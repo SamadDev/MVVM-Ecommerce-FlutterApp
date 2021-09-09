@@ -1,10 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../Services/Products_db.dart';
+import 'package:shop_app/models/Cart.dart';
+import 'package:shop_app/models/Product.dart';
 
 class users_dbServices {
   final String uid;
   users_dbServices({this.uid});
   var CartProds;
+
+  List<Cart> userCart = [];
 
   final product_dbServices p = new product_dbServices();
 
@@ -30,11 +34,29 @@ class users_dbServices {
     }, SetOptions(merge: true));
   }
 
+  Future fillCartList(var CartProds) async {
+    userCart = [];
+    await p.getAllCategories();
+    for (int i = 0; i < CartProds.length; i++) {
+      await p.getSpecificProd(CartProds[i]['id']);
+      userCart.add(Cart(
+          product: Product(
+              id: p.currentProd.id,
+              images: p.currentProd.images,
+              colors: p.currentProd.colors,
+              title: p.currentProd.title,
+              price: p.currentProd.price),
+          numOfItem: CartProds[i]['quantity'],
+          option1: CartProds[i]['option1']));
+    }
+    print(userCart);
+  }
+
   Future getUserCart() async {
     Map map = new Map<String, dynamic>();
     DocumentSnapshot documentSnapshot = await UsersInformation.doc(uid).get();
     CartProds = documentSnapshot.get('cart');
-    await p.fillCartList(CartProds);
-    print(p.userCart[1].product.title);
+    await fillCartList(CartProds);
+    print(userCart[1].product.title);
   }
 }

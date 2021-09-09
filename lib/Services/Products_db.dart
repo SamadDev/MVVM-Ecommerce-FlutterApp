@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shop_app/models/Product.dart';
-import 'package:shop_app/models/Cart.dart';
+
+import '../../../screens/cart/components/body.dart';
 
 class product_dbServices {
   final DocumentReference ClothingInformation =
       FirebaseFirestore.instance.collection('Products').doc('Clothing');
+
+  final cartBody b = new cartBody();
 
   Product currentProd;
 
@@ -13,8 +16,6 @@ class product_dbServices {
   List<List<Product>> Categories = [];
 
   List<String> categories = [];
-
-  List<Cart> userCart = [];
 
   Future getProdsOfCat(String category) async {
     QuerySnapshot querySnapshot =
@@ -74,23 +75,5 @@ class product_dbServices {
     DocumentSnapshot doc = await ClothingInformation.get();
     categories = List<String>.from(doc.get('Categories'));
     print(categories);
-  }
-
-  Future fillCartList(var CartProds) async {
-    userCart = [];
-    await getAllCategories();
-    for (int i = 0; i < CartProds.length; i++) {
-      await getSpecificProd(CartProds[i]['id']);
-      userCart.add(Cart(
-          product: Product(
-              id: currentProd.id,
-              images: currentProd.images,
-              colors: currentProd.colors,
-              title: currentProd.title,
-              price: currentProd.price),
-          numOfItem: CartProds[i]['quantity'],
-          option1: CartProds[i]['option1']));
-    }
-    print(userCart);
   }
 }

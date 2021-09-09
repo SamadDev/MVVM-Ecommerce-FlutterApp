@@ -26,33 +26,50 @@ class CartCard extends StatelessWidget {
                 color: Color(0xFFF5F6F9),
                 borderRadius: BorderRadius.circular(15),
               ),
-              child: Image.asset(cart.product.images[0]),
+              child: Image.network(cart.product.images[0].toString()),
             ),
           ),
         ),
         SizedBox(width: 20),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              cart.product.title,
-              style: TextStyle(color: Colors.black, fontSize: 16),
-              maxLines: 2,
-            ),
-            SizedBox(height: 10),
-            Text.rich(
-              TextSpan(
-                text: "\$${cart.product.price}",
-                style:
-                    TextStyle(fontWeight: FontWeight.w600, color: PrimaryColor),
-                children: [
-                  TextSpan(
-                      text: " x${cart.numOfItem}",
-                      style: Theme.of(context).textTheme.bodyText1),
-                ],
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                cart.product.title,
+                maxLines: 1,
+                softWrap: false,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    fontFamily: 'PantonItalic'),
               ),
-            )
-          ],
+              Text(
+                cart.option1,
+                style: TextStyle(
+                    color: SecondaryColorDark,
+                    fontSize: 14,
+                    fontFamily: 'PantonBoldItalic'),
+              ),
+              SizedBox(height: 10),
+              Text.rich(
+                TextSpan(
+                  text: "${cart.product.price} EGP",
+                  style: TextStyle(
+                      color: PrimaryColor,
+                      fontSize: 16,
+                      fontFamily: 'PantonBoldItalic'),
+                  children: [
+                    TextSpan(
+                        text: " x${cart.numOfItem}",
+                        style: Theme.of(context).textTheme.bodyText2),
+                  ],
+                ),
+              )
+            ],
+          ),
         )
       ],
     );

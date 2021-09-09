@@ -7,40 +7,38 @@ import 'cart_card.dart';
 import '../../../constants.dart';
 import 'package:shop_app/Services/Users_db.dart';
 import '../../../Services/authentication.dart';
-import 'package:provider/provider.dart';
+import 'package:shop_app/models/Cart.dart';
 import '../../../Services/Products_db.dart';
 
-class Body extends StatefulWidget {
+class cartBody extends StatefulWidget {
   @override
-  _BodyState createState() => _BodyState();
+  _cartBodyState createState() => _cartBodyState();
 }
 
-class _BodyState extends State<Body> {
+class _cartBodyState extends State<cartBody> {
   @override
   Widget build(BuildContext context) {
     User user = context.read<AuthenticationService>().CurrentUser();
     final users_dbServices u = new users_dbServices(uid: user.uid);
-    final product_dbServices p = new product_dbServices();
 
-    user = context.read<AuthenticationService>().CurrentUser();
     return Padding(
       padding:
           EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
       child: FutureBuilder(
         future: u.getUserCart(),
         builder: (context, snapshot) {
-          p.fillCartList(p.userCart);
-          if (snapshot.connectionState == ConnectionState.done)
+          if (snapshot.connectionState == ConnectionState.done) {
+            print(u.CartProds.length);
             return ListView.builder(
-              itemCount: p.userCart.length,
+              itemCount: u.userCart.length,
               itemBuilder: (context, index) => Padding(
                 padding: EdgeInsets.symmetric(vertical: 10),
                 child: Dismissible(
-                  key: Key(p.userCart[index].product.id.toString()),
+                  key: Key(u.userCart[index].product.id.toString()),
                   direction: DismissDirection.endToStart,
                   onDismissed: (direction) {
                     setState(() {
-                      p.userCart.removeAt(index);
+                      u.userCart.removeAt(index);
                     });
                   },
                   background: Container(
@@ -56,11 +54,11 @@ class _BodyState extends State<Body> {
                       ],
                     ),
                   ),
-                  child: CartCard(cart: p.userCart[index]),
+                  child: CartCard(cart: u.userCart[index]),
                 ),
               ),
             );
-
+          }
           if (snapshot.connectionState == ConnectionState.waiting)
             return Center(
               child: Container(
