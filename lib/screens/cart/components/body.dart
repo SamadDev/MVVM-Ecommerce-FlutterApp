@@ -19,7 +19,7 @@ class _cartBodyState extends State<cartBody> {
   @override
   Widget build(BuildContext context) {
     User user = context.read<AuthenticationService>().CurrentUser();
-    final users_dbServices u = new users_dbServices(uid: user.uid);
+    final users_dbServices u = users_dbServices(uid: user.uid);
 
     return Padding(
       padding:
@@ -28,7 +28,7 @@ class _cartBodyState extends State<cartBody> {
         future: u.getUserCart(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            print(u.CartProds.length);
+            print(u.userCart.length);
             return ListView.builder(
               itemCount: u.userCart.length,
               itemBuilder: (context, index) => Padding(
