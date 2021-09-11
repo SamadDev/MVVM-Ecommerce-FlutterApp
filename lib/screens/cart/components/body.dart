@@ -7,25 +7,42 @@ import 'cart_card.dart';
 import '../../../constants.dart';
 import 'package:shop_app/Services/Users_db.dart';
 import '../../../Services/authentication.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shop_app/models/Cart.dart';
 import '../../../Services/Products_db.dart';
 
 class cartBody extends StatefulWidget {
+  final _auth = FirebaseAuth.instance;
+  User CurrentUser() {
+    return _auth.currentUser;
+  }
+
   @override
   _cartBodyState createState() => _cartBodyState();
 }
 
 class _cartBodyState extends State<cartBody> {
+  users_dbServices u;
+  Future builderr;
+
+  @override
+  void initState() {
+    u = users_dbServices(uid: widget.CurrentUser().uid);
+    builderr = guc();
+    super.initState();
+  }
+
+  guc() async {
+    return await u.getUserCart();
+  }
+
   @override
   Widget build(BuildContext context) {
-    User user = context.read<AuthenticationService>().CurrentUser();
-    final users_dbServices u = users_dbServices(uid: user.uid);
-
     return Padding(
       padding:
           EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
       child: FutureBuilder(
-        future: u.getUserCart(),
+        future: builderr,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             print(u.userCart.length);
@@ -34,7 +51,7 @@ class _cartBodyState extends State<cartBody> {
               itemBuilder: (context, index) => Padding(
                 padding: EdgeInsets.symmetric(vertical: 10),
                 child: Dismissible(
-                  key: Key(u.userCart[index].product.id.toString()),
+                  key: UniqueKey(),
                   direction: DismissDirection.endToStart,
                   onDismissed: (direction) {
                     setState(() {

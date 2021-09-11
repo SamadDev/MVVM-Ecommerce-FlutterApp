@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shop_app/size_config.dart';
 
-const PrimaryColor = Color(0xFFa2e571);
-const PrimaryLightColor = Color(0xffd7dbdb);
+const PrimaryColor = Color(0xffff5656);
+const PrimaryLightColor = Color(0xffffffff);
 const PrimaryGradientColor = LinearGradient(
   begin: Alignment.topLeft,
   end: Alignment.bottomRight,

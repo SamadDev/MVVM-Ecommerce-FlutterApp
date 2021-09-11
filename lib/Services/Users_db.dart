@@ -53,10 +53,8 @@ class users_dbServices {
   }
 
   Future getUserCart() async {
-    Map map = new Map<String, dynamic>();
     DocumentSnapshot documentSnapshot = await UsersInformation.doc(uid).get();
     CartProds = documentSnapshot.get('cart');
     await fillCartList(CartProds);
-    print(userCart[1].product.title);
   }
 }
