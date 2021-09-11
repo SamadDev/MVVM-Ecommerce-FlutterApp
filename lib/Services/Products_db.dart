@@ -7,8 +7,6 @@ class product_dbServices {
   final DocumentReference ClothingInformation =
       FirebaseFirestore.instance.collection('Products').doc('Clothing');
 
-  final cartBody b = new cartBody();
-
   Product currentProd;
 
   List<Product> CurrentCat = [];
@@ -31,25 +29,6 @@ class product_dbServices {
     }
     print('Successfully Retrieved Products');
   }
-
-  /*
-  Future getAllProds() async {
-    for (int i = 0; i < categories.length; i++) {
-      QuerySnapshot querySnapshot =
-          await ClothingInformation.collection(categories[i]).get();
-      for (int i = 0; i < querySnapshot.docs.length; i++) {
-        var a = querySnapshot.docs[i];
-        Categories[i].add(Product(
-            id: a.id,
-            images: a.get('images'),
-            colors: a.get('Colors'),
-            title: a.get('Title'),
-            price: a.get('Price')));
-      }
-    }
-    print(Categories.length);
-  }
-  */
 
   Future getSpecificProd(String id) async {
     for (int i = 0; i < categories.length; i++) {

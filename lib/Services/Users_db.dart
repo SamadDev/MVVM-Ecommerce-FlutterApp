@@ -57,4 +57,11 @@ class users_dbServices {
     CartProds = documentSnapshot.get('cart');
     await fillCartList(CartProds);
   }
+
+  Future DeleteItemFromCart(int index) async {
+    DocumentReference docRef = UsersInformation.doc(uid);
+    await docRef.update({
+      'cart': FieldValue.arrayRemove([CartProds[index]])
+    });
+  }
 }

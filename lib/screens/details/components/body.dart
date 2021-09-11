@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shop_app/models/Cart.dart';
 import 'package:shop_app/models/Product.dart';
 import 'package:shop_app/size_config.dart';
 import '../../../constants.dart';
@@ -10,6 +11,7 @@ import 'package:shop_app/Services/Users_db.dart';
 import 'package:shop_app/Services/Products_db.dart';
 import '../../../Services/authentication.dart';
 import 'package:provider/provider.dart';
+import '../../../screens/cart/components/body.dart';
 
 class Body extends StatefulWidget {
   final Product product;
@@ -28,6 +30,8 @@ class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
     user = context.read<AuthenticationService>().CurrentUser();
+    final product_dbServices p = new product_dbServices();
+
     return ListView(
       children: [
         ProductImages(product: widget.product),
@@ -66,12 +70,11 @@ class _BodyState extends State<Body> {
                         child: ElevatedButton(
                           onPressed: () async {
                             try {
-                              users_dbServices(uid: user.uid)
+                              await users_dbServices(uid: user.uid)
                                   .addToCart(widget.product.id, size, 1);
-                              product_dbServices().getAllCategories();
                               print("Added to cart");
                             } catch (e) {
-                              return e.message;
+                              return e;
                             }
                           },
                           child: Text(

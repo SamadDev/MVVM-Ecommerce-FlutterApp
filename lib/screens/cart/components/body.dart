@@ -17,23 +17,24 @@ class cartBody extends StatefulWidget {
     return _auth.currentUser;
   }
 
+  users_dbServices u;
+
   @override
   _cartBodyState createState() => _cartBodyState();
 }
 
 class _cartBodyState extends State<cartBody> {
-  users_dbServices u;
-  Future builderr;
+  Future futureCart;
 
   @override
   void initState() {
-    u = users_dbServices(uid: widget.CurrentUser().uid);
-    builderr = guc();
+    widget.u = users_dbServices(uid: widget.CurrentUser().uid);
+    futureCart = guc();
     super.initState();
   }
 
   guc() async {
-    return await u.getUserCart();
+    return await widget.u.getUserCart();
   }
 
   @override
@@ -42,12 +43,12 @@ class _cartBodyState extends State<cartBody> {
       padding:
           EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
       child: FutureBuilder(
-        future: builderr,
+        future: futureCart,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            print(u.userCart.length);
+            print(widget.u.userCart.length);
             return ListView.builder(
-              itemCount: u.userCart.length,
+              itemCount: widget.u.userCart.length,
               itemBuilder: (context, index) => Padding(
                 padding: EdgeInsets.symmetric(vertical: 10),
                 child: Dismissible(
@@ -55,8 +56,9 @@ class _cartBodyState extends State<cartBody> {
                   direction: DismissDirection.endToStart,
                   onDismissed: (direction) {
                     setState(() {
-                      u.userCart.removeAt(index);
+                      widget.u.userCart.removeAt(index);
                     });
+                    widget.u.DeleteItemFromCart(index);
                   },
                   background: Container(
                     padding: EdgeInsets.symmetric(horizontal: 20),
@@ -71,7 +73,7 @@ class _cartBodyState extends State<cartBody> {
                       ],
                     ),
                   ),
-                  child: CartCard(cart: u.userCart[index]),
+                  child: CartCard(cart: widget.u.userCart[index]),
                 ),
               ),
             );
