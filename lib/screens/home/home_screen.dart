@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+import 'package:shop_app/Services/authentication.dart';
 import 'package:shop_app/components/coustom_bottom_nav_bar.dart';
 import 'package:shop_app/constants.dart';
 import 'package:titled_navigation_bar/titled_navigation_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
 import 'components/body.dart';
 import '../../../Services/Products_db.dart';
 import '../../../size_config.dart';
@@ -20,8 +23,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedPage = 0;
   List<Widget> pageList = [];
-  final _auth = FirebaseAuth.instance;
-  User loggedInUser;
   final product_dbServices p = new product_dbServices();
 
   @override
@@ -31,19 +32,6 @@ class _HomeScreenState extends State<HomeScreen> {
     pageList.add(CartScreen());
     pageList.add(ProfileScreen());
     super.initState();
-    getCurrentUser();
-  }
-
-  void getCurrentUser() async {
-    try {
-      final user = await _auth.currentUser;
-      if (user != null) {
-        loggedInUser = user;
-        print(loggedInUser.email);
-      }
-    } catch (e) {
-      print(e);
-    }
   }
 
   @override

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shop_app/models/Cart.dart';
+import 'package:shop_app/models/cartItem.dart';
 
 import '../../../constants.dart';
 import '../../../size_config.dart';
@@ -10,7 +10,7 @@ class CartCard extends StatelessWidget {
     @required this.cart,
   }) : super(key: key);
 
-  final Cart cart;
+  final cartItem cart;
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +63,7 @@ class CartCard extends StatelessWidget {
                       fontFamily: 'PantonBoldItalic'),
                   children: [
                     TextSpan(
-                        text: " x${cart.numOfItem}",
+                        text: " x${cart.quantity}",
                         style: Theme.of(context).textTheme.bodyText2),
                   ],
                 ),

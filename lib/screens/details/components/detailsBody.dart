@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shop_app/models/Cart.dart';
+import '../../../globalVars.dart';
 import 'package:shop_app/models/Product.dart';
 import 'package:shop_app/size_config.dart';
 import '../../../constants.dart';
@@ -15,7 +15,6 @@ import '../../../screens/cart/components/body.dart';
 
 class Body extends StatefulWidget {
   final Product product;
-
   const Body({Key key, @required this.product}) : super(key: key);
 
   @override
@@ -30,7 +29,8 @@ class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
     user = context.read<AuthenticationService>().CurrentUser();
-    final product_dbServices p = new product_dbServices();
+    final product_dbServices p = context.read<globalVars>().p;
+    final users_dbServices u = users_dbServices(uid: user.uid);
 
     return ListView(
       children: [
@@ -67,36 +67,47 @@ class _BodyState extends State<Body> {
                           bottom: getProportionateScreenHeight(35),
                           top: getProportionateScreenHeight(12),
                         ),
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            try {
-                              await users_dbServices(uid: user.uid)
-                                  .addToCart(widget.product.id, size, 1);
-                              print("Added to cart");
-                            } catch (e) {
-                              return e;
-                            }
-                          },
-                          child: Text(
-                            'Add To Cart',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontFamily: 'PantonBoldItalic'),
-                          ),
-                          style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.all(PrimaryColor),
-                              fixedSize: MaterialStateProperty.all<Size>(Size(
-                                  double.infinity,
-                                  getProportionateScreenHeight(65))),
-                              elevation: MaterialStateProperty.all<double>(0),
-                              shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(50)))),
-                        ),
+                        child: Consumer<globalVars>(builder: (_, gv, __) {
+                          return ElevatedButton(
+                            onPressed: () async {
+                              try {
+                                await u.addToCart(widget.product.id, size, 1);
+                                String temp = widget.product.id + size;
+                                List<String> tempLsit = [];
+
+                                for (int i = 0; i < gv.userCart.length; i++) {
+                                  tempLsit.add(gv.userCart[i].uid);
+                                }
+                                if (!tempLsit.contains(temp)) {
+                                  gv.addToUserCart(widget.product, 1, size);
+                                } else {
+                                  print("Already in Cart");
+                                }
+                              } catch (e) {
+                                return e;
+                              }
+                            },
+                            child: Text(
+                              'Add To Cart',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontFamily: 'PantonBoldItalic'),
+                            ),
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all(PrimaryColor),
+                                fixedSize: MaterialStateProperty.all<Size>(Size(
+                                    double.infinity,
+                                    getProportionateScreenHeight(65))),
+                                elevation: MaterialStateProperty.all<double>(0),
+                                shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(50)))),
+                          );
+                        }),
                       ),
                     ),
                   ],
