@@ -11,7 +11,6 @@ import 'package:shop_app/Services/Users_db.dart';
 import 'package:shop_app/Services/Products_db.dart';
 import '../../../Services/authentication.dart';
 import 'package:provider/provider.dart';
-import '../../../screens/cart/components/body.dart';
 
 class Body extends StatefulWidget {
   final Product product;

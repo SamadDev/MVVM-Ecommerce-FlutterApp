@@ -27,57 +27,67 @@ class cartBodyState extends State<cartBody> {
   @override
   Widget build(BuildContext context) {
     final User u = context.read<AuthenticationService>().CurrentUser();
+
+    Future _refresh() async {
+      await Provider.of<globalVars>(context, listen: false).getUserCart(u);
+      setState(() {});
+    }
+
     return Padding(
       padding:
           EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
       child: Consumer<globalVars>(builder: (_, gv, __) {
-        return FutureBuilder(
-          future: futureCart,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              return ListView.builder(
-                itemCount: gv.userCart.length,
-                itemBuilder: (context, index) => Padding(
-                  padding: EdgeInsets.symmetric(vertical: 10),
-                  child: Dismissible(
-                    key: UniqueKey(),
-                    direction: DismissDirection.endToStart,
-                    onDismissed: (direction) {
-                      setState(() {
-                        gv.removeFromUserCart(index);
-                      });
-                      gv.DeleteItemFromCart(u, index);
-                    },
-                    background: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 20),
-                      decoration: BoxDecoration(
-                        color: Color(0xFFFFE6E6),
-                        borderRadius: BorderRadius.circular(15),
+        return RefreshIndicator(
+          color: SecondaryColorDark,
+          onRefresh: _refresh,
+          child: FutureBuilder(
+            future: futureCart,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                return ListView.builder(
+                  itemCount: gv.userCart.length,
+                  itemBuilder: (context, index) => Padding(
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    child: Dismissible(
+                      key: UniqueKey(),
+                      direction: DismissDirection.endToStart,
+                      onDismissed: (direction) {
+                        setState(() {
+                          gv.removeFromUserCart(index);
+                        });
+                        gv.DeleteItemFromCart(u, index);
+                      },
+                      background: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        decoration: BoxDecoration(
+                          color: Color(0xFFFFE6E6),
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Row(
+                          children: [
+                            Spacer(),
+                            SvgPicture.asset("assets/icons/Trash.svg"),
+                          ],
+                        ),
                       ),
-                      child: Row(
-                        children: [
-                          Spacer(),
-                          SvgPicture.asset("assets/icons/Trash.svg"),
-                        ],
-                      ),
+                      child: CartCard(cart: gv.userCart[index]),
                     ),
-                    child: CartCard(cart: gv.userCart[index]),
                   ),
-                ),
-              );
-            }
-            if (snapshot.connectionState == ConnectionState.waiting)
-              return Center(
-                child: Container(
-                    height: getProportionateScreenWidth(40),
-                    width: getProportionateScreenWidth(40),
-                    child: CircularProgressIndicator(
-                      color: SecondaryColorDark,
-                    )),
-              );
+                );
+              }
+              if (snapshot.connectionState == ConnectionState.waiting)
+                return Center(
+                  child: Container(
+                      height: getProportionateScreenWidth(40),
+                      width: getProportionateScreenWidth(40),
+                      child: CircularProgressIndicator(
+                        color: SecondaryColorDark,
+                      )),
+                );
 
-            return Container();
-          },
+              return Container();
+            },
+          ),
         );
       }),
     );
