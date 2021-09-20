@@ -23,6 +23,7 @@ class globalVars with ChangeNotifier {
   final product_dbServices _p = product_dbServices();
   var _CartProds;
   List<cartItem> _userCart = [];
+  int _total = 0;
 
   Future fillCartList(var CartProds) async {
     _userCart = [];
@@ -48,6 +49,7 @@ class globalVars with ChangeNotifier {
     DocumentSnapshot documentSnapshot = await UsersInformation.doc(u.uid).get();
     _CartProds = documentSnapshot.get('cart');
     await fillCartList(_CartProds);
+    TotalPrice();
   }
 
   Future DeleteItemFromCart(User u, int index) async {
@@ -61,14 +63,26 @@ class globalVars with ChangeNotifier {
     _userCart.add(cartItem(
         product: p, quantity: quantity, option1: option1, uid: p.id + option1));
     notifyListeners();
+    TotalPrice();
   }
 
   void removeFromUserCart(int index) {
     _userCart.removeAt(index);
     notifyListeners();
+    TotalPrice();
+  }
+
+  void TotalPrice() {
+    _total = 0;
+    for (int i = 0; i < _userCart.length; i++) {
+      _total += (_userCart[i].product.price * _userCart[i].quantity);
+    }
+    notifyListeners();
   }
 
   product_dbServices get p => _p;
+
+  int get total => _total;
 
   List<cartItem> get userCart => _userCart;
 }

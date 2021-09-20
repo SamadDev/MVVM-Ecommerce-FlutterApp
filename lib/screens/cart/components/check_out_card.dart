@@ -71,29 +71,38 @@ class CheckoutCard extends StatelessWidget {
               ],
             ),
             SizedBox(height: getProportionateScreenHeight(20)),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text.rich(
-                  TextSpan(
-                    text: "Total:\n",
-                    children: [
-                      TextSpan(
-                        text: "\$337.15",
-                        style: TextStyle(fontSize: 16, color: Colors.black),
-                      ),
-                    ],
+            Consumer<globalVars>(builder: (_, gv, __) {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text.rich(
+                    TextSpan(
+                      text: "Total:\n",
+                      style: TextStyle(
+                          color: SecondaryColorDark,
+                          fontSize: 12,
+                          fontFamily: 'PantonBoldItalic'),
+                      children: [
+                        TextSpan(
+                          text: "${gv.total} EGP",
+                          style: TextStyle(
+                              color: PrimaryColor,
+                              fontSize: 20,
+                              fontFamily: 'PantonBoldItalic'),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                SizedBox(
-                  width: getProportionateScreenWidth(190),
-                  child: DefaultButton(
-                    text: "Check Out",
-                    press: () {},
+                  SizedBox(
+                    width: getProportionateScreenWidth(190),
+                    child: DefaultButton(
+                      text: "Check Out",
+                      press: () {},
+                    ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              );
+            }),
           ],
         ),
       ),
