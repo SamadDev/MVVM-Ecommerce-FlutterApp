@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:shop_app/globalVars.dart';
 import 'package:shop_app/models/cartItem.dart';
-
+import 'package:provider/provider.dart';
 import '../../../constants.dart';
 import '../../../size_config.dart';
+import '../../../Services/authentication.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class CartCard extends StatelessWidget {
+class CartCard extends StatefulWidget {
   const CartCard({
     Key key,
     @required this.cart,
@@ -13,7 +16,13 @@ class CartCard extends StatelessWidget {
   final cartItem cart;
 
   @override
+  State<CartCard> createState() => _CartCardState();
+}
+
+class _CartCardState extends State<CartCard> {
+  @override
   Widget build(BuildContext context) {
+    User user = context.read<AuthenticationService>().CurrentUser();
     return Row(
       children: [
         SizedBox(
@@ -26,7 +35,7 @@ class CartCard extends StatelessWidget {
                 color: Color(0xFFF5F6F9),
                 borderRadius: BorderRadius.circular(15),
               ),
-              child: Image.network(cart.product.images[0].toString()),
+              child: Image.network(widget.cart.product.images[0].toString()),
             ),
           ),
         ),
@@ -36,7 +45,7 @@ class CartCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                cart.product.title,
+                widget.cart.product.title,
                 maxLines: 1,
                 softWrap: false,
                 overflow: TextOverflow.ellipsis,
@@ -47,26 +56,46 @@ class CartCard extends StatelessWidget {
                     fontFamily: 'PantonItalic'),
               ),
               Text(
-                cart.option1,
+                widget.cart.option1,
                 style: TextStyle(
                     color: SecondaryColorDark,
                     fontSize: 14,
                     fontFamily: 'PantonBoldItalic'),
               ),
               SizedBox(height: 10),
-              Text.rich(
-                TextSpan(
-                  text: "${cart.product.price} EGP",
-                  style: TextStyle(
-                      color: PrimaryColor,
-                      fontSize: 16,
-                      fontFamily: 'PantonBoldItalic'),
-                  children: [
-                    TextSpan(
-                        text: " x${cart.quantity}",
-                        style: Theme.of(context).textTheme.bodyText2),
-                  ],
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "${widget.cart.product.price} EGP",
+                    style: TextStyle(
+                        color: PrimaryColor,
+                        fontSize: 16,
+                        fontFamily: 'PantonBoldItalic'),
+                  ),
+                  Consumer<globalVars>(builder: (_, gv, __) {
+                    return Row(
+                      children: [
+                        IconButton(
+                          onPressed: () => gv.decrementQ(widget.cart.uid),
+                          icon: Icon(Icons.remove),
+                          color: PrimaryColor,
+                          enableFeedback: false,
+                        ),
+                        Text(
+                          "${widget.cart.quantity}",
+                          style: TextStyle(fontFamily: 'PantonBoldItalic'),
+                        ),
+                        IconButton(
+                          onPressed: () => gv.incrementQ(widget.cart.uid),
+                          icon: Icon(Icons.add),
+                          color: PrimaryColor,
+                          enableFeedback: false,
+                        )
+                      ],
+                    );
+                  }),
+                ],
               )
             ],
           ),

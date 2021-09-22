@@ -4,7 +4,7 @@ import 'Product.dart';
 
 class cartItem {
   final Product product;
-  final int quantity;
+  int quantity;
   final String option1;
   final String uid;
 

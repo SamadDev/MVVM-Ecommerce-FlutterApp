@@ -93,13 +93,15 @@ class CheckoutCard extends StatelessWidget {
                       ],
                     ),
                   ),
-                  SizedBox(
-                    width: getProportionateScreenWidth(190),
-                    child: DefaultButton(
-                      text: "Check Out",
-                      press: () {},
-                    ),
-                  ),
+                  Consumer<globalVars>(builder: (_, gv, __) {
+                    return SizedBox(
+                      width: getProportionateScreenWidth(190),
+                      child: DefaultButton(
+                        text: "Check Out",
+                        press: () {},
+                      ),
+                    );
+                  }),
                 ],
               );
             }),
