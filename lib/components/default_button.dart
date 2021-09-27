@@ -24,9 +24,9 @@ class DefaultButton extends StatelessWidget {
         child: Text(
           text,
           style: TextStyle(
-            fontSize: getProportionateScreenWidth(18),
-            color: Colors.white,
-          ),
+              color: Colors.white,
+              fontSize: 17,
+              fontFamily: 'PantonBoldItalic'),
         ),
       ),
     );

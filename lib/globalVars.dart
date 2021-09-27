@@ -22,6 +22,8 @@ class globalVars with ChangeNotifier {
   List<cartItem> _userCart = [];
   int _total = 0;
 
+  String _uName, _uPN, _uAddress, _uGovernorate;
+
   Future fillCartList(var CartProds) async {
     _userCart = [];
     await _p.getAllCategories();
@@ -47,6 +49,15 @@ class globalVars with ChangeNotifier {
     _CartProds = documentSnapshot.get('cart');
     await fillCartList(_CartProds);
     TotalPrice();
+  }
+
+  Future getUserInfo(User u) async {
+    DocumentSnapshot documentSnapshot = await UsersInformation.doc(u.uid).get();
+    _uName = documentSnapshot.get('Full Name');
+    _uPN = documentSnapshot.get('Phone Number');
+    _uGovernorate = documentSnapshot.get('Governorate');
+    _uAddress = documentSnapshot.get('Address');
+    //notifyListeners();
   }
 
   Future DeleteItemFromCart(User u, int index) async {
@@ -126,4 +137,12 @@ class globalVars with ChangeNotifier {
   int get total => _total;
 
   List<cartItem> get userCart => _userCart;
+
+  get uGovernorate => _uGovernorate;
+
+  get uAddress => _uAddress;
+
+  get uPN => _uPN;
+
+  String get uName => _uName;
 }

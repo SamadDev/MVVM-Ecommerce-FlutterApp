@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'components/body.dart';
+import 'components/cartBody.dart';
 import 'components/check_out_card.dart';
 
 class CartScreen extends StatelessWidget {

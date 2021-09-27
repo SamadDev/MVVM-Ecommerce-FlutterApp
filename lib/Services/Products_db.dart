@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shop_app/models/Product.dart';
-import '../../../screens/cart/components/body.dart';
+import '../../../screens/cart/components/cartBody.dart';
 
 class product_dbServices {
   final DocumentReference ClothingInformation =

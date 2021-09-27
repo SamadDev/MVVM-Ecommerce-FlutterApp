@@ -32,6 +32,7 @@ class _BodyState extends State<Body> {
     final users_dbServices u = users_dbServices(uid: user.uid);
 
     return ListView(
+      padding: EdgeInsets.zero,
       children: [
         ProductImages(product: widget.product),
         TopRoundedContainer(
