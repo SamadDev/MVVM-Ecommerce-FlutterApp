@@ -22,7 +22,11 @@ class globalVars with ChangeNotifier {
   List<cartItem> _userCart = [];
   int _total = 0;
 
+  int _shippingPrice = 40;
+
   String _uName, _uPN, _uAddress, _uGovernorate;
+
+  String _paymentMethod = "Select Method";
 
   Future fillCartList(var CartProds) async {
     _userCart = [];
@@ -132,6 +136,11 @@ class globalVars with ChangeNotifier {
     }
   }
 
+  void changePaymentMethod(String method) {
+    _paymentMethod = method;
+    notifyListeners();
+  }
+
   product_dbServices get p => _p;
 
   int get total => _total;
@@ -143,6 +152,10 @@ class globalVars with ChangeNotifier {
   get uAddress => _uAddress;
 
   get uPN => _uPN;
+
+  int get shippingPrice => _shippingPrice;
+
+  String get paymentMethod => _paymentMethod;
 
   String get uName => _uName;
 }

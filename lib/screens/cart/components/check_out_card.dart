@@ -11,7 +11,6 @@ import '../../../Services/authentication.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../../Services/Products_db.dart';
-import '../../../globalVars.dart';
 import 'package:shop_app/screens/checkOut/checkout_bottom_sheet.dart';
 
 class CheckoutCard extends StatelessWidget {
@@ -75,7 +74,7 @@ class CheckoutCard extends StatelessWidget {
                       isScrollControlled: true,
                       backgroundColor: Colors.transparent,
                       builder: (BuildContext bc) {
-                        return CheckoutBottomSheet();
+                        return checkoutBottomSheet();
                       });
                 },
               ),

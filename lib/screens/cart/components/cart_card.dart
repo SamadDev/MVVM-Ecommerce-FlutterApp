@@ -22,7 +22,6 @@ class CartCard extends StatefulWidget {
 class _CartCardState extends State<CartCard> {
   @override
   Widget build(BuildContext context) {
-    User user = context.read<AuthenticationService>().CurrentUser();
     return Row(
       children: [
         SizedBox(

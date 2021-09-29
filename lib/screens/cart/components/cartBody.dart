@@ -15,24 +15,19 @@ class cartBody extends StatefulWidget {
 
 class cartBodyState extends State<cartBody> {
   Future futureCart;
+  User u;
 
   @override
   void initState() {
-    User u = Provider.of<AuthenticationService>(context, listen: false)
+    u = Provider.of<AuthenticationService>(context, listen: false)
         .CurrentUser();
+    Provider.of<globalVars>(context, listen: false).getUserInfo(u);
     futureCart = Provider.of<globalVars>(context, listen: false).getUserCart(u);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final User u = context.read<AuthenticationService>().CurrentUser();
-
-    Future _refresh() async {
-      await Provider.of<globalVars>(context, listen: false).getUserCart(u);
-      setState(() {});
-    }
-
     return Padding(
       padding:
           EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
