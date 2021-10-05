@@ -6,6 +6,12 @@ import 'package:shop_app/size_config.dart';
 import 'package:animated_size_and_fade/animated_size_and_fade.dart';
 import 'package:shop_app/globalVars.dart';
 import 'package:provider/provider.dart';
+import 'package:progress_state_button/iconed_button.dart';
+import 'package:progress_state_button/progress_button.dart';
+import '../../../Services/authentication.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shop_app/Services/Users_db.dart';
+import 'package:nanoid/nanoid.dart';
 
 class checkoutBottomSheet extends StatefulWidget {
   bool paymentSection = false;
@@ -17,8 +23,11 @@ class checkoutBottomSheet extends StatefulWidget {
 }
 
 class _checkoutBottomSheetState extends State<checkoutBottomSheet> {
+  User user;
   @override
   Widget build(BuildContext context) {
+    user = context.read<AuthenticationService>().CurrentUser();
+    final users_dbServices u = users_dbServices(uid: user.uid);
     return Consumer<globalVars>(builder: (_, gv, __) {
       return Container(
         padding: EdgeInsets.symmetric(
@@ -52,7 +61,7 @@ class _checkoutBottomSheetState extends State<checkoutBottomSheet> {
               ],
             ),
             SizedBox(
-              height: 45,
+              height: 20,
             ),
             getDivider(),
             InkWell(
@@ -170,7 +179,7 @@ class _checkoutBottomSheetState extends State<checkoutBottomSheet> {
             getDivider(),
             InkWell(
               child: checkoutRow("Total Cost", widget.TotalSection, false,
-                  trailingText: "${(gv.total + 40).toString()} EGP"),
+                  trailingText: "${(gv.total).toString()} EGP"),
               onTap: () {
                 setState(() {
                   widget.addressSection = false;
@@ -193,7 +202,7 @@ class _checkoutBottomSheetState extends State<checkoutBottomSheet> {
                         itemCount: gv.userCart.length,
                         itemBuilder: (context, index) => ListTile(
                               title: Text(
-                                gv.userCart[index].product.title,
+                                '${gv.userCart[index].option1} - ${gv.userCart[index].product.title}',
                                 maxLines: 1,
                                 softWrap: false,
                                 overflow: TextOverflow.ellipsis,
@@ -221,7 +230,23 @@ class _checkoutBottomSheetState extends State<checkoutBottomSheet> {
               ),
               child: DefaultButton(
                 text: "Place Order",
-                press: () {},
+                press: () {
+                  List<dynamic> tempCart = [];
+                  Map map = new Map<String, dynamic>();
+                  for (int i = 0; i < gv.userCart.length; i++) {
+                    tempCart.add(map = {
+                      "id": gv.userCart[i].product.id,
+                      "option1": gv.userCart[i].option1,
+                      "quantity": gv.userCart[i].quantity,
+                      "total": gv.userCart[i].quantity *
+                          gv.userCart[i].product.price,
+                    });
+                  }
+                  String orderID = customAlphabet("0123456789", 18);
+                  u.addOrder(orderID, tempCart, gv.paymentMethod, gv.total);
+                  u.DeleteAttribute("cart");
+                  gv.resetCart();
+                },
               ),
             ),
           ],

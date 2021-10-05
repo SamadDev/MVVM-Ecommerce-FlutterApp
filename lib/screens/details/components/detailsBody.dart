@@ -71,7 +71,6 @@ class _BodyState extends State<Body> {
                           return ElevatedButton(
                             onPressed: () async {
                               try {
-                                await u.addToCart(widget.product.id, size, 1);
                                 String temp = widget.product.id + size;
                                 List<String> tempLsit = [];
 
@@ -80,6 +79,7 @@ class _BodyState extends State<Body> {
                                 }
                                 if (!tempLsit.contains(temp)) {
                                   gv.addToUserCart(widget.product, 1, size);
+                                  await u.addToCart(widget.product.id, size, 1);
                                 } else {
                                   print("Already in Cart");
                                 }

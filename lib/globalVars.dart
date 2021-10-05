@@ -71,11 +71,6 @@ class globalVars with ChangeNotifier {
     });
   }
 
-  Future DeleteAttribute(User u) async {
-    DocumentReference docRef = UsersInformation.doc(u.uid);
-    await docRef.update({'cart': FieldValue.delete()});
-  }
-
   void addToUserCart(Product p, int quantity, String option1) {
     _userCart.add(cartItem(
         product: p, quantity: quantity, option1: option1, uid: p.id + option1));
@@ -113,8 +108,13 @@ class globalVars with ChangeNotifier {
     TotalPrice();
   }
 
+  void resetCart() {
+    _userCart = [];
+    notifyListeners();
+  }
+
   void TotalPrice() {
-    _total = 0;
+    _total = _shippingPrice;
     for (int i = 0; i < _userCart.length; i++) {
       _total += (_userCart[i].product.price * _userCart[i].quantity);
     }
@@ -152,6 +152,8 @@ class globalVars with ChangeNotifier {
   get uAddress => _uAddress;
 
   get uPN => _uPN;
+
+  get CartProds => _CartProds;
 
   int get shippingPrice => _shippingPrice;
 

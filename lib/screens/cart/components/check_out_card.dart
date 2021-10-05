@@ -1,16 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shop_app/components/default_button.dart';
-import 'package:shop_app/Services/Users_db.dart';
 import 'package:shop_app/globalVars.dart';
-import 'package:shop_app/screens/checkOut/checkOut_screen.dart';
-import '../../checkOut/checkOut.dart';
 import '../../../constants.dart';
 import '../../../size_config.dart';
-import '../../../Services/authentication.dart';
 import 'package:provider/provider.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import '../../../Services/Products_db.dart';
 import 'package:shop_app/screens/checkOut/checkout_bottom_sheet.dart';
 
 class CheckoutCard extends StatelessWidget {
@@ -20,11 +13,6 @@ class CheckoutCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final product_dbServices p = new product_dbServices();
-    User user = context.read<AuthenticationService>().CurrentUser();
-    final users_dbServices u = new users_dbServices(uid: user.uid);
-    globalVars g = globalVars();
-
     return Container(
       padding: EdgeInsets.symmetric(
         vertical: getProportionateScreenWidth(20),

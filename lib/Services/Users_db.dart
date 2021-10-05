@@ -11,6 +11,9 @@ class users_dbServices {
   final CollectionReference UsersInformation =
       FirebaseFirestore.instance.collection('UsersInfo');
 
+  final CollectionReference Orders =
+      FirebaseFirestore.instance.collection('Orders');
+
   Future addUserData(String fullName, String phoneNumber, String governorate,
       String address) async {
     return await UsersInformation.doc(uid).set({
@@ -28,5 +31,33 @@ class users_dbServices {
         map = {"id": id, "option1": option1, "quantity": 1}
       ]),
     }, SetOptions(merge: true));
+  }
+
+  Future DeleteAttribute(String attribute) async {
+    DocumentReference docRef = UsersInformation.doc(uid);
+    await docRef.update({attribute: FieldValue.delete()});
+  }
+
+  Future addToOrders(
+      String orderID, List<dynamic> c, String paymentMethod, int total) async {
+    return await Orders.doc(orderID).set({
+      'userID': uid,
+      'Status': "Pending",
+      'Payment method': paymentMethod,
+      'Total': total,
+      'cart': c,
+    }, SetOptions(merge: true));
+  }
+
+  Future addOrderToUser(String orderID) async {
+    return await UsersInformation.doc(uid).set({
+      'orders': FieldValue.arrayUnion([orderID])
+    }, SetOptions(merge: true));
+  }
+
+  void addOrder(
+      String orderID, List<dynamic> c, String paymentMethod, int total) {
+    addToOrders(orderID, c, paymentMethod, total);
+    addOrderToUser(orderID);
   }
 }
