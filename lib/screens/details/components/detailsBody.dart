@@ -11,6 +11,8 @@ import 'package:shop_app/Services/Users_db.dart';
 import 'package:shop_app/Services/Products_db.dart';
 import '../../../Services/authentication.dart';
 import 'package:provider/provider.dart';
+import 'package:progress_state_button/iconed_button.dart';
+import 'package:progress_state_button/progress_button.dart';
 
 class Body extends StatefulWidget {
   final Product product;
@@ -24,6 +26,77 @@ class _BodyState extends State<Body> {
   List<String> sizes = ['S', 'M', 'L', 'XL'];
   String size = 'S';
   User user;
+  ButtonState stateTextWithIcon = ButtonState.idle;
+
+  void onPressedIconWithText(globalVars gv, users_dbServices u) {
+    setState(() {
+      stateTextWithIcon = ButtonState.loading;
+    });
+    try {
+      String temp = widget.product.id + size;
+      List<String> tempLsit = [];
+
+      for (int i = 0; i < gv.userCart.length; i++) {
+        tempLsit.add(gv.userCart[i].uid);
+      }
+      if (!tempLsit.contains(temp)) {
+        gv.addToUserCart(widget.product, 1, size);
+        u.addToCart(widget.product.id, size, 1);
+        setState(() {
+          stateTextWithIcon = ButtonState.success;
+        });
+        Future.delayed(Duration(milliseconds: 2000), () {
+          setState(() {
+            stateTextWithIcon = ButtonState.idle;
+          });
+        });
+      } else {
+        print("Already in Cart");
+        setState(() {
+          stateTextWithIcon = ButtonState.fail;
+        });
+        Future.delayed(Duration(milliseconds: 2000), () {
+          setState(() {
+            stateTextWithIcon = ButtonState.idle;
+          });
+        });
+      }
+    } catch (e) {
+      return e;
+    }
+  }
+
+  Widget buildTextWithIcon(globalVars gv, users_dbServices u) {
+    return ProgressButton.icon(
+        radius: 20.0,
+        textStyle: TextStyle(
+            color: Colors.white, fontSize: 17, fontFamily: 'PantonBoldItalic'),
+        iconedButtons: {
+          ButtonState.idle: IconedButton(
+              text: "Add to Cart",
+              icon: Icon(
+                Icons.add_rounded,
+                size: 0.01,
+                color: PrimaryColor,
+              ),
+              color: PrimaryColor),
+          ButtonState.loading:
+              IconedButton(text: "Loading", color: PrimaryColor),
+          ButtonState.fail: IconedButton(
+              text: "Already in cart",
+              icon: Icon(Icons.cancel, color: Colors.white),
+              color: PrimaryColor),
+          ButtonState.success: IconedButton(
+              text: "Added successfully",
+              icon: Icon(
+                Icons.check_circle,
+                color: Colors.white,
+              ),
+              color: PrimaryColor)
+        },
+        onPressed: () => onPressedIconWithText(gv, u),
+        state: stateTextWithIcon);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,45 +141,7 @@ class _BodyState extends State<Body> {
                           top: getProportionateScreenHeight(12),
                         ),
                         child: Consumer<globalVars>(builder: (_, gv, __) {
-                          return ElevatedButton(
-                            onPressed: () async {
-                              try {
-                                String temp = widget.product.id + size;
-                                List<String> tempLsit = [];
-
-                                for (int i = 0; i < gv.userCart.length; i++) {
-                                  tempLsit.add(gv.userCart[i].uid);
-                                }
-                                if (!tempLsit.contains(temp)) {
-                                  gv.addToUserCart(widget.product, 1, size);
-                                  await u.addToCart(widget.product.id, size, 1);
-                                } else {
-                                  print("Already in Cart");
-                                }
-                              } catch (e) {
-                                return e;
-                              }
-                            },
-                            child: Text(
-                              'Add To Cart',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                  fontFamily: 'PantonBoldItalic'),
-                            ),
-                            style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all(PrimaryColor),
-                                fixedSize: MaterialStateProperty.all<Size>(Size(
-                                    double.infinity,
-                                    getProportionateScreenHeight(65))),
-                                elevation: MaterialStateProperty.all<double>(0),
-                                shape: MaterialStateProperty.all<
-                                        RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(50)))),
-                          );
+                          return buildTextWithIcon(gv, u);
                         }),
                       ),
                     ),

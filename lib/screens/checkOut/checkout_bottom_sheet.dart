@@ -9,7 +9,8 @@ import '../../../Services/authentication.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shop_app/Services/Users_db.dart';
 import 'package:nanoid/nanoid.dart';
-import 'package:rounded_loading_button/rounded_loading_button.dart';
+import 'package:progress_state_button/iconed_button.dart';
+import 'package:progress_state_button/progress_button.dart';
 
 class checkoutBottomSheet extends StatefulWidget {
   bool paymentSection = false;
@@ -22,49 +23,82 @@ class checkoutBottomSheet extends StatefulWidget {
 
 class _checkoutBottomSheetState extends State<checkoutBottomSheet> {
   User user;
-  final RoundedLoadingButtonController _btnController =
-      RoundedLoadingButtonController();
+  ButtonState stateTextWithIcon = ButtonState.idle;
 
-  void _doSomething(RoundedLoadingButtonController controller, globalVars gv,
-      users_dbServices u) {
-    try {
-      if (gv.paymentMethod != "Select Method") {
-        List<dynamic> tempCart = [];
-        Map map = new Map<String, dynamic>();
-        for (int i = 0; i < gv.userCart.length; i++) {
-          tempCart.add(map = {
-            "id": gv.userCart[i].product.id,
-            "option1": gv.userCart[i].option1,
-            "quantity": gv.userCart[i].quantity,
-            "total": gv.userCart[i].quantity * gv.userCart[i].product.price,
+  void onPressedIconWithText(globalVars gv, users_dbServices u) {
+    setState(() {
+      stateTextWithIcon = ButtonState.loading;
+    });
+    Future.delayed(Duration(milliseconds: 700), () {
+      try {
+        if (gv.paymentMethod != "Select Method") {
+          List<dynamic> tempCart = [];
+          Map map = new Map<String, dynamic>();
+          for (int i = 0; i < gv.userCart.length; i++) {
+            tempCart.add(map = {
+              "id": gv.userCart[i].product.id,
+              "option1": gv.userCart[i].option1,
+              "quantity": gv.userCart[i].quantity,
+              "total": gv.userCart[i].quantity * gv.userCart[i].product.price,
+            });
+          }
+          String orderID = customAlphabet("0123456789", 18);
+          u.addOrder(orderID, tempCart, gv.paymentMethod, gv.total);
+          u.DeleteAttribute("cart");
+          gv.resetCart();
+          setState(() {
+            stateTextWithIcon = ButtonState.success;
+          });
+          Future.delayed(Duration(milliseconds: 1250), () {
+            Navigator.pop(context);
+          });
+          gv.selectedPage = 0;
+          print(gv.selectedPage);
+        } else {
+          print("Choose payment method");
+          setState(() {
+            stateTextWithIcon = ButtonState.idle;
           });
         }
-        String orderID = customAlphabet("0123456789", 18);
-        u.addOrder(orderID, tempCart, gv.paymentMethod, gv.total);
-        u.DeleteAttribute("cart");
-        gv.resetCart();
-        controller.success();
-        Future.delayed(Duration(seconds: 1), () {
-          Navigator.pop(context);
+      } catch (e) {
+        setState(() {
+          stateTextWithIcon = ButtonState.fail;
         });
-        gv.selectedPage = 0;
-        print(gv.selectedPage);
-      } else {
-        print("Choose payment method");
-        controller.reset();
+        print(e);
       }
-    } catch (e) {
-      controller.error();
-      print(e);
-    }
+    });
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _btnController.stateStream.listen((value) {
-      print(value);
-    });
+  Widget buildTextWithIcon(globalVars gv, users_dbServices u) {
+    return ProgressButton.icon(
+        radius: 20.0,
+        textStyle: TextStyle(
+            color: Colors.white, fontSize: 17, fontFamily: 'PantonBoldItalic'),
+        iconedButtons: {
+          ButtonState.idle: IconedButton(
+              text: "Place Order",
+              icon: Icon(
+                Icons.add_rounded,
+                size: 0.01,
+                color: PrimaryColor,
+              ),
+              color: PrimaryColor),
+          ButtonState.loading:
+              IconedButton(text: "Loading", color: PrimaryColor),
+          ButtonState.fail: IconedButton(
+              text: "Failed",
+              icon: Icon(Icons.cancel, color: Colors.white),
+              color: Colors.red.shade300),
+          ButtonState.success: IconedButton(
+              text: "Order Placed",
+              icon: Icon(
+                Icons.check_circle,
+                color: Colors.white,
+              ),
+              color: Colors.green.shade400)
+        },
+        onPressed: () => onPressedIconWithText(gv, u),
+        state: stateTextWithIcon);
   }
 
   @override
@@ -271,18 +305,7 @@ class _checkoutBottomSheetState extends State<checkoutBottomSheet> {
               margin: EdgeInsets.only(
                 top: 25,
               ),
-              child: RoundedLoadingButton(
-                curve: Curves.easeInOutQuint,
-                completionCurve: Curves.easeInOutQuint,
-                color: PrimaryColor,
-                successColor: Colors.green,
-                errorColor: Colors.red,
-                successIcon: Icons.check,
-                failedIcon: Icons.cottage,
-                child: Text('Tap me!', style: TextStyle(color: Colors.white)),
-                controller: _btnController,
-                onPressed: () => _doSomething(_btnController, gv, u),
-              ),
+              child: buildTextWithIcon(gv, u),
 
               /*DefaultButton(
                 text: "Place Order",
