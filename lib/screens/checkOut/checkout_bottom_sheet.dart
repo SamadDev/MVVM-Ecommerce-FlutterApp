@@ -1,17 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:shop_app/components/default_button.dart';
 import 'package:shop_app/constants.dart';
 import 'package:shop_app/size_config.dart';
 import 'package:animated_size_and_fade/animated_size_and_fade.dart';
 import 'package:shop_app/globalVars.dart';
 import 'package:provider/provider.dart';
-import 'package:progress_state_button/iconed_button.dart';
-import 'package:progress_state_button/progress_button.dart';
 import '../../../Services/authentication.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shop_app/Services/Users_db.dart';
 import 'package:nanoid/nanoid.dart';
+import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 class checkoutBottomSheet extends StatefulWidget {
   bool paymentSection = false;
@@ -24,6 +22,51 @@ class checkoutBottomSheet extends StatefulWidget {
 
 class _checkoutBottomSheetState extends State<checkoutBottomSheet> {
   User user;
+  final RoundedLoadingButtonController _btnController =
+      RoundedLoadingButtonController();
+
+  void _doSomething(RoundedLoadingButtonController controller, globalVars gv,
+      users_dbServices u) {
+    try {
+      if (gv.paymentMethod != "Select Method") {
+        List<dynamic> tempCart = [];
+        Map map = new Map<String, dynamic>();
+        for (int i = 0; i < gv.userCart.length; i++) {
+          tempCart.add(map = {
+            "id": gv.userCart[i].product.id,
+            "option1": gv.userCart[i].option1,
+            "quantity": gv.userCart[i].quantity,
+            "total": gv.userCart[i].quantity * gv.userCart[i].product.price,
+          });
+        }
+        String orderID = customAlphabet("0123456789", 18);
+        u.addOrder(orderID, tempCart, gv.paymentMethod, gv.total);
+        u.DeleteAttribute("cart");
+        gv.resetCart();
+        controller.success();
+        Future.delayed(Duration(seconds: 1), () {
+          Navigator.pop(context);
+        });
+        gv.selectedPage = 0;
+        print(gv.selectedPage);
+      } else {
+        print("Choose payment method");
+        controller.reset();
+      }
+    } catch (e) {
+      controller.error();
+      print(e);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _btnController.stateStream.listen((value) {
+      print(value);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     user = context.read<AuthenticationService>().CurrentUser();
@@ -228,26 +271,43 @@ class _checkoutBottomSheetState extends State<checkoutBottomSheet> {
               margin: EdgeInsets.only(
                 top: 25,
               ),
-              child: DefaultButton(
+              child: RoundedLoadingButton(
+                curve: Curves.easeInOutQuint,
+                completionCurve: Curves.easeInOutQuint,
+                color: PrimaryColor,
+                successColor: Colors.green,
+                errorColor: Colors.red,
+                successIcon: Icons.check,
+                failedIcon: Icons.cottage,
+                child: Text('Tap me!', style: TextStyle(color: Colors.white)),
+                controller: _btnController,
+                onPressed: () => _doSomething(_btnController, gv, u),
+              ),
+
+              /*DefaultButton(
                 text: "Place Order",
                 press: () {
-                  List<dynamic> tempCart = [];
-                  Map map = new Map<String, dynamic>();
-                  for (int i = 0; i < gv.userCart.length; i++) {
-                    tempCart.add(map = {
-                      "id": gv.userCart[i].product.id,
-                      "option1": gv.userCart[i].option1,
-                      "quantity": gv.userCart[i].quantity,
-                      "total": gv.userCart[i].quantity *
-                          gv.userCart[i].product.price,
-                    });
+                  if (gv.paymentMethod != "Select Method") {
+                    List<dynamic> tempCart = [];
+                    Map map = new Map<String, dynamic>();
+                    for (int i = 0; i < gv.userCart.length; i++) {
+                      tempCart.add(map = {
+                        "id": gv.userCart[i].product.id,
+                        "option1": gv.userCart[i].option1,
+                        "quantity": gv.userCart[i].quantity,
+                        "total": gv.userCart[i].quantity *
+                            gv.userCart[i].product.price,
+                      });
+                    }
+                    String orderID = customAlphabet("0123456789", 18);
+                    u.addOrder(orderID, tempCart, gv.paymentMethod, gv.total);
+                    u.DeleteAttribute("cart");
+                    gv.resetCart();
+                  } else {
+                    print("Choose payment method");
                   }
-                  String orderID = customAlphabet("0123456789", 18);
-                  u.addOrder(orderID, tempCart, gv.paymentMethod, gv.total);
-                  u.DeleteAttribute("cart");
-                  gv.resetCart();
                 },
-              ),
+              ),*/
             ),
           ],
         ),

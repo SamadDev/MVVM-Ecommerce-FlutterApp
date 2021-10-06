@@ -7,6 +7,8 @@ import '../../../size_config.dart';
 import 'package:shop_app/screens/splash/splash_screen.dart';
 import 'package:shop_app/screens/cart/cart_screen.dart';
 import 'package:shop_app/screens/profile/profile_screen.dart';
+import 'package:shop_app/globalVars.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   static String routeName = "/home";
@@ -31,40 +33,44 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return Scaffold(
-      body: IndexedStack(
-        index: _selectedPage,
-        children: pageList,
-      ),
-      bottomNavigationBar: TitledBottomNavigationBar(
-        curve: Curves.easeInOutQuint,
-        activeColor: PrimaryColor,
-        reverse: true,
-        items: [
-          TitledNavigationBarItem(
-              icon: Icons.home_outlined,
-              title: Text("Home", style: TextStyle(fontFamily: "PantonBold"))),
-          TitledNavigationBarItem(
-              icon: Icons.favorite_border_outlined,
-              title: Text("Favourites",
-                  style: TextStyle(fontFamily: "PantonBold"))),
-          TitledNavigationBarItem(
-              icon: Icons.shopping_cart_outlined,
-              title: Text("Cart", style: TextStyle(fontFamily: "PantonBold"))),
-          TitledNavigationBarItem(
-              icon: Icons.person_outline_rounded,
-              title:
-                  Text("ProfIle", style: TextStyle(fontFamily: "PantonBold"))),
-        ],
-        currentIndex: _selectedPage,
-        onTap: _onItemTapped,
-      ),
-    );
+    return Consumer<globalVars>(builder: (_, gv, __) {
+      return Scaffold(
+        body: IndexedStack(
+          index: gv.selectedPage,
+          children: pageList,
+        ),
+        bottomNavigationBar: TitledBottomNavigationBar(
+          curve: Curves.easeInOutQuint,
+          activeColor: PrimaryColor,
+          reverse: true,
+          items: [
+            TitledNavigationBarItem(
+                icon: Icons.home_outlined,
+                title:
+                    Text("Home", style: TextStyle(fontFamily: "PantonBold"))),
+            TitledNavigationBarItem(
+                icon: Icons.favorite_border_outlined,
+                title: Text("Favourites",
+                    style: TextStyle(fontFamily: "PantonBold"))),
+            TitledNavigationBarItem(
+                icon: Icons.shopping_cart_outlined,
+                title:
+                    Text("Cart", style: TextStyle(fontFamily: "PantonBold"))),
+            TitledNavigationBarItem(
+                icon: Icons.person_outline_rounded,
+                title: Text("ProfIle",
+                    style: TextStyle(fontFamily: "PantonBold"))),
+          ],
+          currentIndex: gv.selectedPage,
+          onTap: (index) => _onItemTapped(gv, index),
+        ),
+      );
+    });
   }
 
-  void _onItemTapped(int index) {
+  void _onItemTapped(globalVars gv, int index) {
     setState(() {
-      _selectedPage = index;
+      gv.selectedPage = index;
     });
   }
 }

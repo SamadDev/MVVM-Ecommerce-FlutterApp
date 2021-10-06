@@ -57,13 +57,17 @@ class CheckoutCard extends StatelessWidget {
               child: DefaultButton(
                 text: "Checkout",
                 press: () {
-                  showModalBottomSheet(
-                      context: context,
-                      isScrollControlled: true,
-                      backgroundColor: Colors.transparent,
-                      builder: (BuildContext bc) {
-                        return checkoutBottomSheet();
-                      });
+                  if (gv.userCart.isNotEmpty) {
+                    showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        backgroundColor: Colors.transparent,
+                        builder: (BuildContext bc) {
+                          return checkoutBottomSheet();
+                        });
+                  } else {
+                    print("Cart is empty");
+                  }
                 },
               ),
             ),

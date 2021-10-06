@@ -20,6 +20,9 @@ class globalVars with ChangeNotifier {
   final product_dbServices _p = product_dbServices();
   var _CartProds;
   List<cartItem> _userCart = [];
+
+  int selectedPage = 0;
+
   int _total = 0;
 
   int _shippingPrice = 40;
@@ -111,10 +114,15 @@ class globalVars with ChangeNotifier {
   void resetCart() {
     _userCart = [];
     notifyListeners();
+    TotalPrice();
   }
 
   void TotalPrice() {
-    _total = _shippingPrice;
+    if (_userCart.isEmpty) {
+      _total = 0;
+    } else {
+      _total = _shippingPrice;
+    }
     for (int i = 0; i < _userCart.length; i++) {
       _total += (_userCart[i].product.price * _userCart[i].quantity);
     }
