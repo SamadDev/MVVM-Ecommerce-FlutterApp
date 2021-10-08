@@ -1,15 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:shop_app/Services/Users_db.dart';
 import 'package:shop_app/components/custom_surfix_icon.dart';
 import 'package:shop_app/components/form_error.dart';
-import 'package:shop_app/screens/sign_in/sign_in_screen.dart';
 import 'package:shop_app/screens/home/home_screen.dart';
 import '../../../constants.dart';
 import '../../../size_config.dart';
 import '../../../Services/authentication.dart';
 import 'package:provider/provider.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:progress_state_button/iconed_button.dart';
+import 'package:progress_state_button/progress_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shop_app/helper/keyboard.dart';
 
 class SignUpForm extends StatefulWidget {
   @override
@@ -27,6 +29,99 @@ class _SignUpFormState extends State<SignUpForm> {
   String address;
   bool showSpinner = false;
   final List<String> errors = [];
+  ButtonState stateTextWithIcon = ButtonState.idle;
+
+  void onPressedIconWithText() {
+    setState(() {
+      stateTextWithIcon = ButtonState.loading;
+    });
+    Future.delayed(Duration(milliseconds: 400), () async {
+      if (_formKey.currentState.validate()) {
+        _formKey.currentState.save();
+        try {
+          await context.read<AuthenticationService>().signUp(
+              email: email,
+              password: password,
+              fullName: fullName,
+              phoneNumber: phoneNumber,
+              governorate: selectedGov,
+              address: address);
+
+          User user = context.read<AuthenticationService>().CurrentUser();
+
+          if (user != null) {
+            KeyboardUtil.hideKeyboard(context);
+            Navigator.pushNamed(context, HomeScreen.routeName);
+            print("----------${user.email}----------");
+          } else {
+            setState(() {
+              stateTextWithIcon = ButtonState.fail;
+            });
+            Future.delayed(Duration(milliseconds: 2000), () {
+              setState(() {
+                stateTextWithIcon = ButtonState.idle;
+              });
+            });
+          }
+        } catch (e) {
+          print(e);
+          setState(() {
+            stateTextWithIcon = ButtonState.fail;
+          });
+          Future.delayed(Duration(milliseconds: 2000), () {
+            setState(() {
+              stateTextWithIcon = ButtonState.idle;
+            });
+          });
+        }
+      } else {
+        setState(() {
+          stateTextWithIcon = ButtonState.success;
+        });
+        Future.delayed(Duration(milliseconds: 2000), () {
+          setState(() {
+            stateTextWithIcon = ButtonState.idle;
+          });
+        });
+      }
+    });
+  }
+
+  Widget buildTextWithIcon() {
+    return ProgressButton.icon(
+        height: getProportionateScreenWidth(58),
+        maxWidth: getProportionateScreenWidth(400),
+        radius: 20.0,
+        textStyle: TextStyle(
+            color: Color(0xffeeecec),
+            fontSize: 18,
+            fontFamily: 'PantonBoldItalic'),
+        iconedButtons: {
+          ButtonState.idle: IconedButton(
+              text: "Continue",
+              icon: Icon(
+                Icons.add_rounded,
+                size: 0.01,
+                color: PrimaryColor,
+              ),
+              color: PrimaryColor),
+          ButtonState.loading:
+              IconedButton(text: "Loading", color: PrimaryColor),
+          ButtonState.fail: IconedButton(
+              text: "email already exists",
+              icon: Icon(Icons.cancel, color: Colors.white),
+              color: PrimaryColor),
+          ButtonState.success: IconedButton(
+              text: "Invalid Input",
+              icon: Icon(
+                Icons.cancel,
+                color: Colors.white,
+              ),
+              color: PrimaryColor)
+        },
+        onPressed: () => onPressedIconWithText(),
+        state: stateTextWithIcon);
+  }
 
   void addError({String error}) {
     if (!errors.contains(error))
@@ -71,206 +166,77 @@ class _SignUpFormState extends State<SignUpForm> {
           ),
           backgroundColor: SecondaryColorDark,
         ),
-        body: ModalProgressHUD(
-          inAsyncCall: showSpinner,
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(
-                  width: double.infinity,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: getProportionateScreenWidth(22)),
-                    child: Column(
-                      children: [
-                        SizedBox(height: SizeConfig.screenHeight * 0.04), // 4%
-                        Text("Register Account", style: headingStyle),
-                        Text(
-                          "Complete your details or continue \nwith social media",
-                          textAlign: TextAlign.center,
+        body: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SizedBox(
+                width: double.infinity,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: getProportionateScreenWidth(22)),
+                  child: Column(
+                    children: [
+                      SizedBox(height: SizeConfig.screenHeight * 0.04), // 4%
+                      Text("Register Account", style: headingStyle),
+                      Text(
+                        "Complete your details or continue \nwith social media",
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: SizeConfig.screenHeight * 0.06),
+                      Form(
+                        key: _formKey,
+                        child: Column(
+                          children: [
+                            buildEmailFormField(),
+                            SizedBox(height: getProportionateScreenHeight(30)),
+                            buildPasswordFormField(),
+                            SizedBox(height: getProportionateScreenHeight(30)),
+                            buildConfirmPassFormField(),
+                            SizedBox(height: getProportionateScreenHeight(30)),
+                            buildFullNameFormField(),
+                            SizedBox(height: getProportionateScreenHeight(30)),
+                            buildPhoneNumberFormField(),
+                            SizedBox(height: getProportionateScreenHeight(30)),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Governorate:",
+                                  style: TextStyle(
+                                    fontFamily: 'PantonBoldItalic',
+                                    color: SecondaryColorDark,
+                                    fontSize: SizeConfig.screenWidth * 0.046,
+                                  ),
+                                ),
+                                Container(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 15),
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(18.0),
+                                        border: Border.all(
+                                            color: SecondaryColorDark,
+                                            width: 2.8)),
+                                    child: buildGovDropdown()),
+                              ],
+                            ),
+                            SizedBox(height: getProportionateScreenHeight(30)),
+                            buildAddressFormField(),
+                            SizedBox(height: getProportionateScreenHeight(20)),
+                            FormError(errors: errors),
+                            SizedBox(height: getProportionateScreenHeight(20)),
+                            buildTextWithIcon(),
+                            SizedBox(height: getProportionateScreenHeight(35)),
+                          ],
                         ),
-                        SizedBox(height: SizeConfig.screenHeight * 0.07),
-                        Form(
-                          key: _formKey,
-                          child: Column(
-                            children: [
-                              buildEmailFormField(),
-                              SizedBox(
-                                  height: getProportionateScreenHeight(30)),
-                              buildPasswordFormField(),
-                              SizedBox(
-                                  height: getProportionateScreenHeight(30)),
-                              buildConfirmPassFormField(),
-                              SizedBox(
-                                  height: getProportionateScreenHeight(30)),
-                              buildFullNameFormField(),
-                              SizedBox(
-                                  height: getProportionateScreenHeight(30)),
-                              buildPhoneNumberFormField(),
-                              SizedBox(
-                                  height: getProportionateScreenHeight(30)),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "Governorate:",
-                                    style: TextStyle(
-                                      fontFamily: 'PantonBoldItalic',
-                                      color: SecondaryColorDark,
-                                      fontSize: SizeConfig.screenWidth * 0.046,
-                                    ),
-                                  ),
-                                  Container(
-                                      padding:
-                                          EdgeInsets.symmetric(horizontal: 15),
-                                      decoration: BoxDecoration(
-                                          border: Border.all(
-                                        color: SecondaryColorDark,
-                                        width: 4,
-                                      )),
-                                      child: buildGovDropdown()),
-                                ],
-                              ),
-                              SizedBox(
-                                  height: getProportionateScreenHeight(30)),
-                              buildAddressFormField(),
-                              SizedBox(
-                                  height: getProportionateScreenHeight(30)),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "Already have an account?",
-                                    style: TextStyle(
-                                        color: SecondaryColorDark,
-                                        fontSize: 13,
-                                        fontFamily: 'PantonBold'),
-                                  ),
-                                  ElevatedButton(
-                                    child: Text(
-                                      "Login",
-                                      style: TextStyle(
-                                          color: SecondaryColorDark,
-                                          fontSize: 15,
-                                          fontFamily: 'PantonBoldItalic'),
-                                    ),
-                                    style: ButtonStyle(
-                                        padding: MaterialStateProperty.all<
-                                            EdgeInsetsGeometry>(
-                                          EdgeInsets.symmetric(
-                                            horizontal: 30,
-                                          ),
-                                        ),
-                                        shape: MaterialStateProperty.all<
-                                                RoundedRectangleBorder>(
-                                            RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.zero,
-                                                side: BorderSide(
-                                                    color: SecondaryColorDark,
-                                                    width: 3.7))),
-                                        backgroundColor:
-                                            MaterialStateProperty.all<Color>(
-                                                PrimaryColor),
-                                        overlayColor: MaterialStateProperty
-                                            .resolveWith<Color>(
-                                                (Set<MaterialState> states) {
-                                          return null;
-                                        })),
-                                    onPressed: () {
-                                      Navigator.pushNamed(
-                                          context, SignInScreen.routeName);
-                                    },
-                                  ),
-                                ],
-                              ),
-                              FormError(errors: errors),
-                              SizedBox(
-                                  height: getProportionateScreenHeight(30)),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ),
-        bottomNavigationBar: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SizedBox(
-              width: double.infinity,
-              height: getProportionateScreenHeight(8),
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  color: SecondaryColorDark,
-                ),
-              ),
-            ),
-            SizedBox(
-              width: double.infinity,
-              height: SizeConfig.screenWidth * 0.18,
-              child: ElevatedButton(
-                child: Text(
-                  "Continue",
-                  style: TextStyle(
-                      color: SecondaryColorDark,
-                      fontSize: 20,
-                      fontFamily: 'PantonBoldItalic'),
-                ),
-                style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(PrimaryColor),
-                    overlayColor: MaterialStateProperty.resolveWith<Color>(
-                        (Set<MaterialState> states) {
-                      if (states.contains(MaterialState.pressed))
-                        return Color(0xFF98d668);
-                      return null;
-                    })),
-                onPressed: () async {
-                  setState(() {
-                    showSpinner = true;
-                  });
-                  if (_formKey.currentState.validate()) {
-                    _formKey.currentState.save();
-                    try {
-                      final newUser = context
-                          .read<AuthenticationService>()
-                          .signUp(
-                              email: email,
-                              password: password,
-                              fullName: fullName,
-                              phoneNumber: phoneNumber,
-                              governorate: selectedGov,
-                              address: address);
-
-                      if (newUser != null) {
-                        Navigator.pushNamed(context, HomeScreen.routeName);
-                      } else {
-                        setState(() {
-                          showSpinner = false;
-                        });
-                      }
-                    } catch (e) {
-                      print(e);
-                      setState(() {
-                        showSpinner = false;
-                      });
-                    }
-                  } else {
-                    setState(() {
-                      showSpinner = false;
-                    });
-                  }
-                },
-              ),
-            ),
-          ],
         ),
       ),
     );

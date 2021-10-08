@@ -55,7 +55,7 @@ class _BodyState extends State<Body> {
             press: () async {
               print("Sign-Out of ${loggedInUser.email}");
               context.read<AuthenticationService>().signOut();
-              Navigator.pushNamed(context, SignInScreen.routeName);
+              Navigator.pushReplacementNamed(context, SignInScreen.routeName);
             },
           ),
         ],

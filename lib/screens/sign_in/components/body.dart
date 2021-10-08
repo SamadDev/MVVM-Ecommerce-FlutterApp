@@ -26,20 +26,6 @@ class _SignFormState extends State<SignIn> {
   final List<String> errors = [];
   ButtonState stateTextWithIcon = ButtonState.idle;
 
-  void addError({String error}) {
-    if (!errors.contains(error))
-      setState(() {
-        errors.add(error);
-      });
-  }
-
-  void removeError({String error}) {
-    if (errors.contains(error))
-      setState(() {
-        errors.remove(error);
-      });
-  }
-
   void onPressedIconWithText() {
     setState(() {
       stateTextWithIcon = ButtonState.loading;
@@ -126,6 +112,20 @@ class _SignFormState extends State<SignIn> {
         },
         onPressed: () => onPressedIconWithText(),
         state: stateTextWithIcon);
+  }
+
+  void addError({String error}) {
+    if (!errors.contains(error))
+      setState(() {
+        errors.add(error);
+      });
+  }
+
+  void removeError({String error}) {
+    if (errors.contains(error))
+      setState(() {
+        errors.remove(error);
+      });
   }
 
   @override
