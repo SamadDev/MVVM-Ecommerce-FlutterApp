@@ -8,21 +8,24 @@ class AuthenticationService {
 
   Stream<User> get authStateChanges => _firebaseAuth.idTokenChanges();
 
-  User CurrentUser() {
-    return _firebaseAuth.currentUser;
-  }
+  User CurrentUser() => _firebaseAuth.currentUser;
 
   Future<void> signOut() async {
     await _firebaseAuth.signOut();
   }
 
-  Future<String> signIn({String email, String password}) async {
+  Future<UserCredential> signIn({String email, String password}) async {
     try {
-      await _firebaseAuth.signInWithEmailAndPassword(
-          email: email, password: password);
-      return "Signed in";
+      UserCredential userCredential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
+      CurrentUser();
+      return userCredential;
     } on FirebaseAuthException catch (e) {
-      return e.message;
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided for that user.');
+      }
     }
   }
 

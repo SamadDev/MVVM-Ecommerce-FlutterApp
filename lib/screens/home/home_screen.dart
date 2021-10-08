@@ -17,7 +17,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _selectedPage = 0;
   List<Widget> pageList = [];
   final product_dbServices p = new product_dbServices();
 

@@ -12,25 +12,13 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
-  final _auth = FirebaseAuth.instance;
   User loggedInUser;
 
   @override
   void initState() {
+    loggedInUser = Provider.of<AuthenticationService>(context, listen: false)
+        .CurrentUser();
     super.initState();
-    getCurrentUser();
-  }
-
-  void getCurrentUser() async {
-    try {
-      final user = await _auth.currentUser;
-      if (user != null) {
-        loggedInUser = user;
-        print(loggedInUser.email);
-      }
-    } catch (e) {
-      print(e);
-    }
   }
 
   @override
@@ -64,10 +52,10 @@ class _BodyState extends State<Body> {
           ProfileMenu(
             text: "Log Out",
             icon: "assets/icons/Log out.svg",
-            press: () {
+            press: () async {
               print("Sign-Out of ${loggedInUser.email}");
               context.read<AuthenticationService>().signOut();
-              Navigator.pop(context);
+              Navigator.pushNamed(context, SignInScreen.routeName);
             },
           ),
         ],

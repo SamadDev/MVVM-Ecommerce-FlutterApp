@@ -6,11 +6,13 @@ import 'package:shop_app/components/custom_surfix_icon.dart';
 import 'package:shop_app/components/form_error.dart';
 import 'package:shop_app/helper/keyboard.dart';
 import 'package:shop_app/screens/forgot_password/forgot_password_screen.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:shop_app/screens/home/home_screen.dart';
 import '../../../constants.dart';
 import '../../../Services/authentication.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:progress_state_button/iconed_button.dart';
+import 'package:progress_state_button/progress_button.dart';
 
 class SignIn extends StatefulWidget {
   @override
@@ -21,8 +23,8 @@ class _SignFormState extends State<SignIn> {
   final _formKey = GlobalKey<FormState>();
   String email;
   String password;
-  bool showSpinner = false;
   final List<String> errors = [];
+  ButtonState stateTextWithIcon = ButtonState.idle;
 
   void addError({String error}) {
     if (!errors.contains(error))
@@ -36,6 +38,94 @@ class _SignFormState extends State<SignIn> {
       setState(() {
         errors.remove(error);
       });
+  }
+
+  void onPressedIconWithText() {
+    setState(() {
+      stateTextWithIcon = ButtonState.loading;
+    });
+    Future.delayed(Duration(milliseconds: 600), () async {
+      if (_formKey.currentState.validate()) {
+        _formKey.currentState.save();
+        try {
+          await context
+              .read<AuthenticationService>()
+              .signIn(email: email, password: password);
+
+          User user = context.read<AuthenticationService>().CurrentUser();
+
+          if (user != null) {
+            KeyboardUtil.hideKeyboard(context);
+            Navigator.pushNamed(context, HomeScreen.routeName);
+            print("----------${user.email}----------");
+          } else {
+            setState(() {
+              stateTextWithIcon = ButtonState.fail;
+            });
+            Future.delayed(Duration(milliseconds: 2000), () {
+              setState(() {
+                stateTextWithIcon = ButtonState.idle;
+              });
+            });
+          }
+        } catch (e) {
+          print(e);
+          setState(() {
+            stateTextWithIcon = ButtonState.fail;
+          });
+          Future.delayed(Duration(milliseconds: 2000), () {
+            setState(() {
+              stateTextWithIcon = ButtonState.idle;
+            });
+          });
+        }
+      } else {
+        setState(() {
+          stateTextWithIcon = ButtonState.success;
+        });
+        Future.delayed(Duration(milliseconds: 2000), () {
+          setState(() {
+            stateTextWithIcon = ButtonState.idle;
+          });
+        });
+      }
+    });
+  }
+
+  Widget buildTextWithIcon() {
+    return ProgressButton.icon(
+        height: getProportionateScreenWidth(58),
+        maxWidth: getProportionateScreenWidth(400),
+        radius: 20.0,
+        textStyle: TextStyle(
+            color: Color(0xffeeecec),
+            fontSize: 17,
+            fontFamily: 'PantonBoldItalic'),
+        iconedButtons: {
+          ButtonState.idle: IconedButton(
+              text: "Continue",
+              icon: Icon(
+                Icons.add_rounded,
+                size: 0.01,
+                color: PrimaryColor,
+              ),
+              color: PrimaryColor),
+          ButtonState.loading:
+              IconedButton(text: "Loading", color: PrimaryColor),
+          ButtonState.fail: IconedButton(
+              text: "Wrong email or password",
+              icon: Icon(Icons.cancel, color: Colors.white),
+              color: PrimaryColor),
+          ButtonState.success: IconedButton(
+              text: "Invalid Input",
+              icon: Icon(
+                Icons.cancel,
+                color: Colors.white,
+              ),
+              color: PrimaryColor)
+        },
+        onPressed: () => onPressedIconWithText(),
+        state: stateTextWithIcon);
   }
 
   @override
@@ -55,151 +145,78 @@ class _SignFormState extends State<SignIn> {
           ),
           backgroundColor: SecondaryColorDark,
         ),
-        body: ModalProgressHUD(
-          inAsyncCall: showSpinner,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SizedBox(
-                width: double.infinity,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: getProportionateScreenWidth(22)),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        SizedBox(height: SizeConfig.screenHeight * 0.07),
-                        Text(
-                          "Welcome Back",
-                          style: TextStyle(
-                            color: SecondaryColorDark,
-                            fontSize: getProportionateScreenWidth(28),
-                            fontFamily: 'PantonBoldItalic',
-                          ),
-                        ),
-                        Text(
-                          "Sign in with your email and password  \nor continue with social media",
-                          textAlign: TextAlign.center,
-                        ),
-                        SizedBox(height: SizeConfig.screenHeight * 0.1),
-                        Form(
-                          key: _formKey,
-                          child: Column(
-                            children: [
-                              buildEmailFormField(),
-                              SizedBox(height: SizeConfig.screenHeight * 0.05),
-                              buildPasswordFormField(),
-                              SizedBox(height: SizeConfig.screenHeight * 0.05),
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: GestureDetector(
-                                  onTap: () => Navigator.pushNamed(
-                                      context, ForgotPasswordScreen.routeName),
-                                  child: Text(
-                                    "Forgot Password",
-                                    style: TextStyle(
-                                        decoration: TextDecoration.underline,
-                                        color: SecondaryColorDark,
-                                        fontSize: 13,
-                                        fontFamily: 'PantonBold'),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(height: SizeConfig.screenHeight * 0.025),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "Don't have an account?",
-                                    style: TextStyle(
-                                        color: SecondaryColorDark,
-                                        fontSize: 15,
-                                        fontFamily: 'PantonBold'),
-                                  ),
-                                  signUpRedirect(),
-                                ],
-                              ),
-                              SizedBox(height: SizeConfig.screenHeight * 0.02),
-                              FormError(errors: errors),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        bottomNavigationBar: Column(
-          mainAxisSize: MainAxisSize.min,
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             SizedBox(
               width: double.infinity,
-              height: getProportionateScreenHeight(8),
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  color: SecondaryColorDark,
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: getProportionateScreenWidth(22)),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      SizedBox(height: SizeConfig.screenHeight * 0.07),
+                      Text(
+                        "Welcome Back",
+                        style: TextStyle(
+                          color: SecondaryColorDark,
+                          fontSize: getProportionateScreenWidth(28),
+                          fontFamily: 'PantonBoldItalic',
+                        ),
+                      ),
+                      Text(
+                        "Sign in with your email and password  \nor continue with social media",
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: SizeConfig.screenHeight * 0.1),
+                      Form(
+                        key: _formKey,
+                        child: Column(
+                          children: [
+                            buildEmailFormField(),
+                            SizedBox(height: SizeConfig.screenHeight * 0.05),
+                            buildPasswordFormField(),
+                            SizedBox(height: SizeConfig.screenHeight * 0.05),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: GestureDetector(
+                                onTap: () => Navigator.pushNamed(
+                                    context, ForgotPasswordScreen.routeName),
+                                child: Text(
+                                  "Forgot Password",
+                                  style: TextStyle(
+                                      decoration: TextDecoration.underline,
+                                      color: SecondaryColorDark,
+                                      fontSize: 13,
+                                      fontFamily: 'PantonBold'),
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: SizeConfig.screenHeight * 0.025),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Don't have an account?",
+                                  style: TextStyle(
+                                      color: SecondaryColorDark,
+                                      fontSize: 15,
+                                      fontFamily: 'PantonBold'),
+                                ),
+                                signUpRedirect(),
+                              ],
+                            ),
+                            SizedBox(height: SizeConfig.screenHeight * 0.02),
+                            FormError(errors: errors),
+                            SizedBox(height: SizeConfig.screenHeight * 0.02),
+                            buildTextWithIcon(),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ),
-            SizedBox(
-              width: double.infinity,
-              height: SizeConfig.screenWidth * 0.19,
-              child: ElevatedButton(
-                child: Text(
-                  "Continue",
-                  style: TextStyle(
-                      color: SecondaryColorDark,
-                      fontSize: 20,
-                      fontFamily: 'PantonBoldItalic'),
-                ),
-                style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(PrimaryColor),
-                    overlayColor: MaterialStateProperty.resolveWith<Color>(
-                        (Set<MaterialState> states) {
-                      if (states.contains(MaterialState.pressed))
-                        return Color(0xFF98d668);
-                      return null;
-                    })),
-                onPressed: () {
-                  setState(() {
-                    showSpinner = true;
-                  });
-                  if (_formKey.currentState.validate()) {
-                    _formKey.currentState.save();
-                    // if all are valid then go to success screen
-                    try {
-                      final user = context
-                          .read<AuthenticationService>()
-                          .signIn(email: email, password: password);
-
-                      if (user != null) {
-                        KeyboardUtil.hideKeyboard(context);
-                        Navigator.pushNamed(context, HomeScreen.routeName);
-                        print(user);
-                      } else {
-                        errors.add(InvalidEmailError);
-                        print(user);
-                        setState(() {
-                          showSpinner = false;
-                        });
-                      }
-                    } catch (e) {
-                      print(e);
-                      setState(() {
-                        showSpinner = false;
-                      });
-                    }
-                  } else {
-                    setState(() {
-                      showSpinner = false;
-                    });
-                  }
-                },
               ),
             ),
           ],
@@ -286,7 +303,7 @@ class signUpRedirect extends StatelessWidget {
       child: Text(
         "Sign-Up",
         style: TextStyle(
-            color: SecondaryColorDark,
+            color: Color(0xffeeecec),
             fontSize: 15,
             fontFamily: 'PantonBoldItalic'),
       ),
@@ -297,9 +314,7 @@ class signUpRedirect extends StatelessWidget {
             ),
           ),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              RoundedRectangleBorder(
-                  borderRadius: BorderRadius.zero,
-                  side: BorderSide(color: SecondaryColorDark, width: 3.7))),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
           backgroundColor: MaterialStateProperty.all<Color>(PrimaryColor),
           overlayColor: MaterialStateProperty.resolveWith<Color>(
               (Set<MaterialState> states) {
