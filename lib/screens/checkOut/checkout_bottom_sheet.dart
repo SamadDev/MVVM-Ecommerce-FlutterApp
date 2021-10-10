@@ -57,12 +57,22 @@ class _checkoutBottomSheetState extends State<checkoutBottomSheet> {
         } else {
           print("Choose payment method");
           setState(() {
-            stateTextWithIcon = ButtonState.idle;
+            stateTextWithIcon = ButtonState.ExtraState1;
+          });
+          Future.delayed(Duration(milliseconds: 2000), () {
+            setState(() {
+              stateTextWithIcon = ButtonState.idle;
+            });
           });
         }
       } catch (e) {
         setState(() {
           stateTextWithIcon = ButtonState.fail;
+        });
+        Future.delayed(Duration(milliseconds: 2000), () {
+          setState(() {
+            stateTextWithIcon = ButtonState.idle;
+          });
         });
         print(e);
       }
@@ -95,7 +105,14 @@ class _checkoutBottomSheetState extends State<checkoutBottomSheet> {
                 Icons.check_circle,
                 color: Colors.white,
               ),
-              color: Colors.green.shade400)
+              color: Colors.green.shade400),
+          ButtonState.ExtraState1: IconedButton(
+              text: "Choose payment method",
+              icon: Icon(
+                Icons.cancel,
+                color: Colors.white,
+              ),
+              color: PrimaryColor),
         },
         onPressed: () => onPressedIconWithText(gv, u),
         state: stateTextWithIcon);

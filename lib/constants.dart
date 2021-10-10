@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:shop_app/size_config.dart';
 
 const PrimaryColor = Color(0xffea4b4b);
-const PrimaryLightColor = Color(0xffdcdede);
+const PrimaryLightColor = Color(0xffe1e3e3);
+const CardBackgroundColor = Color(0xfff0f1f1);
 const PrimaryGradientColor = LinearGradient(
   begin: Alignment.topLeft,
   end: Alignment.bottomRight,

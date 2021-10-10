@@ -69,6 +69,8 @@ class globalVars with ChangeNotifier {
 
   Future DeleteItemFromCart(User u, int index) async {
     DocumentReference docRef = UsersInformation.doc(u.uid);
+    DocumentSnapshot documentSnapshot = await docRef.get();
+    _CartProds = documentSnapshot.get('cart');
     await docRef.update({
       'cart': FieldValue.arrayRemove([_CartProds[index]])
     });

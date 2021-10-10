@@ -36,7 +36,7 @@ class ProductCard extends StatelessWidget {
                 child: Container(
                   padding: EdgeInsets.all(getProportionateScreenWidth(20)),
                   decoration: BoxDecoration(
-                    color: PrimaryLightColor.withOpacity(0.3),
+                    color: CardBackgroundColor,
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: Hero(
@@ -51,41 +51,13 @@ class ProductCard extends StatelessWidget {
                   softWrap: false,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(color: Colors.black)),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "${product.price} EGP",
-                    style: TextStyle(
-                      fontSize: getProportionateScreenWidth(18),
-                      fontWeight: FontWeight.w600,
-                      color: PrimaryColor,
-                    ),
-                  ),
-                  /*
-                  InkWell(
-                    borderRadius: BorderRadius.circular(50),
-                    onTap: () {},
-                    child: Container(
-                      padding: EdgeInsets.all(getProportionateScreenWidth(8)),
-                      height: getProportionateScreenWidth(28),
-                      width: getProportionateScreenWidth(28),
-                      decoration: BoxDecoration(
-                        color: product.isFavourite
-                            ? PrimaryColor.withOpacity(0.15)
-                            : SecondaryColor.withOpacity(0.1),
-                        shape: BoxShape.circle,
-                      ),
-                      child: SvgPicture.asset(
-                        "assets/icons/Heart Icon_2.svg",
-                        color: product.isFavourite
-                            ? Color(0xFFFF4848)
-                            : Color(0xFFDBDEE4),
-                      ),
-                    ),
-                  ),
-                  */
-                ],
+              Text(
+                "${product.price} EGP",
+                style: TextStyle(
+                  fontSize: getProportionateScreenWidth(18),
+                  fontWeight: FontWeight.w600,
+                  color: PrimaryColor,
+                ),
               )
             ],
           ),

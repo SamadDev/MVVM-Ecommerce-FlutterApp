@@ -45,7 +45,8 @@ class _BodyState extends State<Body> {
         setState(() {
           stateTextWithIcon = ButtonState.success;
         });
-        Future.delayed(Duration(milliseconds: 2000), () {
+        Future.delayed(Duration(milliseconds: 1500), () {
+          if (!mounted) return;
           setState(() {
             stateTextWithIcon = ButtonState.idle;
           });
@@ -55,7 +56,8 @@ class _BodyState extends State<Body> {
         setState(() {
           stateTextWithIcon = ButtonState.fail;
         });
-        Future.delayed(Duration(milliseconds: 2000), () {
+        Future.delayed(Duration(milliseconds: 1500), () {
+          if (!mounted) return;
           setState(() {
             stateTextWithIcon = ButtonState.idle;
           });
@@ -92,6 +94,14 @@ class _BodyState extends State<Body> {
                 Icons.check_circle,
                 color: Colors.white,
               ),
+              color: PrimaryColor),
+          ButtonState.ExtraState1: IconedButton(
+              text: "",
+              icon: Icon(
+                Icons.check_circle,
+                size: 0.01,
+                color: Colors.white,
+              ),
               color: PrimaryColor)
         },
         onPressed: () => onPressedIconWithText(gv, u),
@@ -117,7 +127,7 @@ class _BodyState extends State<Body> {
                 pressOnSeeMore: () {},
               ),
               TopRoundedContainer(
-                color: Color(0xFFF6F7F9),
+                color: PrimaryLightColor,
                 child: Column(
                   children: [
                     Row(

@@ -31,7 +31,7 @@ class _CartCardState extends State<CartCard> {
             child: Container(
               padding: EdgeInsets.all(getProportionateScreenWidth(10)),
               decoration: BoxDecoration(
-                color: Color(0xFFF5F6F9),
+                color: CardBackgroundColor,
                 borderRadius: BorderRadius.circular(15),
               ),
               child: Image.network(widget.cart.product.images[0].toString()),

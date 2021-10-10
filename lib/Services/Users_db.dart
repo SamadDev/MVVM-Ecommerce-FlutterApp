@@ -46,6 +46,7 @@ class users_dbServices {
       'Payment method': paymentMethod,
       'Total': total,
       'cart': c,
+      'Date&Time': FieldValue.serverTimestamp(),
     }, SetOptions(merge: true));
   }
 

@@ -108,6 +108,14 @@ class _SignFormState extends State<SignIn> {
                 Icons.cancel,
                 color: Colors.white,
               ),
+              color: PrimaryColor),
+          ButtonState.ExtraState1: IconedButton(
+              text: "",
+              icon: Icon(
+                Icons.check_circle,
+                size: 0.01,
+                color: Colors.white,
+              ),
               color: PrimaryColor)
         },
         onPressed: () => onPressedIconWithText(),
