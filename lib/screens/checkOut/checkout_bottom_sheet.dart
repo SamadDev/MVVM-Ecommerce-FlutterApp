@@ -11,6 +11,7 @@ import 'package:shop_app/Services/Users_db.dart';
 import 'package:nanoid/nanoid.dart';
 import 'package:progress_state_button/iconed_button.dart';
 import 'package:progress_state_button/progress_button.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 class checkoutBottomSheet extends StatefulWidget {
   bool paymentSection = false;
@@ -25,58 +26,71 @@ class _checkoutBottomSheetState extends State<checkoutBottomSheet> {
   User user;
   ButtonState stateTextWithIcon = ButtonState.idle;
 
-  void onPressedIconWithText(globalVars gv, users_dbServices u) {
+  void onPressedIconWithText(globalVars gv, users_dbServices u) async {
     setState(() {
       stateTextWithIcon = ButtonState.loading;
     });
-    Future.delayed(Duration(milliseconds: 700), () {
-      try {
-        if (gv.paymentMethod != "Select Method") {
-          List<dynamic> tempCart = [];
-          Map map = new Map<String, dynamic>();
-          for (int i = 0; i < gv.userCart.length; i++) {
-            tempCart.add(map = {
-              "id": gv.userCart[i].product.id,
-              "option1": gv.userCart[i].option1,
-              "quantity": gv.userCart[i].quantity,
-              "total": gv.userCart[i].quantity * gv.userCart[i].product.price,
+    bool connection = await InternetConnectionChecker().hasConnection;
+    if (connection == true) {
+      Future.delayed(Duration(milliseconds: 600), () {
+        try {
+          if (gv.paymentMethod != "Select Method") {
+            List<dynamic> tempCart = [];
+            Map map = new Map<String, dynamic>();
+            for (int i = 0; i < gv.userCart.length; i++) {
+              tempCart.add(map = {
+                "id": gv.userCart[i].product.id,
+                "option1": gv.userCart[i].option1,
+                "quantity": gv.userCart[i].quantity,
+                "total": gv.userCart[i].quantity * gv.userCart[i].product.price,
+              });
+            }
+            String orderID = customAlphabet("0123456789", 18);
+            u.addOrder(orderID, tempCart, gv.paymentMethod, gv.total);
+            u.DeleteAttribute("cart");
+            gv.resetCart();
+            setState(() {
+              stateTextWithIcon = ButtonState.success;
+            });
+            Future.delayed(Duration(milliseconds: 1250), () {
+              Navigator.pop(context);
+            });
+            gv.selectedPage = 0;
+            print(gv.selectedPage);
+          } else {
+            print("Choose payment method");
+            setState(() {
+              stateTextWithIcon = ButtonState.ExtraState1;
+            });
+            Future.delayed(Duration(milliseconds: 2000), () {
+              setState(() {
+                stateTextWithIcon = ButtonState.idle;
+              });
             });
           }
-          String orderID = customAlphabet("0123456789", 18);
-          u.addOrder(orderID, tempCart, gv.paymentMethod, gv.total);
-          u.DeleteAttribute("cart");
-          gv.resetCart();
+        } catch (e) {
           setState(() {
-            stateTextWithIcon = ButtonState.success;
+            stateTextWithIcon = ButtonState.fail;
           });
-          Future.delayed(Duration(milliseconds: 1250), () {
-            Navigator.pop(context);
-          });
-          gv.selectedPage = 0;
-          print(gv.selectedPage);
-        } else {
-          print("Choose payment method");
-          setState(() {
-            stateTextWithIcon = ButtonState.ExtraState1;
-          });
-          Future.delayed(Duration(milliseconds: 2000), () {
+          Future.delayed(Duration(milliseconds: 1500), () {
             setState(() {
               stateTextWithIcon = ButtonState.idle;
             });
           });
+          print(e);
         }
-      } catch (e) {
+      });
+    } else {
+      setState(() {
+        stateTextWithIcon = ButtonState.fail;
+      });
+      Future.delayed(Duration(milliseconds: 1500), () {
+        if (!mounted) return;
         setState(() {
-          stateTextWithIcon = ButtonState.fail;
+          stateTextWithIcon = ButtonState.idle;
         });
-        Future.delayed(Duration(milliseconds: 2000), () {
-          setState(() {
-            stateTextWithIcon = ButtonState.idle;
-          });
-        });
-        print(e);
-      }
-    });
+      });
+    }
   }
 
   Widget buildTextWithIcon(globalVars gv, users_dbServices u) {
@@ -96,9 +110,12 @@ class _checkoutBottomSheetState extends State<checkoutBottomSheet> {
           ButtonState.loading:
               IconedButton(text: "Loading", color: PrimaryColor),
           ButtonState.fail: IconedButton(
-              text: "Failed",
-              icon: Icon(Icons.cancel, color: Colors.white),
-              color: Colors.red.shade300),
+              text: "Connection Lost",
+              icon: Icon(
+                Icons.cancel,
+                color: Colors.white,
+              ),
+              color: PrimaryColor),
           ButtonState.success: IconedButton(
               text: "Order Placed",
               icon: Icon(

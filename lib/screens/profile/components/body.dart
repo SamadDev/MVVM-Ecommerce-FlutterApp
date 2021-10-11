@@ -5,6 +5,7 @@ import 'profile_menu.dart';
 import 'profile_pic.dart';
 import '../../../Services/authentication.dart';
 import 'package:provider/provider.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 class Body extends StatefulWidget {
   @override

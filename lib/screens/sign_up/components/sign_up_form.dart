@@ -7,11 +7,11 @@ import '../../../constants.dart';
 import '../../../size_config.dart';
 import '../../../Services/authentication.dart';
 import 'package:provider/provider.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:progress_state_button/iconed_button.dart';
 import 'package:progress_state_button/progress_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shop_app/helper/keyboard.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 class SignUpForm extends StatefulWidget {
   @override
@@ -31,60 +31,73 @@ class _SignUpFormState extends State<SignUpForm> {
   final List<String> errors = [];
   ButtonState stateTextWithIcon = ButtonState.idle;
 
-  void onPressedIconWithText() {
+  void onPressedIconWithText() async {
     setState(() {
       stateTextWithIcon = ButtonState.loading;
     });
-    Future.delayed(Duration(milliseconds: 400), () async {
-      if (_formKey.currentState.validate()) {
-        _formKey.currentState.save();
-        try {
-          await context.read<AuthenticationService>().signUp(
-              email: email,
-              password: password,
-              fullName: fullName,
-              phoneNumber: phoneNumber,
-              governorate: selectedGov,
-              address: address);
+    bool connection = await InternetConnectionChecker().hasConnection;
+    if (connection == true) {
+      Future.delayed(Duration(milliseconds: 400), () async {
+        if (_formKey.currentState.validate()) {
+          _formKey.currentState.save();
+          try {
+            await context.read<AuthenticationService>().signUp(
+                email: email,
+                password: password,
+                fullName: fullName,
+                phoneNumber: phoneNumber,
+                governorate: selectedGov,
+                address: address);
 
-          User user = context.read<AuthenticationService>().CurrentUser();
+            User user = context.read<AuthenticationService>().CurrentUser();
 
-          if (user != null) {
-            KeyboardUtil.hideKeyboard(context);
-            Navigator.pushNamed(context, HomeScreen.routeName);
-            print("----------${user.email}----------");
-          } else {
+            if (user != null) {
+              KeyboardUtil.hideKeyboard(context);
+              Navigator.pushNamed(context, HomeScreen.routeName);
+              print("----------${user.email}----------");
+            } else {
+              setState(() {
+                stateTextWithIcon = ButtonState.fail;
+              });
+              Future.delayed(Duration(milliseconds: 1600), () {
+                setState(() {
+                  stateTextWithIcon = ButtonState.idle;
+                });
+              });
+            }
+          } catch (e) {
+            print(e);
             setState(() {
               stateTextWithIcon = ButtonState.fail;
             });
-            Future.delayed(Duration(milliseconds: 2000), () {
+            Future.delayed(Duration(milliseconds: 1600), () {
               setState(() {
                 stateTextWithIcon = ButtonState.idle;
               });
             });
           }
-        } catch (e) {
-          print(e);
+        } else {
           setState(() {
-            stateTextWithIcon = ButtonState.fail;
+            stateTextWithIcon = ButtonState.success;
           });
-          Future.delayed(Duration(milliseconds: 2000), () {
+          Future.delayed(Duration(milliseconds: 1600), () {
             setState(() {
               stateTextWithIcon = ButtonState.idle;
             });
           });
         }
-      } else {
+      });
+    } else {
+      setState(() {
+        stateTextWithIcon = ButtonState.ExtraState1;
+      });
+      Future.delayed(Duration(milliseconds: 1600), () {
+        if (!mounted) return;
         setState(() {
-          stateTextWithIcon = ButtonState.success;
+          stateTextWithIcon = ButtonState.idle;
         });
-        Future.delayed(Duration(milliseconds: 2000), () {
-          setState(() {
-            stateTextWithIcon = ButtonState.idle;
-          });
-        });
-      }
-    });
+      });
+    }
   }
 
   Widget buildTextWithIcon() {
@@ -119,10 +132,9 @@ class _SignUpFormState extends State<SignUpForm> {
               ),
               color: PrimaryColor),
           ButtonState.ExtraState1: IconedButton(
-              text: "",
+              text: "Connection Lost",
               icon: Icon(
-                Icons.check_circle,
-                size: 0.01,
+                Icons.cancel,
                 color: Colors.white,
               ),
               color: PrimaryColor)

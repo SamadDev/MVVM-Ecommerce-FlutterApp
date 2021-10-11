@@ -13,6 +13,7 @@ import '../../../Services/authentication.dart';
 import 'package:provider/provider.dart';
 import 'package:progress_state_button/iconed_button.dart';
 import 'package:progress_state_button/progress_button.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 class Body extends StatefulWidget {
   final Product product;
@@ -28,43 +29,56 @@ class _BodyState extends State<Body> {
   User user;
   ButtonState stateTextWithIcon = ButtonState.idle;
 
-  void onPressedIconWithText(globalVars gv, users_dbServices u) {
+  void onPressedIconWithText(globalVars gv, users_dbServices u) async {
     setState(() {
       stateTextWithIcon = ButtonState.loading;
     });
-    try {
-      String temp = widget.product.id + size;
-      List<String> tempLsit = [];
+    bool connection = await InternetConnectionChecker().hasConnection;
+    if (connection == true) {
+      try {
+        String temp = widget.product.id + size;
+        List<String> tempLsit = [];
 
-      for (int i = 0; i < gv.userCart.length; i++) {
-        tempLsit.add(gv.userCart[i].uid);
-      }
-      if (!tempLsit.contains(temp)) {
-        gv.addToUserCart(widget.product, 1, size);
-        u.addToCart(widget.product.id, size, 1);
-        setState(() {
-          stateTextWithIcon = ButtonState.success;
-        });
-        Future.delayed(Duration(milliseconds: 1500), () {
-          if (!mounted) return;
+        for (int i = 0; i < gv.userCart.length; i++) {
+          tempLsit.add(gv.userCart[i].uid);
+        }
+        if (!tempLsit.contains(temp)) {
+          gv.addToUserCart(widget.product, 1, size);
+          u.addToCart(widget.product.id, size, 1);
           setState(() {
-            stateTextWithIcon = ButtonState.idle;
+            stateTextWithIcon = ButtonState.success;
           });
-        });
-      } else {
-        print("Already in Cart");
-        setState(() {
-          stateTextWithIcon = ButtonState.fail;
-        });
-        Future.delayed(Duration(milliseconds: 1500), () {
-          if (!mounted) return;
+          Future.delayed(Duration(milliseconds: 1500), () {
+            if (!mounted) return;
+            setState(() {
+              stateTextWithIcon = ButtonState.idle;
+            });
+          });
+        } else {
+          print("Already in Cart");
           setState(() {
-            stateTextWithIcon = ButtonState.idle;
+            stateTextWithIcon = ButtonState.fail;
           });
-        });
+          Future.delayed(Duration(milliseconds: 1500), () {
+            if (!mounted) return;
+            setState(() {
+              stateTextWithIcon = ButtonState.idle;
+            });
+          });
+        }
+      } catch (e) {
+        return e;
       }
-    } catch (e) {
-      return e;
+    } else {
+      setState(() {
+        stateTextWithIcon = ButtonState.ExtraState1;
+      });
+      Future.delayed(Duration(milliseconds: 1500), () {
+        if (!mounted) return;
+        setState(() {
+          stateTextWithIcon = ButtonState.idle;
+        });
+      });
     }
   }
 
@@ -96,10 +110,9 @@ class _BodyState extends State<Body> {
               ),
               color: PrimaryColor),
           ButtonState.ExtraState1: IconedButton(
-              text: "",
+              text: "Connection Lost",
               icon: Icon(
-                Icons.check_circle,
-                size: 0.01,
+                Icons.cancel,
                 color: Colors.white,
               ),
               color: PrimaryColor)

@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:progress_state_button/iconed_button.dart';
 import 'package:progress_state_button/progress_button.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 class SignIn extends StatefulWidget {
   @override
@@ -26,25 +27,38 @@ class _SignFormState extends State<SignIn> {
   final List<String> errors = [];
   ButtonState stateTextWithIcon = ButtonState.idle;
 
-  void onPressedIconWithText() {
+  void onPressedIconWithText() async {
     setState(() {
       stateTextWithIcon = ButtonState.loading;
     });
-    Future.delayed(Duration(milliseconds: 600), () async {
-      if (_formKey.currentState.validate()) {
-        _formKey.currentState.save();
-        try {
-          await context
-              .read<AuthenticationService>()
-              .signIn(email: email, password: password);
+    bool connection = await InternetConnectionChecker().hasConnection;
+    if (connection == true) {
+      Future.delayed(Duration(milliseconds: 600), () async {
+        if (_formKey.currentState.validate()) {
+          _formKey.currentState.save();
+          try {
+            await context
+                .read<AuthenticationService>()
+                .signIn(email: email, password: password);
 
-          User user = context.read<AuthenticationService>().CurrentUser();
+            User user = context.read<AuthenticationService>().CurrentUser();
 
-          if (user != null) {
-            KeyboardUtil.hideKeyboard(context);
-            Navigator.pushNamed(context, HomeScreen.routeName);
-            print("----------${user.email}----------");
-          } else {
+            if (user != null) {
+              KeyboardUtil.hideKeyboard(context);
+              Navigator.pushNamed(context, HomeScreen.routeName);
+              print("----------${user.email}----------");
+            } else {
+              setState(() {
+                stateTextWithIcon = ButtonState.fail;
+              });
+              Future.delayed(Duration(milliseconds: 2000), () {
+                setState(() {
+                  stateTextWithIcon = ButtonState.idle;
+                });
+              });
+            }
+          } catch (e) {
+            print(e);
             setState(() {
               stateTextWithIcon = ButtonState.fail;
             });
@@ -54,10 +68,9 @@ class _SignFormState extends State<SignIn> {
               });
             });
           }
-        } catch (e) {
-          print(e);
+        } else {
           setState(() {
-            stateTextWithIcon = ButtonState.fail;
+            stateTextWithIcon = ButtonState.success;
           });
           Future.delayed(Duration(milliseconds: 2000), () {
             setState(() {
@@ -65,17 +78,18 @@ class _SignFormState extends State<SignIn> {
             });
           });
         }
-      } else {
+      });
+    } else {
+      setState(() {
+        stateTextWithIcon = ButtonState.ExtraState1;
+      });
+      Future.delayed(Duration(milliseconds: 1600), () {
+        if (!mounted) return;
         setState(() {
-          stateTextWithIcon = ButtonState.success;
+          stateTextWithIcon = ButtonState.idle;
         });
-        Future.delayed(Duration(milliseconds: 2000), () {
-          setState(() {
-            stateTextWithIcon = ButtonState.idle;
-          });
-        });
-      }
-    });
+      });
+    }
   }
 
   Widget buildTextWithIcon() {
@@ -110,10 +124,9 @@ class _SignFormState extends State<SignIn> {
               ),
               color: PrimaryColor),
           ButtonState.ExtraState1: IconedButton(
-              text: "",
+              text: "Connection Lost",
               icon: Icon(
-                Icons.check_circle,
-                size: 0.01,
+                Icons.cancel,
                 color: Colors.white,
               ),
               color: PrimaryColor)
@@ -153,15 +166,15 @@ class _SignFormState extends State<SignIn> {
           ),
           backgroundColor: SecondaryColorDark,
         ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SizedBox(
-              width: double.infinity,
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: getProportionateScreenWidth(22)),
-                child: SingleChildScrollView(
+        body: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SizedBox(
+                width: double.infinity,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: getProportionateScreenWidth(22)),
                   child: Column(
                     children: [
                       SizedBox(height: SizeConfig.screenHeight * 0.07),
@@ -196,7 +209,7 @@ class _SignFormState extends State<SignIn> {
                                   style: TextStyle(
                                       decoration: TextDecoration.underline,
                                       color: SecondaryColorDark,
-                                      fontSize: 13,
+                                      fontSize: 12,
                                       fontFamily: 'PantonBold'),
                                 ),
                               ),
@@ -209,7 +222,7 @@ class _SignFormState extends State<SignIn> {
                                   "Don't have an account?",
                                   style: TextStyle(
                                       color: SecondaryColorDark,
-                                      fontSize: 15,
+                                      fontSize: 14,
                                       fontFamily: 'PantonBold'),
                                 ),
                                 signUpRedirect(),
@@ -226,8 +239,8 @@ class _SignFormState extends State<SignIn> {
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -312,13 +325,13 @@ class signUpRedirect extends StatelessWidget {
         "Sign-Up",
         style: TextStyle(
             color: Color(0xffeeecec),
-            fontSize: 15,
+            fontSize: 13,
             fontFamily: 'PantonBoldItalic'),
       ),
       style: ButtonStyle(
           padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
             EdgeInsets.symmetric(
-              horizontal: 30,
+              horizontal: 25,
             ),
           ),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
