@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:shop_app/constants.dart';
 import 'package:titled_navigation_bar/titled_navigation_bar.dart';
 import 'components/body.dart';
-import '../../../Services/Products_db.dart';
 import '../../../size_config.dart';
-import 'package:shop_app/screens/splash/splash_screen.dart';
+import 'package:shop_app/screens/favourites/Favs_screen.dart';
 import 'package:shop_app/screens/cart/cart_screen.dart';
 import 'package:shop_app/screens/profile/profile_screen.dart';
 import 'package:shop_app/globalVars.dart';
@@ -18,12 +17,11 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   List<Widget> pageList = [];
-  final product_dbServices p = new product_dbServices();
 
   @override
   void initState() {
-    pageList.add(Body());
-    pageList.add(SplashScreen());
+    pageList.add(HomeBody());
+    pageList.add(FavScreen());
     pageList.add(CartScreen());
     pageList.add(ProfileScreen());
     super.initState();
@@ -45,20 +43,18 @@ class _HomeScreenState extends State<HomeScreen> {
           items: [
             TitledNavigationBarItem(
                 icon: Icons.home_outlined,
-                title:
-                    Text("Home", style: TextStyle(fontFamily: "PantonBold"))),
+                title: Text("Home", style: TextStyle(fontFamily: "PantonBold"))),
             TitledNavigationBarItem(
                 icon: Icons.favorite_border_outlined,
                 title: Text("Favourites",
-                    style: TextStyle(fontFamily: "PantonBold"))),
+                    style: TextStyle(
+                        fontSize: getProportionateScreenWidth(13), fontFamily: "PantonBold"))),
             TitledNavigationBarItem(
                 icon: Icons.shopping_cart_outlined,
-                title:
-                    Text("Cart", style: TextStyle(fontFamily: "PantonBold"))),
+                title: Text("Cart", style: TextStyle(fontFamily: "PantonBold"))),
             TitledNavigationBarItem(
                 icon: Icons.person_outline_rounded,
-                title: Text("ProfIle",
-                    style: TextStyle(fontFamily: "PantonBold"))),
+                title: Text("ProfIle", style: TextStyle(fontFamily: "PantonBold"))),
           ],
           currentIndex: gv.selectedPage,
           onTap: (index) => _onItemTapped(gv, index),

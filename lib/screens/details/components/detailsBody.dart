@@ -8,7 +8,6 @@ import 'top_rounded_container.dart';
 import 'product_images.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shop_app/Services/Users_db.dart';
-import 'package:shop_app/Services/Products_db.dart';
 import '../../../Services/authentication.dart';
 import 'package:provider/provider.dart';
 import 'package:progress_state_button/iconed_button.dart';
@@ -85,8 +84,7 @@ class _BodyState extends State<Body> {
   Widget buildTextWithIcon(globalVars gv, users_dbServices u) {
     return ProgressButton.icon(
         radius: 20.0,
-        textStyle: TextStyle(
-            color: Colors.white, fontSize: 17, fontFamily: 'PantonBoldItalic'),
+        textStyle: TextStyle(color: Colors.white, fontSize: 17, fontFamily: 'PantonBoldItalic'),
         iconedButtons: {
           ButtonState.idle: IconedButton(
               text: "Add to Cart",
@@ -96,8 +94,7 @@ class _BodyState extends State<Body> {
                 color: PrimaryColor,
               ),
               color: PrimaryColor),
-          ButtonState.loading:
-              IconedButton(text: "Loading", color: PrimaryColor),
+          ButtonState.loading: IconedButton(text: "Loading", color: PrimaryColor),
           ButtonState.fail: IconedButton(
               text: "Already in cart",
               icon: Icon(Icons.cancel, color: Colors.white),
@@ -124,7 +121,6 @@ class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
     user = context.read<AuthenticationService>().CurrentUser();
-    final product_dbServices p = context.read<globalVars>().p;
     final users_dbServices u = users_dbServices(uid: user.uid);
 
     return ListView(
@@ -196,16 +192,13 @@ class _BodyState extends State<Body> {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(10),
-            border:
-                Border.all(color: PrimaryColor.withOpacity(size == s ? 1 : 0)),
+            border: Border.all(color: PrimaryColor.withOpacity(size == s ? 1 : 0)),
           ),
           child: Center(
             child: Text(
               s,
               style: TextStyle(
-                  color: SecondaryColorDark,
-                  fontSize: 15,
-                  fontFamily: 'PantonBoldItalic'),
+                  color: SecondaryColorDark, fontSize: 15, fontFamily: 'PantonBoldItalic'),
             ),
           ),
         ),

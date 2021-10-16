@@ -18,49 +18,46 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(left: getProportionateScreenWidth(20)),
-      child: SizedBox(
-        width: getProportionateScreenWidth(width),
-        child: GestureDetector(
-          onTap: () => Navigator.pushNamed(
-            context,
-            DetailsScreen.routeName,
-            arguments: ProductDetailsArguments(product: product),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              AspectRatio(
-                aspectRatio: 1.02,
-                child: Container(
-                  padding: EdgeInsets.all(getProportionateScreenWidth(20)),
-                  decoration: BoxDecoration(
-                    color: CardBackgroundColor,
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Hero(
-                    tag: product.id.toString(),
-                    child: Image.network(product.images[0].toString()),
-                  ),
+    return SizedBox(
+      width: getProportionateScreenWidth(width),
+      child: GestureDetector(
+        onTap: () => Navigator.pushNamed(
+          context,
+          DetailsScreen.routeName,
+          arguments: ProductDetailsArguments(product: product),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            AspectRatio(
+              aspectRatio: 1.02,
+              child: Container(
+                padding: EdgeInsets.all(getProportionateScreenWidth(20)),
+                decoration: BoxDecoration(
+                  color: CardBackgroundColor,
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Hero(
+                  tag: product.id.toString(),
+                  child: Image.network(product.images[0].toString()),
                 ),
               ),
-              const SizedBox(height: 10),
-              Text(product.title,
-                  maxLines: 1,
-                  softWrap: false,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(color: Colors.black)),
-              Text(
-                "${product.price} EGP",
-                style: TextStyle(
-                  fontSize: getProportionateScreenWidth(18),
-                  fontWeight: FontWeight.w600,
-                  color: PrimaryColor,
-                ),
-              )
-            ],
-          ),
+            ),
+            const SizedBox(height: 6),
+            Text(product.title,
+                maxLines: 1,
+                softWrap: false,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(color: Colors.black)),
+            Text(
+              "${product.price} EGP",
+              style: TextStyle(
+                fontSize: getProportionateScreenWidth(18),
+                fontWeight: FontWeight.w600,
+                color: PrimaryColor,
+              ),
+            )
+          ],
         ),
       ),
     );

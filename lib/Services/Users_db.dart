@@ -1,21 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../../../Services/Products_db.dart';
-import 'package:shop_app/models/cartItem.dart';
 
 class users_dbServices {
   final String uid;
   users_dbServices({this.uid});
 
-  final product_dbServices p = new product_dbServices();
+  final CollectionReference UsersInformation = FirebaseFirestore.instance.collection('UsersInfo');
 
-  final CollectionReference UsersInformation =
-      FirebaseFirestore.instance.collection('UsersInfo');
+  final CollectionReference Orders = FirebaseFirestore.instance.collection('Orders');
 
-  final CollectionReference Orders =
-      FirebaseFirestore.instance.collection('Orders');
-
-  Future addUserData(String fullName, String phoneNumber, String governorate,
-      String address) async {
+  Future addUserData(
+      String fullName, String phoneNumber, String governorate, String address) async {
     return await UsersInformation.doc(uid).set({
       'Full Name': fullName,
       'Phone Number': phoneNumber,
@@ -38,8 +32,7 @@ class users_dbServices {
     await docRef.update({attribute: FieldValue.delete()});
   }
 
-  Future addToOrders(
-      String orderID, List<dynamic> c, String paymentMethod, int total) async {
+  Future addToOrders(String orderID, List<dynamic> c, String paymentMethod, int total) async {
     return await Orders.doc(orderID).set({
       'userID': uid,
       'Status': "Pending",
@@ -56,8 +49,7 @@ class users_dbServices {
     }, SetOptions(merge: true));
   }
 
-  void addOrder(
-      String orderID, List<dynamic> c, String paymentMethod, int total) {
+  void addOrder(String orderID, List<dynamic> c, String paymentMethod, int total) {
     addToOrders(orderID, c, paymentMethod, total);
     addOrderToUser(orderID);
   }

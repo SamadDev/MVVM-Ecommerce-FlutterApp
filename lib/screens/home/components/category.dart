@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:shop_app/components/product_card.dart';
-import '../../../Services/Products_db.dart';
+import 'package:shop_app/screens/category/categoryScreen.dart';
 import '../../../size_config.dart';
 import 'section_title.dart';
 import '../../../constants.dart';
+import 'package:provider/provider.dart';
+import '../../../globalVars.dart';
 
 class category extends StatelessWidget {
   final String cat;
-  final product_dbServices p = new product_dbServices();
 
   category({@required this.cat});
 
@@ -16,42 +17,36 @@ class category extends StatelessWidget {
     return Column(
       children: [
         Padding(
-          padding:
-              EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
-          child: SectionTitle(title: cat, press: () {}),
+          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+          child: SectionTitle(
+              title: cat,
+              press: () {
+                Navigator.pushNamed(
+                  context,
+                  CategoryScreen.routeName,
+                  arguments: CategoryDetailsArguments(category: cat),
+                );
+              }),
         ),
         SizedBox(height: getProportionateScreenWidth(20)),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
-          child: FutureBuilder(
-            future: p.getProdsOfCat(cat),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done)
-                return Row(
-                  children: [
-                    ...List.generate(
-                      p.CurrentCat.length,
-                      (index) {
-                        return ProductCard(product: p.CurrentCat[index]);
-                      },
-                    ),
-                    SizedBox(width: getProportionateScreenWidth(20)),
-                  ],
-                );
-
-              if (snapshot.connectionState == ConnectionState.waiting)
-                return Center(
-                  child: Container(
-                      height: getProportionateScreenWidth(40),
-                      width: getProportionateScreenWidth(40),
-                      child: CircularProgressIndicator(
-                        color: SecondaryColorDark,
-                      )),
-                );
-
-              return Container();
-            },
-          ),
+          child: Consumer<globalVars>(builder: (_, gv, __) {
+            return Row(
+              children: [
+                ...List.generate(
+                  gv.AllProds[cat].length < 5 ? gv.AllProds[cat].length : 5,
+                  (index) {
+                    return Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: ProductCard(product: gv.AllProds[cat][index]),
+                    );
+                  },
+                ),
+                SizedBox(width: getProportionateScreenWidth(20)),
+              ],
+            );
+          }),
         )
       ],
     );

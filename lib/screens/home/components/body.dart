@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
-import '../../../Services/Products_db.dart';
 import '../../../size_config.dart';
 import 'categories.dart';
 import '../../../constants.dart';
 import 'home_header.dart';
 import 'category.dart';
 import 'special_offers.dart';
+import 'package:provider/provider.dart';
+import '../../../globalVars.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 
-class Body extends StatefulWidget {
+class HomeBody extends StatefulWidget {
   @override
-  State<Body> createState() => _BodyState();
+  State<HomeBody> createState() => _HomeBodyState();
 }
 
-class _BodyState extends State<Body> {
-  final product_dbServices p = new product_dbServices();
-
+class _HomeBodyState extends State<HomeBody> {
   bool connection;
 
   Future connection_checker() async {
@@ -32,66 +31,58 @@ class _BodyState extends State<Body> {
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   if (connection == true) {
-                    return FutureBuilder(
-                        future: p.getAllCategories(),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.done) {
-                            return Column(
-                              children: [
-                                SizedBox(
-                                    height: getProportionateScreenHeight(20)),
-                                HomeHeader(),
-                                SizedBox(
-                                    height: getProportionateScreenWidth(10)),
-                                Categories(),
-                                SpecialOffers(),
-                                SizedBox(
-                                    height: getProportionateScreenWidth(30)),
-                                Column(
-                                  children: List.generate(
-                                      p.categories.length,
-                                      (index) =>
-                                          category(cat: p.categories[index])),
-                                ),
-                                SizedBox(
-                                    height: getProportionateScreenWidth(30))
-                              ],
-                            );
-                          }
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting)
-                            return Center(
-                              child: Container(
-                                  height: getProportionateScreenWidth(40),
-                                  width: getProportionateScreenWidth(40),
-                                  child: CircularProgressIndicator(
-                                    color: SecondaryColorDark,
-                                  )),
-                            );
-                          return Container();
-                        });
+                    return Consumer<globalVars>(builder: (_, gv, __) {
+                      return FutureBuilder(
+                          future: gv.getAllProds(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.done) {
+                              return Column(
+                                children: [
+                                  SizedBox(height: getProportionateScreenHeight(20)),
+                                  HomeHeader(),
+                                  SizedBox(height: getProportionateScreenWidth(10)),
+                                  Categories(),
+                                  SpecialOffers(),
+                                  SizedBox(height: getProportionateScreenWidth(30)),
+                                  Column(
+                                    children: List.generate(gv.categories.length,
+                                        (index) => category(cat: gv.categories[index])),
+                                  ),
+                                  SizedBox(height: getProportionateScreenWidth(30))
+                                ],
+                              );
+                            }
+                            if (snapshot.connectionState == ConnectionState.waiting)
+                              return Center(
+                                child: Container(
+                                    height: getProportionateScreenWidth(40),
+                                    width: getProportionateScreenWidth(40),
+                                    child: CircularProgressIndicator(
+                                      color: SecondaryColorDark,
+                                    )),
+                              );
+                            return Container();
+                          });
+                    });
                   } else {
                     return Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.warning_amber_rounded,
+                        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                          Icon(
+                            Icons.warning_amber_rounded,
+                            color: SecondaryColor,
+                            size: 23,
+                          ),
+                          Text(
+                            '    No Internet Connection',
+                            style: TextStyle(
+                                fontSize: 16,
                                 color: SecondaryColor,
-                                size: 23,
-                              ),
-                              Text(
-                                '    No Internet Connection',
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    color: SecondaryColor,
-                                    fontFamily: 'PantonBoldItalic'),
-                              ),
-                            ]),
+                                fontFamily: 'PantonBoldItalic'),
+                          ),
+                        ]),
                         SizedBox(
                           height: 10,
                         ),
