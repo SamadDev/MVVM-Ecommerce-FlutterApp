@@ -44,44 +44,10 @@ class _OrdersScreenState extends State<OrdersScreen> {
             future: gv.getUserOrders(u),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
-                return Center(
-                  child: Container(
-                      width: double.infinity,
-                      margin: EdgeInsets.symmetric(horizontal: 25),
-                      padding: EdgeInsets.all(25),
-                      decoration: BoxDecoration(
-                          color: CardBackgroundColor,
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                          boxShadow: [
-                            BoxShadow(
-                              blurRadius: 18,
-                              color: Color(0xFFDADADA),
-                            )
-                          ]),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Order ID: ${gv.OrdersID[1]}",
-                            style: TextStyle(
-                                color: SecondaryColorDark,
-                                fontSize: 16,
-                                fontFamily: 'PantonBoldItalic'),
-                          ),
-                          Text(DateFormat.yMMMd()
-                              .add_jm()
-                              .format(gv.Orders[1]["Date&Time"].toDate())
-                              .toString()),
-                          Divider(
-                            thickness: 2,
-                          ),
-                          Text(gv.Orders[1]["Status"]),
-                          Text(gv.Orders[1]["Total"].toString()),
-                        ],
-                      )),
-                );
+                return ListView.builder(
+                    padding: EdgeInsets.only(bottom: 25),
+                    itemCount: gv.Orders.length,
+                    itemBuilder: (context, index) => orderContainer(gv, index));
               }
               if (snapshot.connectionState == ConnectionState.waiting) {
                 Center(
@@ -97,5 +63,128 @@ class _OrdersScreenState extends State<OrdersScreen> {
             });
       }),
     ));
+  }
+
+  Widget orderContainer(globalVars gv, int Oindex) {
+    return Container(
+        width: double.infinity,
+        margin: EdgeInsets.only(right: 25, left: 25, top: 25),
+        padding: EdgeInsets.all(25),
+        decoration: BoxDecoration(
+            color: CardBackgroundColor,
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+            boxShadow: [
+              BoxShadow(
+                blurRadius: 18,
+                color: Color(0xFFDADADA),
+              )
+            ]),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "Order ID: ${gv.OrdersID[Oindex]}",
+              style: TextStyle(
+                  color: SecondaryColorDark,
+                  fontSize: getProportionateScreenWidth(15),
+                  fontFamily: 'PantonBoldItalic'),
+            ),
+            Text(DateFormat.yMMMd()
+                .add_jm()
+                .format(gv.Orders[Oindex]["Date&Time"].toDate())
+                .toString()),
+            Divider(
+              thickness: 2,
+            ),
+            SingleChildScrollView(
+                child: ConstrainedBox(
+              constraints: BoxConstraints(maxHeight: getProportionateScreenHeight(137)),
+              child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: (gv.Orders[Oindex]["cart"] as List<dynamic>).length,
+                  itemBuilder: (context, index) => ListTile(
+                        contentPadding: EdgeInsets.zero,
+                        title: Text(
+                          '${gv.Orders[Oindex]["cart"][index]["option1"]} - ${gv.getSpecificProd(gv.Orders[Oindex]["cart"][index]["id"]).title}',
+                          maxLines: 1,
+                          softWrap: false,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(fontSize: MediaQuery.of(context).size.width * 0.035),
+                        ),
+                        leading: Stack(alignment: Alignment.bottomRight, children: [
+                          Container(
+                            padding: EdgeInsets.all(3.5),
+                            height: getProportionateScreenWidth(50),
+                            width: getProportionateScreenWidth(50),
+                            decoration: BoxDecoration(
+                              color: PrimaryLightColor,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Image.network(gv
+                                .getSpecificProd(gv.Orders[Oindex]["cart"][index]["id"])
+                                .images[0]
+                                .toString()),
+                          ),
+                          Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 1.5, horizontal: 4.0),
+                              child: RichText(
+                                  text: TextSpan(
+                                      style: TextStyle(
+                                          fontSize: getProportionateScreenWidth(14),
+                                          fontFamily: 'PantonBoldItalic',
+                                          color: PrimaryColor),
+                                      children: <TextSpan>[
+                                    TextSpan(
+                                        text:
+                                            "${gv.Orders[Oindex]["cart"][index]["quantity"].toString()}"),
+                                    TextSpan(
+                                        text: "x",
+                                        style: TextStyle(fontSize: getProportionateScreenWidth(9))),
+                                  ])))
+                        ]),
+                        trailing: Text(gv.Orders[Oindex]["cart"][index]["total"].toString()),
+                      )),
+            )),
+            Divider(
+              thickness: 2,
+            ),
+            SizedBox(
+              height: getProportionateScreenHeight(5),
+            ),
+            RichText(
+                text: TextSpan(
+                    style: TextStyle(
+                        fontSize: getProportionateScreenWidth(14),
+                        fontFamily: 'PantonBoldItalic',
+                        color: SecondaryColorDark),
+                    children: <TextSpan>[
+                  TextSpan(text: "Total :   "),
+                  TextSpan(
+                      text: "${gv.Orders[Oindex]["Total"].toString()}",
+                      style: TextStyle(color: PrimaryColor)),
+                  TextSpan(
+                      text: " EGP",
+                      style: TextStyle(
+                          color: PrimaryColor, fontSize: getProportionateScreenWidth(11))),
+                ])),
+            SizedBox(
+              height: getProportionateScreenHeight(5),
+            ),
+            RichText(
+                text: TextSpan(
+                    style: TextStyle(
+                        fontSize: getProportionateScreenWidth(14),
+                        fontFamily: 'PantonBoldItalic',
+                        color: SecondaryColorDark),
+                    children: <TextSpan>[
+                  TextSpan(text: "Status :   "),
+                  TextSpan(
+                      text: "${gv.Orders[Oindex]["Status"]}",
+                      style: TextStyle(color: PrimaryColor)),
+                ])),
+          ],
+        ));
   }
 }

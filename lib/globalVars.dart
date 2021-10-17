@@ -69,12 +69,16 @@ class globalVars with ChangeNotifier {
   }
 
   Product getSpecificProd(String id) {
-    for (int i = 0; i < _categories.length; i++) {
-      for (int j = 0; j < AllProds[_categories[i]].length; j++) {
-        if (AllProds[_categories[i]][j].id == id) {
-          return AllProds[_categories[i]][j];
+    if (_AllProds.isNotEmpty) {
+      for (int i = 0; i < _categories.length; i++) {
+        for (int j = 0; j < _AllProds[_categories[i]].length; j++) {
+          if (_AllProds[_categories[i]][j].id == id) {
+            return _AllProds[_categories[i]][j];
+          }
         }
       }
+    } else {
+      print("No Products");
     }
   }
 
@@ -125,6 +129,8 @@ class globalVars with ChangeNotifier {
   }
 
   Future getUserOrders(User u) async {
+    _OrdersID.clear();
+    _Orders.clear();
     DocumentSnapshot uSnapshot = await UsersInformation.doc(u.uid).get();
     _OrdersID = await uSnapshot.get('orders');
     print(_OrdersID);
