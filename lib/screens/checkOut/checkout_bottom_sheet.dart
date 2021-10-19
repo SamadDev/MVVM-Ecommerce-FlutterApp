@@ -96,8 +96,7 @@ class _checkoutBottomSheetState extends State<checkoutBottomSheet> {
   Widget buildTextWithIcon(globalVars gv, users_dbServices u) {
     return ProgressButton.icon(
         radius: 20.0,
-        textStyle: TextStyle(
-            color: Colors.white, fontSize: 17, fontFamily: 'PantonBoldItalic'),
+        textStyle: TextStyle(color: Colors.white, fontSize: 17, fontFamily: 'PantonBoldItalic'),
         iconedButtons: {
           ButtonState.idle: IconedButton(
               text: "Place Order",
@@ -107,8 +106,7 @@ class _checkoutBottomSheetState extends State<checkoutBottomSheet> {
                 color: PrimaryColor,
               ),
               color: PrimaryColor),
-          ButtonState.loading:
-              IconedButton(text: "Loading", color: PrimaryColor),
+          ButtonState.loading: IconedButton(text: "Loading", color: PrimaryColor),
           ButtonState.fail: IconedButton(
               text: "Connection Lost",
               icon: Icon(
@@ -146,8 +144,7 @@ class _checkoutBottomSheetState extends State<checkoutBottomSheet> {
           vertical: 30,
         ),
         decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+            color: Colors.white, borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
         child: ListView(
           shrinkWrap: true,
           children: <Widget>[
@@ -232,8 +229,7 @@ class _checkoutBottomSheetState extends State<checkoutBottomSheet> {
             ),
             getDivider(),
             InkWell(
-              child: checkoutRow("Address", widget.addressSection, true,
-                  trailingText: gv.uAddress),
+              child: checkoutRow("Address", widget.addressSection, true, trailingText: gv.uAddress),
               onTap: () {
                 setState(() {
                   widget.addressSection = !widget.addressSection;
@@ -265,22 +261,15 @@ class _checkoutBottomSheetState extends State<checkoutBottomSheet> {
                       child: Text(
                         "Edit",
                         style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                            fontFamily: 'PantonBoldItalic'),
+                            color: Colors.white, fontSize: 14, fontFamily: 'PantonBoldItalic'),
                       ),
                       style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(PrimaryColor),
-                          fixedSize: MaterialStateProperty.all<Size>(Size(
-                              double.infinity,
-                              getProportionateScreenHeight(30))),
+                          backgroundColor: MaterialStateProperty.all(PrimaryColor),
+                          fixedSize: MaterialStateProperty.all<Size>(
+                              Size(double.infinity, getProportionateScreenHeight(30))),
                           elevation: MaterialStateProperty.all<double>(0),
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(12)))),
+                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)))),
                     ),
                   )
                 ],
@@ -318,11 +307,10 @@ class _checkoutBottomSheetState extends State<checkoutBottomSheet> {
                                 softWrap: false,
                                 overflow: TextOverflow.ellipsis,
                               ),
-                              leading: Text(
-                                  "${gv.userCart[index].quantity.toString()}x"),
-                              trailing: Text((gv.userCart[index].quantity *
-                                      gv.userCart[index].product.price)
-                                  .toString()),
+                              leading: Text("${gv.userCart[index].quantity.toString()}x"),
+                              trailing: Text(
+                                  (gv.userCart[index].quantity * gv.userCart[index].product.price)
+                                      .toString()),
                             )),
                     ListTile(
                       title: Text("Shipping fees"),
@@ -340,31 +328,6 @@ class _checkoutBottomSheetState extends State<checkoutBottomSheet> {
                 top: 25,
               ),
               child: buildTextWithIcon(gv, u),
-
-              /*DefaultButton(
-                text: "Place Order",
-                press: () {
-                  if (gv.paymentMethod != "Select Method") {
-                    List<dynamic> tempCart = [];
-                    Map map = new Map<String, dynamic>();
-                    for (int i = 0; i < gv.userCart.length; i++) {
-                      tempCart.add(map = {
-                        "id": gv.userCart[i].product.id,
-                        "option1": gv.userCart[i].option1,
-                        "quantity": gv.userCart[i].quantity,
-                        "total": gv.userCart[i].quantity *
-                            gv.userCart[i].product.price,
-                      });
-                    }
-                    String orderID = customAlphabet("0123456789", 18);
-                    u.addOrder(orderID, tempCart, gv.paymentMethod, gv.total);
-                    u.DeleteAttribute("cart");
-                    gv.resetCart();
-                  } else {
-                    print("Choose payment method");
-                  }
-                },
-              ),*/
             ),
           ],
         ),
@@ -391,14 +354,11 @@ class _checkoutBottomSheetState extends State<checkoutBottomSheet> {
           ),
           children: [
             TextSpan(
-                text: " Terms",
-                style: TextStyle(
-                    color: Colors.black, fontWeight: FontWeight.bold)),
+                text: " Terms", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
             TextSpan(text: " And"),
             TextSpan(
                 text: " Conditions",
-                style: TextStyle(
-                    color: Colors.black, fontWeight: FontWeight.bold)),
+                style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
           ]),
     );
   }
@@ -455,12 +415,4 @@ class _checkoutBottomSheetState extends State<checkoutBottomSheet> {
       ),
     );
   }
-
-/*
-  void onPlaceOrderClicked() {
-    Navigator.pop(context);
-    showDialog(builder: (context) => OrderFailedDialogue(), context: context);
-  }
-  */
-
 }

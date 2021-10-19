@@ -37,9 +37,7 @@ class _SignFormState extends State<SignIn> {
         if (_formKey.currentState.validate()) {
           _formKey.currentState.save();
           try {
-            await context
-                .read<AuthenticationService>()
-                .signIn(email: email, password: password);
+            await context.read<AuthenticationService>().signIn(email: email, password: password);
 
             User user = context.read<AuthenticationService>().CurrentUser();
 
@@ -97,10 +95,8 @@ class _SignFormState extends State<SignIn> {
         height: getProportionateScreenWidth(58),
         maxWidth: getProportionateScreenWidth(400),
         radius: 20.0,
-        textStyle: TextStyle(
-            color: Color(0xffeeecec),
-            fontSize: 17,
-            fontFamily: 'PantonBoldItalic'),
+        textStyle:
+            TextStyle(color: Color(0xffeeecec), fontSize: 17, fontFamily: 'PantonBoldItalic'),
         iconedButtons: {
           ButtonState.idle: IconedButton(
               text: "Continue",
@@ -110,8 +106,7 @@ class _SignFormState extends State<SignIn> {
                 color: PrimaryColor,
               ),
               color: PrimaryColor),
-          ButtonState.loading:
-              IconedButton(text: "Loading", color: PrimaryColor),
+          ButtonState.loading: IconedButton(text: "Loading", color: PrimaryColor),
           ButtonState.fail: IconedButton(
               text: "Wrong email or password",
               icon: Icon(Icons.cancel, color: Colors.white),
@@ -154,7 +149,7 @@ class _SignFormState extends State<SignIn> {
     return SafeArea(
       bottom: false,
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
+        //resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: Text(
             "Sign In",
@@ -173,8 +168,7 @@ class _SignFormState extends State<SignIn> {
               SizedBox(
                 width: double.infinity,
                 child: Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: getProportionateScreenWidth(22)),
+                  padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(22)),
                   child: Column(
                     children: [
                       SizedBox(height: SizeConfig.screenHeight * 0.07),
@@ -202,8 +196,8 @@ class _SignFormState extends State<SignIn> {
                             Align(
                               alignment: Alignment.centerLeft,
                               child: GestureDetector(
-                                onTap: () => Navigator.pushNamed(
-                                    context, ForgotPasswordScreen.routeName),
+                                onTap: () =>
+                                    Navigator.pushNamed(context, ForgotPasswordScreen.routeName),
                                 child: Text(
                                   "Forgot Password",
                                   style: TextStyle(
@@ -323,10 +317,7 @@ class signUpRedirect extends StatelessWidget {
     return ElevatedButton(
       child: Text(
         "Sign-Up",
-        style: TextStyle(
-            color: Color(0xffeeecec),
-            fontSize: 13,
-            fontFamily: 'PantonBoldItalic'),
+        style: TextStyle(color: Color(0xffeeecec), fontSize: 13, fontFamily: 'PantonBoldItalic'),
       ),
       style: ButtonStyle(
           padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
@@ -337,8 +328,7 @@ class signUpRedirect extends StatelessWidget {
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
           backgroundColor: MaterialStateProperty.all<Color>(PrimaryColor),
-          overlayColor: MaterialStateProperty.resolveWith<Color>(
-              (Set<MaterialState> states) {
+          overlayColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
             return null;
           })),
       onPressed: () {

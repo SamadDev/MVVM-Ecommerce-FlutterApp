@@ -21,8 +21,9 @@ class ProductDescription extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding:
-              EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(25)),
+          padding: EdgeInsets.symmetric(
+              horizontal: getProportionateScreenWidth(30),
+              vertical: getProportionateScreenWidth(5)),
           child: Text(
             product.title,
             style: TextStyle(
@@ -67,7 +68,7 @@ class ProductDescription extends StatelessWidget {
         */
         Padding(
           padding: EdgeInsets.symmetric(
-            horizontal: getProportionateScreenWidth(25),
+            horizontal: getProportionateScreenWidth(30),
             vertical: 10,
           ),
           child: GestureDetector(
@@ -76,10 +77,8 @@ class ProductDescription extends StatelessWidget {
               children: [
                 Text(
                   product.price.toString() + " EGP",
-                  style: TextStyle(
-                      color: PrimaryColor,
-                      fontSize: 18,
-                      fontFamily: 'PantonBoldItalic'),
+                  style:
+                      TextStyle(color: PrimaryColor, fontSize: 18, fontFamily: 'PantonBoldItalic'),
                 ),
               ],
             ),

@@ -35,7 +35,7 @@ class users_dbServices {
   Future addToOrders(String orderID, List<dynamic> c, String paymentMethod, int total) async {
     return await Orders.doc(orderID).set({
       'userID': uid,
-      'Status': "Pending",
+      'Status': "Ordered",
       'Payment method': paymentMethod,
       'Total': total,
       'cart': c,

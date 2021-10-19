@@ -17,11 +17,9 @@ class ProductImages extends StatefulWidget {
   _ProductImagesState createState() => _ProductImagesState();
 }
 
-class _ProductImagesState extends State<ProductImages>
-    with TickerProviderStateMixin {
+class _ProductImagesState extends State<ProductImages> with TickerProviderStateMixin {
   int selectedImage = 0;
-  final TransformationController _transformationController =
-      TransformationController();
+  final TransformationController _transformationController = TransformationController();
   Animation<Matrix4> _animationReset;
   AnimationController _controllerReset;
 
@@ -82,9 +80,9 @@ class _ProductImagesState extends State<ProductImages>
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(height: getProportionateScreenHeight(30)),
+        SizedBox(height: getProportionateScreenHeight(40)),
         SizedBox(
-          width: getProportionateScreenWidth(283),
+          width: getProportionateScreenWidth(315),
           child: AspectRatio(
             aspectRatio: 1,
             child: Hero(
@@ -94,8 +92,7 @@ class _ProductImagesState extends State<ProductImages>
                 transformationController: _transformationController,
                 onInteractionStart: _onInteractionStart,
                 onInteractionEnd: _onInteractionEnd,
-                child: Image.network(
-                    widget.product.images[selectedImage].toString()),
+                child: Image.network(widget.product.images[selectedImage].toString()),
               ),
             ),
           ),
@@ -104,8 +101,8 @@ class _ProductImagesState extends State<ProductImages>
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ...List.generate(widget.product.images.length,
-                (index) => buildSmallProductPreview(index)),
+            ...List.generate(
+                widget.product.images.length, (index) => buildSmallProductPreview(index)),
           ],
         )
       ],
@@ -128,8 +125,7 @@ class _ProductImagesState extends State<ProductImages>
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(
-              color: PrimaryColor.withOpacity(selectedImage == index ? 1 : 0)),
+          border: Border.all(color: PrimaryColor.withOpacity(selectedImage == index ? 1 : 0)),
         ),
         child: Image.network(widget.product.images[index].toString()),
       ),

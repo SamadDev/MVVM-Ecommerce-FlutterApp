@@ -139,11 +139,13 @@ class globalVars with ChangeNotifier {
       for (int i = 0; i < _OrdersID.length; i++) {
         DocumentSnapshot oSnapshot = await OrdersRef.doc(_OrdersID[i]).get();
         Map<String, dynamic> temp = oSnapshot.data();
+        temp["ID"] = oSnapshot.id;
         _Orders.add(temp);
       }
     } else {
       print("No Orders");
     }
+    _Orders.sort((a, b) => b["Date&Time"].compareTo(a["Date&Time"]));
   }
 
   void addToUserCart(Product p, int quantity, String option1) {

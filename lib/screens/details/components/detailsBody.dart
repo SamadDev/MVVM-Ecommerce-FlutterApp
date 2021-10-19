@@ -83,6 +83,7 @@ class _BodyState extends State<Body> {
 
   Widget buildTextWithIcon(globalVars gv, users_dbServices u) {
     return ProgressButton.icon(
+        height: getProportionateScreenHeight(63),
         radius: 20.0,
         textStyle: TextStyle(color: Colors.white, fontSize: 17, fontFamily: 'PantonBoldItalic'),
         iconedButtons: {
@@ -154,8 +155,8 @@ class _BodyState extends State<Body> {
                       color: Colors.white,
                       child: Padding(
                         padding: EdgeInsets.only(
-                          left: SizeConfig.screenWidth * 0.15,
-                          right: SizeConfig.screenWidth * 0.15,
+                          left: getProportionateScreenWidth(30),
+                          right: getProportionateScreenWidth(30),
                           bottom: getProportionateScreenHeight(35),
                           top: getProportionateScreenHeight(12),
                         ),
