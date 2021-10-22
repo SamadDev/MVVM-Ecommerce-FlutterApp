@@ -124,51 +124,67 @@ class _BodyState extends State<Body> {
     user = context.read<AuthenticationService>().CurrentUser();
     final users_dbServices u = users_dbServices(uid: user.uid);
 
-    return ListView(
-      padding: EdgeInsets.zero,
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        ProductImages(product: widget.product),
-        TopRoundedContainer(
-          color: Colors.white,
-          child: Column(
-            children: [
-              ProductDescription(
-                product: widget.product,
-                pressOnSeeMore: () {},
-              ),
-              TopRoundedContainer(
-                color: PrimaryLightColor,
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+        Flexible(flex: 5, child: ProductImages(product: widget.product)),
+        Flexible(
+          flex: 4,
+          child: TopRoundedContainer(
+            color: Colors.white,
+            child: Column(
+              children: [
+                Flexible(
+                  flex: 3,
+                  child: ProductDescription(
+                    product: widget.product,
+                    pressOnSeeMore: () {},
+                  ),
+                ),
+                Flexible(
+                  flex: 7,
+                  child: TopRoundedContainer(
+                    color: PrimaryLightColor,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        buildSizeOptions("S"),
-                        buildSizeOptions("M"),
-                        buildSizeOptions("L"),
-                        buildSizeOptions("XL"),
+                        Flexible(
+                          flex: 2,
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              buildSizeOptions("S"),
+                              buildSizeOptions("M"),
+                              buildSizeOptions("L"),
+                              buildSizeOptions("XL"),
+                            ],
+                          ),
+                        ),
+                        //ColorDots(product: product),
+                        Flexible(
+                          flex: 5,
+                          child: TopRoundedContainer(
+                            color: Colors.white,
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                left: getProportionateScreenWidth(30),
+                                right: getProportionateScreenWidth(30),
+                                bottom: getProportionateScreenHeight(35),
+                                top: getProportionateScreenHeight(12),
+                              ),
+                              child: Consumer<globalVars>(builder: (_, gv, __) {
+                                return buildTextWithIcon(gv, u);
+                              }),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
-
-                    //ColorDots(product: product),
-                    TopRoundedContainer(
-                      color: Colors.white,
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                          left: getProportionateScreenWidth(30),
-                          right: getProportionateScreenWidth(30),
-                          bottom: getProportionateScreenHeight(35),
-                          top: getProportionateScreenHeight(12),
-                        ),
-                        child: Consumer<globalVars>(builder: (_, gv, __) {
-                          return buildTextWithIcon(gv, u);
-                        }),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ],

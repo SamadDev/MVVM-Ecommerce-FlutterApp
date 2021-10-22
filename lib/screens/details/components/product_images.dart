@@ -81,8 +81,7 @@ class _ProductImagesState extends State<ProductImages> with TickerProviderStateM
     return Column(
       children: [
         SizedBox(height: getProportionateScreenHeight(40)),
-        SizedBox(
-          width: getProportionateScreenWidth(315),
+        Expanded(
           child: AspectRatio(
             aspectRatio: 1,
             child: Hero(

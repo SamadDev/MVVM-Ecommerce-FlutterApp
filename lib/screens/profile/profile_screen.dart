@@ -5,10 +5,8 @@ class ProfileScreen extends StatelessWidget {
   static String routeName = "/profile";
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Body(),
-      ),
+    return Scaffold(
+      body: Body(),
     );
   }
 }

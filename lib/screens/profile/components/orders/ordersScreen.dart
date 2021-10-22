@@ -24,8 +24,39 @@ class _OrdersScreenState extends State<OrdersScreen> {
     super.initState();
   }
 
+  Widget orders(globalVars gv, List<dynamic> ordersID) {
+    if (gv.Orders.isEmpty) {
+      return FutureBuilder(
+          future: gv.getUserOrders(ordersID),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return ListView.builder(
+                  padding: EdgeInsets.only(bottom: 25),
+                  itemCount: gv.Orders.length,
+                  itemBuilder: (context, index) => orderContainer(gv, index));
+            }
+            if (snapshot.connectionState == ConnectionState.waiting)
+              return Center(
+                child: Container(
+                    height: getProportionateScreenWidth(40),
+                    width: getProportionateScreenWidth(40),
+                    child: CircularProgressIndicator(
+                      color: SecondaryColorDark,
+                    )),
+              );
+            return Container();
+          });
+    } else {
+      return ListView.builder(
+          padding: EdgeInsets.only(bottom: 25),
+          itemCount: gv.Orders.length,
+          itemBuilder: (context, index) => orderContainer(gv, index));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final OrderArguments args = ModalRoute.of(context).settings.arguments;
     return SafeArea(
         child: Scaffold(
       backgroundColor: PrimaryLightColor,
@@ -41,26 +72,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
         backgroundColor: SecondaryColorDark,
       ),
       body: Consumer<globalVars>(builder: (_, gv, __) {
-        return FutureBuilder(
-            future: gv.getUserOrders(u),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                return ListView.builder(
-                    padding: EdgeInsets.only(bottom: 25),
-                    itemCount: gv.Orders.length,
-                    itemBuilder: (context, index) => orderContainer(gv, index));
-              }
-              if (snapshot.connectionState == ConnectionState.waiting)
-                return Center(
-                  child: Container(
-                      height: getProportionateScreenWidth(40),
-                      width: getProportionateScreenWidth(40),
-                      child: CircularProgressIndicator(
-                        color: SecondaryColorDark,
-                      )),
-                );
-              return Container();
-            });
+        return orders(gv, args.ordersID);
       }),
     ));
   }
@@ -194,4 +206,9 @@ class _OrdersScreenState extends State<OrdersScreen> {
           ],
         ));
   }
+}
+
+class OrderArguments {
+  final List<dynamic> ordersID;
+  OrderArguments({@required this.ordersID});
 }

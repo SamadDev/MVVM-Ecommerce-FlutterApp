@@ -19,9 +19,7 @@ class cartBodyState extends State<cartBody> {
 
   @override
   void initState() {
-    u = Provider.of<AuthenticationService>(context, listen: false)
-        .CurrentUser();
-    Provider.of<globalVars>(context, listen: false).getUserInfo(u);
+    u = Provider.of<AuthenticationService>(context, listen: false).CurrentUser();
     futureCart = Provider.of<globalVars>(context, listen: false).getUserCart(u);
     super.initState();
   }
@@ -29,8 +27,7 @@ class cartBodyState extends State<cartBody> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding:
-          EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
       child: Consumer<globalVars>(builder: (_, gv, __) {
         return FutureBuilder(
           future: futureCart,

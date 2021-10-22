@@ -24,9 +24,9 @@ class globalVars with ChangeNotifier {
 
   var _CartProds;
 
-  List<dynamic> _OrdersID = [];
-
   List<Map<String, dynamic>> _Orders = [];
+
+  Map<String, dynamic> _UserInfo;
 
   List<String> _categories = [];
 
@@ -112,11 +112,8 @@ class globalVars with ChangeNotifier {
 
   Future getUserInfo(User u) async {
     DocumentSnapshot documentSnapshot = await UsersInformation.doc(u.uid).get();
-    _uName = documentSnapshot.get('Full Name');
-    _uPN = documentSnapshot.get('Phone Number');
-    _uGovernorate = documentSnapshot.get('Governorate');
-    _uAddress = documentSnapshot.get('Address');
-    //notifyListeners();
+    _UserInfo = documentSnapshot.data();
+    print(_UserInfo);
   }
 
   Future DeleteItemFromCart(User u, int index) async {
@@ -128,16 +125,11 @@ class globalVars with ChangeNotifier {
     });
   }
 
-  Future getUserOrders(User u) async {
-    _OrdersID.clear();
+  Future getUserOrders(List<dynamic> ordersID) async {
     _Orders.clear();
-    DocumentSnapshot uSnapshot = await UsersInformation.doc(u.uid).get();
-    _OrdersID = await uSnapshot.get('orders');
-    print(_OrdersID);
-
-    if (_OrdersID.isNotEmpty) {
-      for (int i = 0; i < _OrdersID.length; i++) {
-        DocumentSnapshot oSnapshot = await OrdersRef.doc(_OrdersID[i]).get();
+    if (ordersID.isNotEmpty) {
+      for (int i = 0; i < ordersID.length; i++) {
+        DocumentSnapshot oSnapshot = await OrdersRef.doc(ordersID[i]).get();
         Map<String, dynamic> temp = oSnapshot.data();
         temp["ID"] = oSnapshot.id;
         _Orders.add(temp);
@@ -230,9 +222,9 @@ class globalVars with ChangeNotifier {
 
   get CartProds => _CartProds;
 
-  List<dynamic> get OrdersID => _OrdersID;
-
   List<Map<String, dynamic>> get Orders => _Orders;
+
+  Map<String, dynamic> get UserInfo => _UserInfo;
 
   List<String> get categories => _categories;
 
