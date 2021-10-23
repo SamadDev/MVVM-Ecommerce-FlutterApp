@@ -7,6 +7,7 @@ import '../../../../Services/authentication.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 import 'process_timeline.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 class OrdersScreen extends StatefulWidget {
   static String routeName = "/orders";
@@ -17,6 +18,11 @@ class OrdersScreen extends StatefulWidget {
 
 class _OrdersScreenState extends State<OrdersScreen> {
   User u;
+  bool connection;
+
+  Future connection_checker() async {
+    connection = await InternetConnectionChecker().hasConnection;
+  }
 
   @override
   void initState() {
@@ -24,7 +30,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
     super.initState();
   }
 
-  Widget orders(globalVars gv, List<dynamic> ordersID) {
+/*  Widget orders(globalVars gv, List<dynamic> ordersID) {
     if (gv.Orders.isEmpty) {
       return FutureBuilder(
           future: gv.getUserOrders(ordersID),
@@ -52,7 +58,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
           itemCount: gv.Orders.length,
           itemBuilder: (context, index) => orderContainer(gv, index));
     }
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +78,26 @@ class _OrdersScreenState extends State<OrdersScreen> {
         backgroundColor: SecondaryColorDark,
       ),
       body: Consumer<globalVars>(builder: (_, gv, __) {
-        return orders(gv, args.ordersID);
+        return FutureBuilder(
+            future: gv.getUserOrders(args.ordersID),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                return ListView.builder(
+                    padding: EdgeInsets.only(bottom: 25),
+                    itemCount: gv.Orders.length,
+                    itemBuilder: (context, index) => orderContainer(gv, index));
+              }
+              if (snapshot.connectionState == ConnectionState.waiting)
+                return Center(
+                  child: Container(
+                      height: getProportionateScreenWidth(40),
+                      width: getProportionateScreenWidth(40),
+                      child: CircularProgressIndicator(
+                        color: SecondaryColorDark,
+                      )),
+                );
+              return Container();
+            });
       }),
     ));
   }

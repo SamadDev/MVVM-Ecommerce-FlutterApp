@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:shop_app/constants.dart';
 import 'package:shop_app/screens/profile/components/orders/ordersScreen.dart';
 import 'package:shop_app/screens/sign_in/sign_in_screen.dart';
-import 'profile_menu.dart';
 import '../../../../size_config.dart';
 import '../../../Services/authentication.dart';
 import 'package:provider/provider.dart';
@@ -33,58 +32,79 @@ class _BodyState extends State<Body> {
               return Column(
                 children: [
                   Flexible(
-                      flex: 2,
+                      flex: 1,
                       child: Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: getProportionateScreenHeight(32),
+                            vertical: getProportionateScreenHeight(15)),
                         height: double.infinity,
                         width: double.infinity,
                         color: PrimaryColor,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                'welcome,',
+                                style: TextStyle(
+                                    fontFamily: 'PantonBoldItalic',
+                                    color: Colors.white,
+                                    fontSize: getProportionateScreenWidth(23)),
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: Text(
+                                gv.UserInfo['Full Name'],
+                                style: TextStyle(
+                                    fontFamily: 'PantonBoldItalic',
+                                    color: Colors.white,
+                                    fontSize: getProportionateScreenWidth(30)),
+                              ),
+                            ),
+                          ],
+                        ),
                       )),
                   Flexible(
-                    flex: 5,
+                    flex: 2,
                     child: Container(
+                      padding: EdgeInsets.symmetric(
+                          vertical: getProportionateScreenHeight(32),
+                          horizontal: getProportionateScreenWidth(25)),
+                      decoration: BoxDecoration(
+                        color: PrimaryLightColor,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(35),
+                          topRight: Radius.circular(35),
+                        ),
+                      ),
                       child: Column(
                         children: [
-                          SizedBox(height: 20),
-                          ProfileMenu(
-                            text: "My Account",
-                            icon: "assets/icons/User Icon.svg",
-                            press: () => {},
+                          ProfButton("My Details", Icons.person_outline_rounded, () {}),
+                          SizedBox(
+                            height: getProportionateScreenHeight(25),
                           ),
-                          ProfileMenu(
-                            text: "My Orders",
-                            icon: "assets/icons/Bell.svg",
-                            press: () {
-                              Navigator.pushNamed(
-                                context,
-                                OrdersScreen.routeName,
-                                arguments: OrderArguments(ordersID: gv.UserInfo['orders']),
-                              );
-                            },
+                          ProfButton("My Orders", Icons.inventory_2_outlined, () {
+                            Navigator.pushNamed(
+                              context,
+                              OrdersScreen.routeName,
+                              arguments: OrderArguments(ordersID: gv.UserInfo['orders']),
+                            );
+                          }),
+                          SizedBox(
+                            height: getProportionateScreenHeight(25),
                           ),
-                          ProfileMenu(
-                            text: "Settings",
-                            icon: "assets/icons/Settings.svg",
-                            press: () async {
-                              print(gv.UserInfo['orders']);
-                              //await gv.getUserInfo(loggedInUser);
-                            },
+                          ProfButton("Settings", Icons.settings_outlined, () {}),
+                          SizedBox(
+                            height: getProportionateScreenHeight(25),
                           ),
-                          ProfileMenu(
-                            text: "Help Center",
-                            icon: "assets/icons/Question mark.svg",
-                            press: () {
-                              print(gv.UserInfo['Full Name']);
-                            },
-                          ),
-                          ProfileMenu(
-                            text: "Log Out",
-                            icon: "assets/icons/Log out.svg",
-                            press: () async {
-                              print("Sign-Out of ${loggedInUser.email}");
-                              context.read<AuthenticationService>().signOut();
-                              Navigator.pushReplacementNamed(context, SignInScreen.routeName);
-                            },
-                          ),
+                          ProfButton("Log Out", Icons.logout, () {
+                            gv.selectedPage = 0;
+                            print("Sign-Out of ${loggedInUser.email}");
+                            context.read<AuthenticationService>().signOut();
+                            Navigator.pushReplacementNamed(context, SignInScreen.routeName);
+                          }),
                         ],
                       ),
                     ),
@@ -108,4 +128,34 @@ class _BodyState extends State<Body> {
           });
     });
   }
+}
+
+ElevatedButton ProfButton(String label, IconData icon, Function func) {
+  return ElevatedButton.icon(
+      onPressed: func,
+      icon: Icon(
+        icon,
+        color: PrimaryColor,
+        size: getProportionateScreenWidth(25),
+      ),
+      label: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            "    $label",
+            style: TextStyle(
+                color: SecondaryColorDark,
+                fontFamily: 'PantonBoldItalic',
+                fontSize: getProportionateScreenWidth(15.5)),
+          ),
+          Icon(
+            Icons.arrow_forward_ios,
+            color: SecondaryColorDark,
+          ),
+        ],
+      ),
+      style: ElevatedButton.styleFrom(
+          padding: EdgeInsets.all(21),
+          primary: Colors.white,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))));
 }
