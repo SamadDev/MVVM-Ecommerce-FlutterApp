@@ -99,7 +99,7 @@ class _BodyState extends State<Body> {
                           SizedBox(
                             height: getProportionateScreenHeight(25),
                           ),
-                          ProfButton("Log Out", Icons.logout, () {
+                          ProfButton("Log-Out", Icons.logout, () {
                             gv.selectedPage = 0;
                             print("Sign-Out of ${loggedInUser.email}");
                             context.read<AuthenticationService>().signOut();

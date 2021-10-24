@@ -6,21 +6,22 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class globalVars with ChangeNotifier {
   globalVars._privateConstructor();
-
   static final globalVars _instance = globalVars._privateConstructor();
-
   factory globalVars() {
     return _instance;
   }
 
-  final CollectionReference UsersInformation = FirebaseFirestore.instance.collection('UsersInfo');
-
   final CollectionReference OrdersRef = FirebaseFirestore.instance.collection('Orders');
+
+  final CollectionReference UsersInformation = FirebaseFirestore.instance.collection('UsersInfo');
 
   final DocumentReference ClothingInformation =
       FirebaseFirestore.instance.collection('Products').doc('Clothing');
 
   final CollectionReference ProductsInformation = FirebaseFirestore.instance.collection('Products');
+
+  final DocumentReference HomeImgsRef =
+      FirebaseFirestore.instance.collection('HomeImages').doc('Home_Images');
 
   var _CartProds;
 
@@ -43,6 +44,13 @@ class globalVars with ChangeNotifier {
   String _uName, _uPN, _uAddress, _uGovernorate;
 
   String _paymentMethod = "Select Method";
+
+  List<String> _imgList = [];
+
+  Future getHomeImages() async {
+    DocumentSnapshot Himgs = await HomeImgsRef.get();
+    _imgList = List<String>.from(Himgs.get('images'));
+  }
 
   Future getAllCategories() async {
     DocumentSnapshot doc = await ClothingInformation.get();
@@ -235,4 +243,6 @@ class globalVars with ChangeNotifier {
   String get paymentMethod => _paymentMethod;
 
   String get uName => _uName;
+
+  List<String> get imgList => _imgList;
 }

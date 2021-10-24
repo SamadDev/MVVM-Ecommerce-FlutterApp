@@ -4,10 +4,10 @@ import 'categories.dart';
 import '../../../constants.dart';
 import 'home_header.dart';
 import 'category.dart';
-import 'special_offers.dart';
 import 'package:provider/provider.dart';
 import '../../../globalVars.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class HomeBody extends StatefulWidget {
   @override
@@ -33,7 +33,7 @@ class _HomeBodyState extends State<HomeBody> {
                   if (connection == true) {
                     return Consumer<globalVars>(builder: (_, gv, __) {
                       return FutureBuilder(
-                          future: gv.getAllProds(),
+                          future: Future.wait([gv.getAllProds(), gv.getHomeImages()]),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState == ConnectionState.done) {
                               return Column(
@@ -42,7 +42,28 @@ class _HomeBodyState extends State<HomeBody> {
                                   HomeHeader(),
                                   SizedBox(height: getProportionateScreenWidth(10)),
                                   Categories(),
-                                  SpecialOffers(),
+                                  CarouselSlider(
+                                    options: CarouselOptions(
+                                      viewportFraction: 0.9,
+                                      autoPlay: true,
+                                      aspectRatio: 1.7,
+                                      enlargeCenterPage: true,
+                                      enlargeStrategy: CenterPageEnlargeStrategy.height,
+                                    ),
+                                    items: gv.imgList
+                                        .map((item) => Container(
+                                              child: Container(
+                                                margin: EdgeInsets.all(7.5),
+                                                child: ClipRRect(
+                                                  borderRadius: BorderRadius.all(Radius.circular(
+                                                      getProportionateScreenWidth(10))),
+                                                  child: Image.network(item,
+                                                      fit: BoxFit.cover, width: double.infinity),
+                                                ),
+                                              ),
+                                            ))
+                                        .toList(),
+                                  ),
                                   SizedBox(height: getProportionateScreenWidth(30)),
                                   Column(
                                     children: List.generate(gv.categories.length,
