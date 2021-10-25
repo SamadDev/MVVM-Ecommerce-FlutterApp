@@ -16,6 +16,7 @@ class category extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        SizedBox(height: getProportionateScreenWidth(20)),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
           child: SectionTitle(
@@ -28,7 +29,7 @@ class category extends StatelessWidget {
                 );
               }),
         ),
-        SizedBox(height: getProportionateScreenWidth(20)),
+        SizedBox(height: getProportionateScreenHeight(8)),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Consumer<globalVars>(builder: (_, gv, __) {
@@ -47,7 +48,7 @@ class category extends StatelessWidget {
               ],
             );
           }),
-        )
+        ),
       ],
     );
   }

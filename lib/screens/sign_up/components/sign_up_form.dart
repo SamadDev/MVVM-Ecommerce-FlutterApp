@@ -105,10 +105,8 @@ class _SignUpFormState extends State<SignUpForm> {
         height: getProportionateScreenWidth(58),
         maxWidth: getProportionateScreenWidth(400),
         radius: 20.0,
-        textStyle: TextStyle(
-            color: Color(0xffeeecec),
-            fontSize: 18,
-            fontFamily: 'PantonBoldItalic'),
+        textStyle:
+            TextStyle(color: Color(0xffeeecec), fontSize: 18, fontFamily: 'PantonBoldItalic'),
         iconedButtons: {
           ButtonState.idle: IconedButton(
               text: "Continue",
@@ -118,8 +116,7 @@ class _SignUpFormState extends State<SignUpForm> {
                 color: PrimaryColor,
               ),
               color: PrimaryColor),
-          ButtonState.loading:
-              IconedButton(text: "Loading", color: PrimaryColor),
+          ButtonState.loading: IconedButton(text: "Loading", color: PrimaryColor),
           ButtonState.fail: IconedButton(
               text: "email already exists",
               icon: Icon(Icons.cancel, color: Colors.white),
@@ -193,8 +190,7 @@ class _SignUpFormState extends State<SignUpForm> {
               SizedBox(
                 width: double.infinity,
                 child: Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: getProportionateScreenWidth(22)),
+                  padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(22)),
                   child: Column(
                     children: [
                       SizedBox(height: SizeConfig.screenHeight * 0.04), // 4%
@@ -230,14 +226,10 @@ class _SignUpFormState extends State<SignUpForm> {
                                   ),
                                 ),
                                 Container(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 15),
+                                    padding: EdgeInsets.symmetric(horizontal: 15),
                                     decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(18.0),
-                                        border: Border.all(
-                                            color: SecondaryColorDark,
-                                            width: 2.8)),
+                                        borderRadius: BorderRadius.circular(18.0),
+                                        border: Border.all(color: SecondaryColorDark, width: 2.8)),
                                     child: buildGovDropdown()),
                               ],
                             ),
@@ -385,8 +377,7 @@ class _SignUpFormState extends State<SignUpForm> {
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon:
-            CustomSurffixIcon(svgIcon: "assets/icons/Location point.svg"),
+        suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Location point.svg"),
       ),
     );
   }

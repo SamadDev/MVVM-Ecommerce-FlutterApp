@@ -127,22 +127,25 @@ class _BodyState extends State<Body> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Flexible(flex: 5, child: ProductImages(product: widget.product)),
+        Flexible(flex: 7, child: ProductImages(product: widget.product)),
+        SizedBox(
+          height: getProportionateScreenHeight(15),
+        ),
         Flexible(
-          flex: 4,
+          flex: 6,
           child: TopRoundedContainer(
             color: Colors.white,
             child: Column(
               children: [
                 Flexible(
-                  flex: 3,
+                  flex: 1,
                   child: ProductDescription(
                     product: widget.product,
                     pressOnSeeMore: () {},
                   ),
                 ),
                 Flexible(
-                  flex: 7,
+                  flex: 2,
                   child: TopRoundedContainer(
                     color: PrimaryLightColor,
                     child: Column(

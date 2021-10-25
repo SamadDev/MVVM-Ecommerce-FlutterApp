@@ -57,7 +57,7 @@ class _ProcessTimelinePageState extends State<ProcessTimelinePage> {
         itemExtentBuilder: (_, __) => getProportionateScreenWidth(325) / _processes.length,
         contentsBuilder: (context, index) {
           return Padding(
-            padding: const EdgeInsets.only(top: 10.0),
+            padding: const EdgeInsets.only(top: 9.0),
             child: Text(
               _processes[index],
               style: TextStyle(

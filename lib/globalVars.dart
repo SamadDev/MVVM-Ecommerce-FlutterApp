@@ -41,8 +41,6 @@ class globalVars with ChangeNotifier {
 
   int _shippingPrice = 40;
 
-  String _uName, _uPN, _uAddress, _uGovernorate;
-
   String _paymentMethod = "Select Method";
 
   List<String> _imgList = [];
@@ -190,6 +188,11 @@ class globalVars with ChangeNotifier {
     TotalPrice();
   }
 
+  void resetPmethod() {
+    _paymentMethod = "Select Method";
+    notifyListeners();
+  }
+
   void TotalPrice() {
     if (_userCart.isEmpty) {
       _total = 0;
@@ -222,12 +225,6 @@ class globalVars with ChangeNotifier {
 
   List<cartItem> get userCart => _userCart;
 
-  get uGovernorate => _uGovernorate;
-
-  get uAddress => _uAddress;
-
-  get uPN => _uPN;
-
   get CartProds => _CartProds;
 
   List<Map<String, dynamic>> get Orders => _Orders;
@@ -241,8 +238,5 @@ class globalVars with ChangeNotifier {
   int get shippingPrice => _shippingPrice;
 
   String get paymentMethod => _paymentMethod;
-
-  String get uName => _uName;
-
   List<String> get imgList => _imgList;
 }

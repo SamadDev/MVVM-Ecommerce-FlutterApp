@@ -33,7 +33,7 @@ class CategoryScreen extends StatelessWidget {
             child: Consumer<globalVars>(builder: (_, gv, __) {
               return GridView.count(
                 childAspectRatio:
-                    MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 1.35),
+                    MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 1.45),
                 crossAxisSpacing: 25,
                 crossAxisCount: 2,
                 children: List.generate(

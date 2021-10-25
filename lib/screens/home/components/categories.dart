@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
+import 'package:shop_app/constants.dart';
+import 'package:shop_app/screens/category/categoryScreen.dart';
 import '../../../size_config.dart';
 
 class Categories extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Map<String, dynamic>> categories = [
-      {"icon": "assets/icons/Flash Icon.svg", "text": "Flash Deal"},
-      {"icon": "assets/icons/Bill Icon.svg", "text": "Bill"},
-      {"icon": "assets/icons/Game Icon.svg", "text": "Game"},
-      {"icon": "assets/icons/Gift Icon.svg", "text": "Daily Gift"},
-      {"icon": "assets/icons/Discover.svg", "text": "More"},
+      {"icon": "assets/icons/tshirt.svg", "text": "Tshirts"},
+      {"icon": "assets/icons/hoodie.svg", "text": "Hoodies"},
+      {"icon": "assets/icons/jacket_1.svg", "text": "Jackets"},
+      {"icon": "assets/icons/jeans.svg", "text": "Pants"},
+      {"icon": "assets/icons/sneaker.svg", "text": "Shoes"},
     ];
     return Padding(
       padding: EdgeInsets.all(getProportionateScreenWidth(20)),
@@ -23,7 +24,13 @@ class Categories extends StatelessWidget {
           (index) => CategoryCard(
             icon: categories[index]["icon"],
             text: categories[index]["text"],
-            press: () {},
+            press: () {
+              Navigator.pushNamed(
+                context,
+                CategoryScreen.routeName,
+                arguments: CategoryDetailsArguments(category: categories[index]["text"]),
+              );
+            },
           ),
         ),
       ),
@@ -51,17 +58,27 @@ class CategoryCard extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              padding: EdgeInsets.all(getProportionateScreenWidth(15)),
+              padding: EdgeInsets.all(getProportionateScreenWidth(13)),
               height: getProportionateScreenWidth(55),
               width: getProportionateScreenWidth(55),
               decoration: BoxDecoration(
-                color: Color(0xFFFFECDF),
+                color: PrimaryColor.withOpacity(0.2),
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: SvgPicture.asset(icon),
+              child: SvgPicture.asset(
+                icon,
+                color: PrimaryColor,
+              ),
             ),
-            SizedBox(height: 5),
-            Text(text, textAlign: TextAlign.center)
+            SizedBox(height: getProportionateScreenWidth(7)),
+            Text(
+              text,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontFamily: 'PantonBold',
+                  fontSize: getProportionateScreenWidth(10),
+                  color: SecondaryColorDark),
+            )
           ],
         ),
       ),

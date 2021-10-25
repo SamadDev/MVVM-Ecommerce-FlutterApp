@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shop_app/constants.dart';
+import '../../../size_config.dart';
 
 class FavScreen extends StatelessWidget {
   static String routeName = "/favs";
@@ -17,7 +18,12 @@ class FavScreen extends StatelessWidget {
               size: 90,
               color: PrimaryColor,
             ),
-            Text("No Favourite Items")
+            SizedBox(height: getProportionateScreenHeight(10)),
+            Text(
+              "No Favourite Items",
+              style: TextStyle(
+                  fontFamily: 'Panton', color: SecondaryColor, fontWeight: FontWeight.w900),
+            )
           ],
         ),
       ),

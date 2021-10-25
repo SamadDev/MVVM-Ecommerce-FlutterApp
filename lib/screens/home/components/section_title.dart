@@ -20,15 +20,19 @@ class SectionTitle extends StatelessWidget {
         Text(
           title,
           style: TextStyle(
-            fontSize: getProportionateScreenWidth(18),
-            color: Colors.black,
+            fontFamily: 'PantonBoldItalic',
+            fontSize: getProportionateScreenWidth(20),
+            color: SecondaryColorDark,
           ),
         ),
         GestureDetector(
           onTap: press,
           child: Text(
             "See All",
-            style: TextStyle(color: PrimaryColor),
+            style: TextStyle(
+                color: PrimaryColor,
+                fontFamily: 'PantonBold',
+                fontSize: getProportionateScreenWidth(13)),
           ),
         ),
       ],

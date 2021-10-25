@@ -64,7 +64,6 @@ class _HomeBodyState extends State<HomeBody> {
                                             ))
                                         .toList(),
                                   ),
-                                  SizedBox(height: getProportionateScreenWidth(30)),
                                   Column(
                                     children: List.generate(gv.categories.length,
                                         (index) => category(cat: gv.categories[index])),

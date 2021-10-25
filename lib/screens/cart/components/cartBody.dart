@@ -33,36 +33,68 @@ class cartBodyState extends State<cartBody> {
           future: futureCart,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
-              return ListView.builder(
-                itemCount: gv.userCart.length,
-                itemBuilder: (context, index) => Padding(
-                  padding: EdgeInsets.symmetric(vertical: 10),
-                  child: Dismissible(
-                    key: UniqueKey(),
-                    direction: DismissDirection.endToStart,
-                    onDismissed: (direction) {
-                      setState(() {
-                        gv.removeFromUserCart(index);
-                      });
-                      gv.DeleteItemFromCart(u, index);
-                    },
-                    background: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 20),
-                      decoration: BoxDecoration(
-                        color: Color(0xFFFFE6E6),
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Row(
-                        children: [
-                          Spacer(),
-                          SvgPicture.asset("assets/icons/Trash.svg"),
-                        ],
+              if (gv.userCart.isNotEmpty) {
+                return Column(
+                  children: [
+                    SizedBox(height: getProportionateScreenHeight(25)),
+                    ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemCount: gv.userCart.length,
+                      itemBuilder: (context, index) => Padding(
+                        padding: EdgeInsets.symmetric(vertical: 10),
+                        child: Dismissible(
+                          key: UniqueKey(),
+                          direction: DismissDirection.endToStart,
+                          onDismissed: (direction) {
+                            setState(() {
+                              gv.removeFromUserCart(index);
+                            });
+                            gv.DeleteItemFromCart(u, index);
+                          },
+                          background: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 20),
+                            decoration: BoxDecoration(
+                              color: Color(0xFFFFE6E6),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: Row(
+                              children: [
+                                Spacer(),
+                                SvgPicture.asset("assets/icons/Trash.svg"),
+                              ],
+                            ),
+                          ),
+                          child: CartCard(cart: gv.userCart[index]),
+                        ),
                       ),
                     ),
-                    child: CartCard(cart: gv.userCart[index]),
+                  ],
+                );
+              } else {
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SvgPicture.asset(
+                        "assets/icons/EmptyCart.svg",
+                        color: PrimaryColor,
+                        height: getProportionateScreenWidth(70),
+                      ),
+                      SizedBox(height: getProportionateScreenHeight(20)),
+                      Text(
+                        "Your Cart is Empty",
+                        style: TextStyle(
+                            fontFamily: 'Panton',
+                            color: SecondaryColor,
+                            fontWeight: FontWeight.w900),
+                      )
+                    ],
                   ),
-                ),
-              );
+                );
+              }
             }
             if (snapshot.connectionState == ConnectionState.waiting)
               return Center(

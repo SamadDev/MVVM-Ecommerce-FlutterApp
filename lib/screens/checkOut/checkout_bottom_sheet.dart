@@ -49,6 +49,7 @@ class _checkoutBottomSheetState extends State<checkoutBottomSheet> {
             u.addOrder(orderID, tempCart, gv.paymentMethod, gv.total);
             u.DeleteAttribute("cart");
             gv.resetCart();
+            gv.resetPmethod();
             setState(() {
               stateTextWithIcon = ButtonState.success;
             });
@@ -229,7 +230,8 @@ class _checkoutBottomSheetState extends State<checkoutBottomSheet> {
             ),
             getDivider(),
             InkWell(
-              child: checkoutRow("Address", widget.addressSection, true, trailingText: gv.uAddress),
+              child: checkoutRow("Address", widget.addressSection, true,
+                  trailingText: gv.UserInfo['Address']),
               onTap: () {
                 setState(() {
                   widget.addressSection = !widget.addressSection;
@@ -248,7 +250,7 @@ class _checkoutBottomSheetState extends State<checkoutBottomSheet> {
                 children: [
                   Expanded(
                     child: Text(
-                      "${gv.uGovernorate}, ${gv.uAddress}",
+                      "${gv.UserInfo['Governorate']}, ${gv.UserInfo['Address']}",
                       maxLines: 2,
                       softWrap: false,
                       overflow: TextOverflow.ellipsis,

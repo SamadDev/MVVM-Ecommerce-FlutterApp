@@ -43,7 +43,7 @@ class ProductCard extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 6),
+            SizedBox(height: getProportionateScreenHeight(6.5)),
             Text(product.title,
                 maxLines: 1,
                 softWrap: false,
@@ -52,8 +52,8 @@ class ProductCard extends StatelessWidget {
             Text(
               "${product.price} EGP",
               style: TextStyle(
-                fontSize: getProportionateScreenWidth(18),
-                fontWeight: FontWeight.w600,
+                fontSize: getProportionateScreenWidth(16),
+                fontFamily: 'PantonBold',
                 color: PrimaryColor,
               ),
             )

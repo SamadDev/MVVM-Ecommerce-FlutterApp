@@ -50,7 +50,7 @@ class _BodyState extends State<Body> {
                                 style: TextStyle(
                                     fontFamily: 'PantonBoldItalic',
                                     color: Colors.white,
-                                    fontSize: getProportionateScreenWidth(23)),
+                                    fontSize: getProportionateScreenWidth(22)),
                               ),
                             ),
                             Align(
@@ -60,7 +60,7 @@ class _BodyState extends State<Body> {
                                 style: TextStyle(
                                     fontFamily: 'PantonBoldItalic',
                                     color: Colors.white,
-                                    fontSize: getProportionateScreenWidth(30)),
+                                    fontSize: getProportionateScreenWidth(28)),
                               ),
                             ),
                           ],
@@ -142,7 +142,7 @@ ElevatedButton ProfButton(String label, IconData icon, Function func) {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            "    $label",
+            "   $label",
             style: TextStyle(
                 color: SecondaryColorDark,
                 fontFamily: 'PantonBoldItalic',
