@@ -34,42 +34,46 @@ class cartBodyState extends State<cartBody> {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               if (gv.userCart.isNotEmpty) {
-                return Column(
-                  children: [
-                    SizedBox(height: getProportionateScreenHeight(25)),
-                    ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      itemCount: gv.userCart.length,
-                      itemBuilder: (context, index) => Padding(
-                        padding: EdgeInsets.symmetric(vertical: 10),
-                        child: Dismissible(
-                          key: UniqueKey(),
-                          direction: DismissDirection.endToStart,
-                          onDismissed: (direction) {
-                            setState(() {
-                              gv.removeFromUserCart(index);
-                            });
-                            gv.DeleteItemFromCart(u, index);
-                          },
-                          background: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 20),
-                            decoration: BoxDecoration(
-                              color: Color(0xFFFFE6E6),
-                              borderRadius: BorderRadius.circular(15),
+                return SingleChildScrollView(
+                  physics: ScrollPhysics(),
+                  child: Column(
+                    children: [
+                      SizedBox(height: getProportionateScreenHeight(22)),
+                      ListView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: gv.userCart.length,
+                        itemBuilder: (context, index) => Padding(
+                          padding: EdgeInsets.symmetric(vertical: 10),
+                          child: Dismissible(
+                            key: UniqueKey(),
+                            direction: DismissDirection.endToStart,
+                            onDismissed: (direction) {
+                              setState(() {
+                                gv.removeFromUserCart(index);
+                              });
+                              gv.DeleteItemFromCart(u, index);
+                            },
+                            background: Container(
+                              padding: EdgeInsets.symmetric(horizontal: 20),
+                              decoration: BoxDecoration(
+                                color: Color(0xFFFFE6E6),
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: Row(
+                                children: [
+                                  Spacer(),
+                                  SvgPicture.asset("assets/icons/Trash.svg"),
+                                ],
+                              ),
                             ),
-                            child: Row(
-                              children: [
-                                Spacer(),
-                                SvgPicture.asset("assets/icons/Trash.svg"),
-                              ],
-                            ),
+                            child: CartCard(cart: gv.userCart[index]),
                           ),
-                          child: CartCard(cart: gv.userCart[index]),
                         ),
                       ),
-                    ),
-                  ],
+                      SizedBox(height: getProportionateScreenHeight(15)),
+                    ],
+                  ),
                 );
               } else {
                 return Center(

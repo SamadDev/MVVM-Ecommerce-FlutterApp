@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shop_app/constants.dart';
-import '../../models/Product.dart';
 import '../../../size_config.dart';
 import 'package:shop_app/components/product_card.dart';
 import 'package:provider/provider.dart';
@@ -18,15 +16,19 @@ class CategoryScreen extends StatelessWidget {
         child: Scaffold(
           backgroundColor: PrimaryLightColor,
           appBar: AppBar(
+            elevation: 5,
+            shadowColor: SecondaryColorDark.withOpacity(0.2),
+            iconTheme: IconThemeData(color: SecondaryColorDark),
             title: Text(
               args.category,
               style: TextStyle(
-                color: SecondaryColor,
+                color: SecondaryColorDark,
                 fontSize: getProportionateScreenWidth(20),
+                fontWeight: FontWeight.w900,
                 fontFamily: 'Panton',
               ),
             ),
-            backgroundColor: SecondaryColorDark,
+            backgroundColor: CardBackgroundColor,
           ),
           body: Padding(
             padding: const EdgeInsets.all(25.0),

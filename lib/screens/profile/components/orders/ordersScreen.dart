@@ -30,36 +30,6 @@ class _OrdersScreenState extends State<OrdersScreen> {
     super.initState();
   }
 
-/*  Widget orders(globalVars gv, List<dynamic> ordersID) {
-    if (gv.Orders.isEmpty) {
-      return FutureBuilder(
-          future: gv.getUserOrders(ordersID),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              return ListView.builder(
-                  padding: EdgeInsets.only(bottom: 25),
-                  itemCount: gv.Orders.length,
-                  itemBuilder: (context, index) => orderContainer(gv, index));
-            }
-            if (snapshot.connectionState == ConnectionState.waiting)
-              return Center(
-                child: Container(
-                    height: getProportionateScreenWidth(40),
-                    width: getProportionateScreenWidth(40),
-                    child: CircularProgressIndicator(
-                      color: SecondaryColorDark,
-                    )),
-              );
-            return Container();
-          });
-    } else {
-      return ListView.builder(
-          padding: EdgeInsets.only(bottom: 25),
-          itemCount: gv.Orders.length,
-          itemBuilder: (context, index) => orderContainer(gv, index));
-    }
-  }*/
-
   @override
   Widget build(BuildContext context) {
     final OrderArguments args = ModalRoute.of(context).settings.arguments;
@@ -67,15 +37,19 @@ class _OrdersScreenState extends State<OrdersScreen> {
         child: Scaffold(
       backgroundColor: PrimaryLightColor,
       appBar: AppBar(
+        elevation: 5,
+        shadowColor: SecondaryColorDark.withOpacity(0.2),
+        iconTheme: IconThemeData(color: SecondaryColorDark),
         title: Text(
           "My Orders",
           style: TextStyle(
-            color: SecondaryColor,
+            color: SecondaryColorDark,
             fontSize: getProportionateScreenWidth(20),
+            fontWeight: FontWeight.w900,
             fontFamily: 'Panton',
           ),
         ),
-        backgroundColor: SecondaryColorDark,
+        backgroundColor: CardBackgroundColor,
       ),
       body: Consumer<globalVars>(builder: (_, gv, __) {
         return FutureBuilder(
