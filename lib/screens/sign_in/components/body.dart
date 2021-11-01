@@ -149,7 +149,6 @@ class _SignFormState extends State<SignIn> {
     return SafeArea(
       bottom: false,
       child: Scaffold(
-        //resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: Text(
             "Sign In",

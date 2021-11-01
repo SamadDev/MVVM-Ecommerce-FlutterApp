@@ -33,47 +33,46 @@ class _OrdersScreenState extends State<OrdersScreen> {
   @override
   Widget build(BuildContext context) {
     final OrderArguments args = ModalRoute.of(context).settings.arguments;
-    return SafeArea(
-        child: Scaffold(
+    return Scaffold(
       backgroundColor: PrimaryLightColor,
       appBar: AppBar(
-        elevation: 5,
-        shadowColor: SecondaryColorDark.withOpacity(0.2),
-        iconTheme: IconThemeData(color: SecondaryColorDark),
-        title: Text(
-          "My Orders",
-          style: TextStyle(
-            color: SecondaryColorDark,
-            fontSize: getProportionateScreenWidth(20),
-            fontWeight: FontWeight.w900,
-            fontFamily: 'Panton',
-          ),
-        ),
-        backgroundColor: CardBackgroundColor,
+    elevation: 5,
+    shadowColor: SecondaryColorDark.withOpacity(0.2),
+    iconTheme: IconThemeData(color: SecondaryColorDark),
+    title: Text(
+      "My Orders",
+      style: TextStyle(
+        color: SecondaryColorDark,
+        fontSize: getProportionateScreenWidth(20),
+        fontWeight: FontWeight.w900,
+        fontFamily: 'Panton',
+      ),
+    ),
+    backgroundColor: CardBackgroundColor,
       ),
       body: Consumer<globalVars>(builder: (_, gv, __) {
-        return FutureBuilder(
-            future: gv.getUserOrders(args.ordersID),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                return ListView.builder(
-                    padding: EdgeInsets.only(bottom: 25),
-                    itemCount: gv.Orders.length,
-                    itemBuilder: (context, index) => orderContainer(gv, index));
-              }
-              if (snapshot.connectionState == ConnectionState.waiting)
-                return Center(
-                  child: Container(
-                      height: getProportionateScreenWidth(40),
-                      width: getProportionateScreenWidth(40),
-                      child: CircularProgressIndicator(
-                        color: SecondaryColorDark,
-                      )),
-                );
-              return Container();
-            });
+    return FutureBuilder(
+        future: gv.getUserOrders(args.ordersID),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return ListView.builder(
+                padding: EdgeInsets.only(bottom: 25),
+                itemCount: gv.Orders.length,
+                itemBuilder: (context, index) => orderContainer(gv, index));
+          }
+          if (snapshot.connectionState == ConnectionState.waiting)
+            return Center(
+              child: Container(
+                  height: getProportionateScreenWidth(40),
+                  width: getProportionateScreenWidth(40),
+                  child: CircularProgressIndicator(
+                    color: SecondaryColorDark,
+                  )),
+            );
+          return Container();
+        });
       }),
-    ));
+    );
   }
 
   Widget orderContainer(globalVars gv, int Oindex) {
@@ -118,7 +117,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                   ),
                   SingleChildScrollView(
                       child: ConstrainedBox(
-                    constraints: BoxConstraints(maxHeight: getProportionateScreenHeight(152)),
+                    constraints: BoxConstraints(maxHeight: getProportionateScreenHeight(150)),
                     child: ListView.builder(
                         shrinkWrap: true,
                         itemCount: (gv.Orders[Oindex]["cart"] as List<dynamic>).length,

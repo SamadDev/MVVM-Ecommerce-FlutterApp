@@ -36,28 +36,34 @@ class _HomeScreenState extends State<HomeScreen> {
           index: gv.selectedPage,
           children: pageList,
         ),
-        bottomNavigationBar: TitledBottomNavigationBar(
-          curve: Curves.easeInOutQuint,
-          activeColor: PrimaryColor,
-          reverse: true,
-          items: [
-            TitledNavigationBarItem(
-                icon: Icons.home_outlined,
-                title: Text("Home", style: TextStyle(fontFamily: "PantonBold"))),
-            TitledNavigationBarItem(
-                icon: Icons.favorite_border_outlined,
-                title: Text("Favourites",
-                    style: TextStyle(
-                        fontSize: getProportionateScreenWidth(13), fontFamily: "PantonBold"))),
-            TitledNavigationBarItem(
-                icon: Icons.shopping_cart_outlined,
-                title: Text("Cart", style: TextStyle(fontFamily: "PantonBold"))),
-            TitledNavigationBarItem(
-                icon: Icons.person_outline_rounded,
-                title: Text("ProfIle", style: TextStyle(fontFamily: "PantonBold"))),
+        bottomNavigationBar: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TitledBottomNavigationBar(
+              curve: Curves.easeInOutQuint,
+              activeColor: PrimaryColor,
+              reverse: true,
+              items: [
+                TitledNavigationBarItem(
+                    icon: Icons.home_outlined,
+                    title: Text("Home", style: TextStyle(fontFamily: "PantonBold"))),
+                TitledNavigationBarItem(
+                    icon: Icons.favorite_border_outlined,
+                    title: Text("Favourites",
+                        style: TextStyle(
+                            fontSize: getProportionateScreenWidth(13), fontFamily: "PantonBold"))),
+                TitledNavigationBarItem(
+                    icon: Icons.shopping_cart_outlined,
+                    title: Text("Cart", style: TextStyle(fontFamily: "PantonBold"))),
+                TitledNavigationBarItem(
+                    icon: Icons.person_outline_rounded,
+                    title: Text("ProfIle", style: TextStyle(fontFamily: "PantonBold"))),
+              ],
+              currentIndex: gv.selectedPage,
+              onTap: (index) => _onItemTapped(gv, index),
+            ),
+            Container(color: Colors.white,height: getProportionateScreenWidth(16),)
           ],
-          currentIndex: gv.selectedPage,
-          onTap: (index) => _onItemTapped(gv, index),
         ),
       );
     });

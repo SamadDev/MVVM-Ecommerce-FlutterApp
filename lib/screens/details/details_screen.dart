@@ -10,21 +10,24 @@ class DetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ProductDetailsArguments args = ModalRoute.of(context).settings.arguments;
-    return SafeArea(
-      bottom: false,
-      child: Scaffold(
-        backgroundColor: PrimaryLightColor,
-        body: Body(product: args.product),
-        floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
-        floatingActionButton: Padding(
-          padding: const EdgeInsets.only(top: 13),
-          child: FloatingActionButton(
-            mini: true,
-            backgroundColor: Colors.white,
-            onPressed: () => Navigator.pop(context),
-            child: SvgPicture.asset(
-              "assets/icons/Back ICon.svg",
-              height: 15,
+    return Container(
+      color: PrimaryLightColor,
+      child: SafeArea(
+        bottom: false,
+        child: Scaffold(
+          backgroundColor: PrimaryLightColor,
+          body: Body(product: args.product),
+          floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
+          floatingActionButton: Padding(
+            padding: const EdgeInsets.only(top: 13),
+            child: FloatingActionButton(
+              mini: true,
+              backgroundColor: Colors.white,
+              onPressed: () => Navigator.pop(context),
+              child: SvgPicture.asset(
+                "assets/icons/Back ICon.svg",
+                height: 15,
+              ),
             ),
           ),
         ),
