@@ -50,7 +50,7 @@ class _BodyState extends State<Body> {
                                 style: TextStyle(
                                     fontFamily: 'PantonBoldItalic',
                                     color: Colors.white,
-                                    fontSize: getProportionateScreenWidth(22)),
+                                    fontSize: getProportionateScreenWidth(24)),
                               ),
                             ),
                             Align(
@@ -60,7 +60,7 @@ class _BodyState extends State<Body> {
                                 style: TextStyle(
                                     fontFamily: 'PantonBoldItalic',
                                     color: Colors.white,
-                                    fontSize: getProportionateScreenWidth(28)),
+                                    fontSize: getProportionateScreenWidth(30)),
                               ),
                             ),
                           ],
@@ -70,7 +70,7 @@ class _BodyState extends State<Body> {
                     flex: 2,
                     child: Container(
                       padding: EdgeInsets.symmetric(
-                          vertical: getProportionateScreenHeight(32),
+                          vertical: getProportionateScreenHeight(30),
                           horizontal: getProportionateScreenWidth(25)),
                       decoration: BoxDecoration(
                         color: PrimaryLightColor,
@@ -103,7 +103,11 @@ class _BodyState extends State<Body> {
                             gv.selectedPage = 0;
                             print("Sign-Out of ${loggedInUser.email}");
                             context.read<AuthenticationService>().signOut();
-                            Navigator.pushReplacementNamed(context, SignInScreen.routeName);
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(builder: (context) => SignInScreen()),
+                                  (Route<dynamic> route) => false,
+                            );
                           }),
                         ],
                       ),

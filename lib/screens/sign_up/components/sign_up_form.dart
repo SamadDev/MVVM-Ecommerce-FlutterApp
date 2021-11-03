@@ -169,86 +169,83 @@ class _SignUpFormState extends State<SignUpForm> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      bottom: false,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            "Sign Up",
-            style: TextStyle(
-              color: SecondaryColor,
-              fontSize: getProportionateScreenWidth(20),
-              fontFamily: 'Panton',
-            ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "Sign Up",
+          style: TextStyle(
+            color: SecondaryColor,
+            fontSize: getProportionateScreenWidth(20),
+            fontFamily: 'Panton',
           ),
-          backgroundColor: SecondaryColorDark,
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SizedBox(
-                width: double.infinity,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(22)),
-                  child: Column(
-                    children: [
-                      SizedBox(height: SizeConfig.screenHeight * 0.04), // 4%
-                      Text("Register Account", style: headingStyle),
-                      Text(
-                        "Complete your details or continue \nwith social media",
-                        textAlign: TextAlign.center,
-                      ),
-                      SizedBox(height: SizeConfig.screenHeight * 0.06),
-                      Form(
-                        key: _formKey,
-                        child: Column(
-                          children: [
-                            buildEmailFormField(),
-                            SizedBox(height: getProportionateScreenHeight(30)),
-                            buildPasswordFormField(),
-                            SizedBox(height: getProportionateScreenHeight(30)),
-                            buildConfirmPassFormField(),
-                            SizedBox(height: getProportionateScreenHeight(30)),
-                            buildFullNameFormField(),
-                            SizedBox(height: getProportionateScreenHeight(30)),
-                            buildPhoneNumberFormField(),
-                            SizedBox(height: getProportionateScreenHeight(30)),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "Governorate:",
-                                  style: TextStyle(
-                                    fontFamily: 'PantonBoldItalic',
-                                    color: SecondaryColorDark,
-                                    fontSize: SizeConfig.screenWidth * 0.046,
-                                  ),
+        backgroundColor: SecondaryColorDark,
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SizedBox(
+              width: double.infinity,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(22)),
+                child: Column(
+                  children: [
+                    SizedBox(height: SizeConfig.screenHeight * 0.04), // 4%
+                    Text("Register Account", style: headingStyle),
+                    Text(
+                      "Complete your details or continue \nwith social media",
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: SizeConfig.screenHeight * 0.06),
+                    Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          buildEmailFormField(),
+                          SizedBox(height: getProportionateScreenHeight(30)),
+                          buildPasswordFormField(),
+                          SizedBox(height: getProportionateScreenHeight(30)),
+                          buildConfirmPassFormField(),
+                          SizedBox(height: getProportionateScreenHeight(30)),
+                          buildFullNameFormField(),
+                          SizedBox(height: getProportionateScreenHeight(30)),
+                          buildPhoneNumberFormField(),
+                          SizedBox(height: getProportionateScreenHeight(30)),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Governorate:",
+                                style: TextStyle(
+                                  fontFamily: 'PantonBoldItalic',
+                                  color: SecondaryColorDark,
+                                  fontSize: SizeConfig.screenWidth * 0.046,
                                 ),
-                                Container(
-                                    padding: EdgeInsets.symmetric(horizontal: 15),
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(18.0),
-                                        border: Border.all(color: SecondaryColorDark, width: 2.8)),
-                                    child: buildGovDropdown()),
-                              ],
-                            ),
-                            SizedBox(height: getProportionateScreenHeight(30)),
-                            buildAddressFormField(),
-                            SizedBox(height: getProportionateScreenHeight(20)),
-                            FormError(errors: errors),
-                            SizedBox(height: getProportionateScreenHeight(20)),
-                            buildTextWithIcon(),
-                            SizedBox(height: getProportionateScreenHeight(35)),
-                          ],
-                        ),
+                              ),
+                              Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 15),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(18.0),
+                                      border: Border.all(color: SecondaryColorDark, width: 2.8)),
+                                  child: buildGovDropdown()),
+                            ],
+                          ),
+                          SizedBox(height: getProportionateScreenHeight(30)),
+                          buildAddressFormField(),
+                          SizedBox(height: getProportionateScreenHeight(20)),
+                          FormError(errors: errors),
+                          SizedBox(height: getProportionateScreenHeight(20)),
+                          buildTextWithIcon(),
+                          SizedBox(height: getProportionateScreenHeight(35)),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

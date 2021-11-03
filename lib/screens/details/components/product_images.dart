@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shop_app/models/Product.dart';
-
+import 'package:cached_network_image/cached_network_image.dart';
 import '../../../constants.dart';
 import '../../../size_config.dart';
 
@@ -91,12 +91,26 @@ class _ProductImagesState extends State<ProductImages> with TickerProviderStateM
                 transformationController: _transformationController,
                 onInteractionStart: _onInteractionStart,
                 onInteractionEnd: _onInteractionEnd,
-                child: Image.network(widget.product.images[selectedImage].toString()),
+                child: CachedNetworkImage(
+                  imageUrl: widget.product.images[selectedImage].toString(),
+                  progressIndicatorBuilder: (context, url, downloadProgress) => SizedBox(
+                    width: getProportionateScreenWidth(6),
+                    height: getProportionateScreenWidth(6),
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        value: downloadProgress.progress,
+                        strokeWidth: 5,
+                        color: PrimaryLightColor,
+                      ),
+                    ),
+                  ),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
+                ),
               ),
             ),
           ),
         ),
-        SizedBox(height: getProportionateScreenHeight(18)),
+        SizedBox(height: getProportionateScreenHeight(15)),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -126,7 +140,21 @@ class _ProductImagesState extends State<ProductImages> with TickerProviderStateM
           borderRadius: BorderRadius.circular(10),
           border: Border.all(color: PrimaryColor.withOpacity(selectedImage == index ? 1 : 0)),
         ),
-        child: Image.network(widget.product.images[index].toString()),
+        child: CachedNetworkImage(
+          imageUrl: widget.product.images[index].toString(),
+          progressIndicatorBuilder: (context, url, downloadProgress) => SizedBox(
+            width: getProportionateScreenWidth(0.1),
+            height: getProportionateScreenWidth(0.1),
+            child: Center(
+              child: CircularProgressIndicator(
+                value: downloadProgress.progress,
+                strokeWidth: 3,
+                color: PrimaryLightColor,
+              ),
+            ),
+          ),
+          errorWidget: (context, url, error) => Icon(Icons.error),
+        ),
       ),
     );
   }

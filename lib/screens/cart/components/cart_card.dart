@@ -4,8 +4,7 @@ import 'package:shop_app/models/cartItem.dart';
 import 'package:provider/provider.dart';
 import '../../../constants.dart';
 import '../../../size_config.dart';
-import '../../../Services/authentication.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class CartCard extends StatefulWidget {
   const CartCard({
@@ -34,7 +33,21 @@ class _CartCardState extends State<CartCard> {
                 color: CardBackgroundColor,
                 borderRadius: BorderRadius.circular(15),
               ),
-              child: Image.network(widget.cart.product.images[0].toString()),
+              child: CachedNetworkImage(
+                imageUrl: widget.cart.product.images[0].toString(),
+                progressIndicatorBuilder: (context, url, downloadProgress) => SizedBox(
+                  width: getProportionateScreenWidth(4),
+                  height: getProportionateScreenWidth(4),
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      value: downloadProgress.progress,
+                      strokeWidth: 4,
+                      color: PrimaryLightColor,
+                    ),
+                  ),
+                ),
+                errorWidget: (context, url, error) => Icon(Icons.error),
+              ),
             ),
           ),
         ),

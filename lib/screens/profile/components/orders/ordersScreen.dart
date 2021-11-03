@@ -8,6 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 import 'process_timeline.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class OrdersScreen extends StatefulWidget {
   static String routeName = "/orders";
@@ -36,42 +37,90 @@ class _OrdersScreenState extends State<OrdersScreen> {
     return Scaffold(
       backgroundColor: PrimaryLightColor,
       appBar: AppBar(
-    elevation: 5,
-    shadowColor: SecondaryColorDark.withOpacity(0.2),
-    iconTheme: IconThemeData(color: SecondaryColorDark),
-    title: Text(
-      "My Orders",
-      style: TextStyle(
-        color: SecondaryColorDark,
-        fontSize: getProportionateScreenWidth(20),
-        fontWeight: FontWeight.w900,
-        fontFamily: 'Panton',
+        elevation: 5,
+        shadowColor: SecondaryColorDark.withOpacity(0.2),
+        iconTheme: IconThemeData(color: SecondaryColorDark),
+        title: Text(
+          "My Orders",
+          style: TextStyle(
+            color: SecondaryColorDark,
+            fontSize: getProportionateScreenWidth(20),
+            fontWeight: FontWeight.w900,
+            fontFamily: 'Panton',
+          ),
+        ),
+        backgroundColor: CardBackgroundColor,
       ),
-    ),
-    backgroundColor: CardBackgroundColor,
-      ),
-      body: Consumer<globalVars>(builder: (_, gv, __) {
-    return FutureBuilder(
-        future: gv.getUserOrders(args.ordersID),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            return ListView.builder(
-                padding: EdgeInsets.only(bottom: 25),
-                itemCount: gv.Orders.length,
-                itemBuilder: (context, index) => orderContainer(gv, index));
-          }
-          if (snapshot.connectionState == ConnectionState.waiting)
-            return Center(
-              child: Container(
-                  height: getProportionateScreenWidth(40),
-                  width: getProportionateScreenWidth(40),
-                  child: CircularProgressIndicator(
-                    color: SecondaryColorDark,
-                  )),
-            );
-          return Container();
-        });
-      }),
+      body: FutureBuilder(
+          future: connection_checker(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              if (connection == true) {
+                return Consumer<globalVars>(builder: (_, gv, __) {
+                  return FutureBuilder(
+                      future: gv.getUserOrders(args.ordersID),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.done) {
+                          return ListView.builder(
+                              padding: EdgeInsets.only(bottom: 25),
+                              itemCount: gv.Orders.length,
+                              itemBuilder: (context, index) => orderContainer(gv, index));
+                        }
+                        if (snapshot.connectionState == ConnectionState.waiting)
+                          return Center(
+                            child: Container(
+                                height: getProportionateScreenWidth(40),
+                                width: getProportionateScreenWidth(40),
+                                child: CircularProgressIndicator(
+                                  color: SecondaryColorDark,
+                                )),
+                          );
+                        return Container();
+                      });
+                });
+              } else {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                      Icon(
+                        Icons.warning_amber_rounded,
+                        color: SecondaryColor,
+                        size: 23,
+                      ),
+                      Text(
+                        '   No Internet Connection',
+                        style: TextStyle(
+                            fontSize: 16, color: SecondaryColor, fontFamily: 'PantonBoldItalic'),
+                      ),
+                    ]),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    IconButton(
+                      onPressed: () => setState(() {}),
+                      icon: Icon(
+                        Icons.replay_circle_filled,
+                        color: PrimaryColor,
+                      ),
+                      iconSize: 53,
+                    )
+                  ],
+                );
+              }
+            }
+            if (snapshot.connectionState == ConnectionState.waiting)
+              return Center(
+                child: Container(
+                    height: getProportionateScreenWidth(40),
+                    width: getProportionateScreenWidth(40),
+                    child: CircularProgressIndicator(
+                      color: SecondaryColorDark,
+                    )),
+              );
+            return Container();
+          }),
     );
   }
 
@@ -115,60 +164,75 @@ class _OrdersScreenState extends State<OrdersScreen> {
                   Divider(
                     thickness: 2,
                   ),
-                  SingleChildScrollView(
-                      child: ConstrainedBox(
-                    constraints: BoxConstraints(maxHeight: getProportionateScreenHeight(150)),
+                  ConstrainedBox(
+                    constraints: BoxConstraints(maxHeight: getProportionateScreenHeight(142)),
                     child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: (gv.Orders[Oindex]["cart"] as List<dynamic>).length,
-                        itemBuilder: (context, index) => ListTile(
-                              contentPadding: EdgeInsets.zero,
-                              title: Text(
-                                '${gv.Orders[Oindex]["cart"][index]["option1"]} - ${gv.getSpecificProd(gv.Orders[Oindex]["cart"][index]["id"]).title}',
-                                maxLines: 1,
-                                softWrap: false,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(fontSize: getProportionateScreenWidth(12.5)),
+                    shrinkWrap: true,
+                    itemCount: (gv.Orders[Oindex]["cart"] as List<dynamic>).length,
+                    itemBuilder: (context, index) => ListTile(
+                          contentPadding: EdgeInsets.zero,
+                          title: Text(
+                            '${gv.Orders[Oindex]["cart"][index]["option1"]} - ${gv.getSpecificProd(gv.Orders[Oindex]["cart"][index]["id"]).title}',
+                            maxLines: 1,
+                            softWrap: false,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(fontSize: getProportionateScreenWidth(12.5)),
+                          ),
+                          leading: Stack(alignment: Alignment.bottomRight, children: [
+                            Container(
+                              padding: EdgeInsets.all(3.5),
+                              height: getProportionateScreenWidth(50),
+                              width: getProportionateScreenWidth(50),
+                              decoration: BoxDecoration(
+                                color: PrimaryLightColor,
+                                borderRadius: BorderRadius.circular(10),
                               ),
-                              leading: Stack(alignment: Alignment.bottomRight, children: [
-                                Container(
-                                  padding: EdgeInsets.all(3.5),
-                                  height: getProportionateScreenWidth(50),
-                                  width: getProportionateScreenWidth(50),
-                                  decoration: BoxDecoration(
-                                    color: PrimaryLightColor,
-                                    borderRadius: BorderRadius.circular(10),
+                              child: CachedNetworkImage(
+                                imageUrl: gv
+                                    .getSpecificProd(gv.Orders[Oindex]["cart"][index]["id"])
+                                    .images[0]
+                                    .toString(),
+                                progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                    SizedBox(
+                                  width: getProportionateScreenWidth(0.1),
+                                  height: getProportionateScreenWidth(0.1),
+                                  child: Center(
+                                    child: CircularProgressIndicator(
+                                      value: downloadProgress.progress,
+                                      strokeWidth: 3,
+                                      color: PrimaryLightColor,
+                                      backgroundColor: CardBackgroundColor,
+                                    ),
                                   ),
-                                  child: Image.network(gv
-                                      .getSpecificProd(gv.Orders[Oindex]["cart"][index]["id"])
-                                      .images[0]
-                                      .toString()),
                                 ),
-                                Padding(
-                                    padding:
-                                        const EdgeInsets.symmetric(vertical: 1.5, horizontal: 4.0),
-                                    child: RichText(
-                                        text: TextSpan(
-                                            style: TextStyle(
-                                                fontSize: getProportionateScreenWidth(14),
-                                                fontFamily: 'PantonBoldItalic',
-                                                color: PrimaryColor),
-                                            children: <TextSpan>[
-                                          TextSpan(
-                                              text:
-                                                  "${gv.Orders[Oindex]["cart"][index]["quantity"].toString()}"),
-                                          TextSpan(
-                                              text: "x",
-                                              style: TextStyle(
-                                                  fontSize: getProportionateScreenWidth(9))),
-                                        ])))
-                              ]),
-                              trailing: Text(
-                                gv.Orders[Oindex]["cart"][index]["total"].toString(),
-                                style: TextStyle(fontSize: getProportionateScreenWidth(13)),
+                                errorWidget: (context, url, error) => Icon(Icons.error),
                               ),
-                            )),
-                  )),
+                            ),
+                            Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 1.5, horizontal: 4.0),
+                                child: RichText(
+                                    text: TextSpan(
+                                        style: TextStyle(
+                                            fontSize: getProportionateScreenWidth(14),
+                                            fontFamily: 'PantonBoldItalic',
+                                            color: PrimaryColor),
+                                        children: <TextSpan>[
+                                      TextSpan(
+                                          text:
+                                              "${gv.Orders[Oindex]["cart"][index]["quantity"].toString()}"),
+                                      TextSpan(
+                                          text: "x",
+                                          style: TextStyle(
+                                              fontSize: getProportionateScreenWidth(9))),
+                                    ])))
+                          ]),
+                          trailing: Text(
+                            gv.Orders[Oindex]["cart"][index]["total"].toString(),
+                            style: TextStyle(fontSize: getProportionateScreenWidth(13)),
+                          ),
+                        )),
+                  ),
                   Divider(
                     thickness: 2,
                   ),

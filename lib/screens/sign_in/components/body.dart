@@ -43,7 +43,11 @@ class _SignFormState extends State<SignIn> {
 
             if (user != null) {
               KeyboardUtil.hideKeyboard(context);
-              Navigator.pushNamed(context, HomeScreen.routeName);
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => HomeScreen()),
+                    (Route<dynamic> route) => false,
+              );
               print("----------${user.email}----------");
             } else {
               setState(() {
@@ -146,94 +150,91 @@ class _SignFormState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      bottom: false,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            "Sign In",
-            style: TextStyle(
-              color: SecondaryColor,
-              fontSize: getProportionateScreenWidth(20),
-              fontFamily: 'Panton',
-            ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "Sign In",
+          style: TextStyle(
+            color: SecondaryColor,
+            fontSize: getProportionateScreenWidth(20),
+            fontFamily: 'Panton',
           ),
-          backgroundColor: SecondaryColorDark,
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SizedBox(
-                width: double.infinity,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(22)),
-                  child: Column(
-                    children: [
-                      SizedBox(height: SizeConfig.screenHeight * 0.07),
-                      Text(
-                        "Welcome Back",
-                        style: TextStyle(
-                          color: SecondaryColorDark,
-                          fontSize: getProportionateScreenWidth(28),
-                          fontFamily: 'PantonBoldItalic',
-                        ),
+        backgroundColor: SecondaryColorDark,
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SizedBox(
+              width: double.infinity,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(22)),
+                child: Column(
+                  children: [
+                    SizedBox(height: SizeConfig.screenHeight * 0.07),
+                    Text(
+                      "Welcome Back",
+                      style: TextStyle(
+                        color: SecondaryColorDark,
+                        fontSize: getProportionateScreenWidth(28),
+                        fontFamily: 'PantonBoldItalic',
                       ),
-                      Text(
-                        "Sign in with your email and password  \nor continue with social media",
-                        textAlign: TextAlign.center,
-                      ),
-                      SizedBox(height: SizeConfig.screenHeight * 0.1),
-                      Form(
-                        key: _formKey,
-                        child: Column(
-                          children: [
-                            buildEmailFormField(),
-                            SizedBox(height: SizeConfig.screenHeight * 0.05),
-                            buildPasswordFormField(),
-                            SizedBox(height: SizeConfig.screenHeight * 0.05),
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: GestureDetector(
-                                onTap: () =>
-                                    Navigator.pushNamed(context, ForgotPasswordScreen.routeName),
-                                child: Text(
-                                  "Forgot Password",
-                                  style: TextStyle(
-                                      decoration: TextDecoration.underline,
-                                      color: SecondaryColorDark,
-                                      fontSize: 12,
-                                      fontFamily: 'PantonBold'),
-                                ),
+                    ),
+                    Text(
+                      "Sign in with your email and password  \nor continue with social media",
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: SizeConfig.screenHeight * 0.1),
+                    Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          buildEmailFormField(),
+                          SizedBox(height: SizeConfig.screenHeight * 0.05),
+                          buildPasswordFormField(),
+                          SizedBox(height: SizeConfig.screenHeight * 0.05),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: GestureDetector(
+                              onTap: () =>
+                                  Navigator.pushNamed(context, ForgotPasswordScreen.routeName),
+                              child: Text(
+                                "Forgot Password",
+                                style: TextStyle(
+                                    decoration: TextDecoration.underline,
+                                    color: SecondaryColorDark,
+                                    fontSize: 12,
+                                    fontFamily: 'PantonBold'),
                               ),
                             ),
-                            SizedBox(height: SizeConfig.screenHeight * 0.025),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "Don't have an account?",
-                                  style: TextStyle(
-                                      color: SecondaryColorDark,
-                                      fontSize: 14,
-                                      fontFamily: 'PantonBold'),
-                                ),
-                                signUpRedirect(),
-                              ],
-                            ),
-                            SizedBox(height: SizeConfig.screenHeight * 0.02),
-                            FormError(errors: errors),
-                            SizedBox(height: SizeConfig.screenHeight * 0.02),
-                            buildTextWithIcon(),
-                          ],
-                        ),
+                          ),
+                          SizedBox(height: SizeConfig.screenHeight * 0.025),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Don't have an account?",
+                                style: TextStyle(
+                                    color: SecondaryColorDark,
+                                    fontSize: 14,
+                                    fontFamily: 'PantonBold'),
+                              ),
+                              signUpRedirect(),
+                            ],
+                          ),
+                          SizedBox(height: SizeConfig.screenHeight * 0.02),
+                          FormError(errors: errors),
+                          SizedBox(height: SizeConfig.screenHeight * 0.02),
+                          buildTextWithIcon(),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

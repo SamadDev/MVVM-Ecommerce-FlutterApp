@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shop_app/models/Product.dart';
 import 'package:shop_app/screens/details/details_screen.dart';
 import '../constants.dart';
 import '../size_config.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class ProductCard extends StatelessWidget {
   const ProductCard({
@@ -39,7 +39,21 @@ class ProductCard extends StatelessWidget {
                 ),
                 child: Hero(
                   tag: product.id.toString(),
-                  child: Image.network(product.images[0].toString()),
+                  child: CachedNetworkImage(
+                    imageUrl: product.images[0].toString(),
+                    progressIndicatorBuilder: (context, url, downloadProgress) => SizedBox(
+                      width: getProportionateScreenWidth(6),
+                      height: getProportionateScreenWidth(6),
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          value: downloadProgress.progress,
+                          strokeWidth: 5,
+                          color: PrimaryLightColor,
+                        ),
+                      ),
+                    ),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
+                  ),
                 ),
               ),
             ),

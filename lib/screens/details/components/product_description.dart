@@ -26,6 +26,9 @@ class ProductDescription extends StatelessWidget {
               vertical: getProportionateScreenWidth(5)),
           child: Text(
             product.title,
+            maxLines: 3,
+            softWrap: false,
+            overflow: TextOverflow.ellipsis,
             style: TextStyle(
                 color: SecondaryColorDark,
                 fontSize: 20,

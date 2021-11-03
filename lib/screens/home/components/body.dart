@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import '../../../globalVars.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class HomeBody extends StatefulWidget {
   @override
@@ -15,7 +16,16 @@ class HomeBody extends StatefulWidget {
 }
 
 class _HomeBodyState extends State<HomeBody> {
+  Future futureProds;
+  Future futureHomeImages;
   bool connection;
+
+  @override
+  void initState() {
+    futureProds = Provider.of<globalVars>(context, listen: false).getAllProds();
+    futureHomeImages = Provider.of<globalVars>(context, listen: false).getHomeImages();
+    super.initState();
+  }
 
   Future connection_checker() async {
     connection = await InternetConnectionChecker().hasConnection;
@@ -33,14 +43,14 @@ class _HomeBodyState extends State<HomeBody> {
                   if (connection == true) {
                     return Consumer<globalVars>(builder: (_, gv, __) {
                       return FutureBuilder(
-                          future: Future.wait([gv.getAllProds(), gv.getHomeImages()]),
+                          future: Future.wait([futureProds, futureHomeImages]),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState == ConnectionState.done) {
                               return Column(
                                 children: [
                                   SizedBox(height: getProportionateScreenHeight(20)),
                                   HomeHeader(),
-                                  SizedBox(height: getProportionateScreenWidth(10)),
+                                  SizedBox(height: getProportionateScreenWidth(5)),
                                   Categories(),
                                   CarouselSlider(
                                     options: CarouselOptions(
@@ -57,8 +67,28 @@ class _HomeBodyState extends State<HomeBody> {
                                                 child: ClipRRect(
                                                   borderRadius: BorderRadius.all(Radius.circular(
                                                       getProportionateScreenWidth(10))),
-                                                  child: Image.network(item,
-                                                      fit: BoxFit.cover, width: double.infinity),
+                                                  child: CachedNetworkImage(
+                                                      imageUrl: item,
+                                                      progressIndicatorBuilder: (context, url,
+                                                              downloadProgress) =>
+                                                          SizedBox(
+                                                            width: getProportionateScreenWidth(6),
+                                                            height: getProportionateScreenWidth(6),
+                                                            child: Center(
+                                                              child: CircularProgressIndicator(
+                                                                value: downloadProgress.progress,
+                                                                strokeWidth: 5,
+                                                                color: PrimaryLightColor,
+                                                                backgroundColor:
+                                                                    CardBackgroundColor,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                      errorWidget: (context, url, error) =>
+                                                          Icon(Icons.error),
+                                                      fit: BoxFit.cover,
+                                                      placeholderFadeInDuration: Duration.zero,
+                                                      width: double.infinity),
                                                 ),
                                               ),
                                             ))
@@ -96,7 +126,7 @@ class _HomeBodyState extends State<HomeBody> {
                             size: 23,
                           ),
                           Text(
-                            '    No Internet Connection',
+                            '   No Internet Connection',
                             style: TextStyle(
                                 fontSize: 16,
                                 color: SecondaryColor,
@@ -116,7 +146,6 @@ class _HomeBodyState extends State<HomeBody> {
                         )
                       ],
                     );
-                    print('No Internet');
                   }
                 }
                 if (snapshot.connectionState == ConnectionState.waiting) {
