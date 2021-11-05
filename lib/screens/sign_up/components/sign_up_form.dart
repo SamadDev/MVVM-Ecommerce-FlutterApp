@@ -190,13 +190,22 @@ class _SignUpFormState extends State<SignUpForm> {
                 padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(22)),
                 child: Column(
                   children: [
-                    SizedBox(height: SizeConfig.screenHeight * 0.04), // 4%
-                    Text("Register Account", style: headingStyle),
+                    SizedBox(height: getProportionateScreenWidth(45)),
                     Text(
-                      "Complete your details or continue \nwith social media",
+                      "Register Account",
+                      style: TextStyle(
+                        color: SecondaryColorDark,
+                        fontSize: getProportionateScreenWidth(25),
+                        fontFamily: 'PantonBoldItalic',
+                      ),
+                    ),
+                    SizedBox(height: getProportionateScreenWidth(5)),
+                    Text(
+                      "Fill all details to create your account",
+                      style: TextStyle(fontFamily: 'Panton'),
                       textAlign: TextAlign.center,
                     ),
-                    SizedBox(height: SizeConfig.screenHeight * 0.06),
+                    SizedBox(height: getProportionateScreenWidth(45)),
                     Form(
                       key: _formKey,
                       child: Column(
@@ -252,6 +261,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
   TextFormField buildPasswordFormField() {
     return TextFormField(
+      style: TextStyle(fontWeight: FontWeight.w800),
       obscureText: true,
       onSaved: (newValue) => password = newValue,
       onChanged: (value) {
@@ -283,16 +293,29 @@ class _SignUpFormState extends State<SignUpForm> {
         return null;
       },
       decoration: InputDecoration(
+        labelStyle: TextStyle(
+            fontFamily: 'PantonBold',
+            color: SecondaryColorDark.withOpacity(0.5),
+            fontWeight: FontWeight.w100),
         labelText: "Password",
-        hintText: "Enter your password",
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Lock.svg"),
+        floatingLabelBehavior: FloatingLabelBehavior.auto,
+        contentPadding: EdgeInsets.symmetric(
+            vertical: getProportionateScreenWidth(20), horizontal: getProportionateScreenWidth(30)),
+        suffixIcon: Padding(
+          padding: EdgeInsets.only(right: getProportionateScreenWidth(26)),
+          child: Icon(
+            Icons.lock_outline_rounded,
+            size: getProportionateScreenWidth(28),
+            color: PrimaryColor,
+          ),
+        ),
       ),
     );
   }
 
   TextFormField buildConfirmPassFormField() {
     return TextFormField(
+      style: TextStyle(fontWeight: FontWeight.w800),
       obscureText: true,
       onSaved: (newValue) => confirm_password = newValue,
       onChanged: (value) {
@@ -310,18 +333,29 @@ class _SignUpFormState extends State<SignUpForm> {
         return null;
       },
       decoration: InputDecoration(
-        labelText: "Confirm Password",
-        hintText: "Re-enter your password",
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Lock.svg"),
+        labelStyle: TextStyle(
+            fontFamily: 'PantonBold',
+            color: SecondaryColorDark.withOpacity(0.5),
+            fontWeight: FontWeight.w100),
+        labelText: "CONFIRM Password",
+        floatingLabelBehavior: FloatingLabelBehavior.auto,
+        contentPadding: EdgeInsets.symmetric(
+            vertical: getProportionateScreenWidth(20), horizontal: getProportionateScreenWidth(30)),
+        suffixIcon: Padding(
+          padding: EdgeInsets.only(right: getProportionateScreenWidth(26)),
+          child: Icon(
+            Icons.lock_outline_rounded,
+            size: getProportionateScreenWidth(28),
+            color: PrimaryColor,
+          ),
+        ),
       ),
     );
   }
 
   TextFormField buildEmailFormField() {
     return TextFormField(
+      style: TextStyle(fontWeight: FontWeight.w800),
       keyboardType: TextInputType.emailAddress,
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {
@@ -343,16 +377,29 @@ class _SignUpFormState extends State<SignUpForm> {
         return null;
       },
       decoration: InputDecoration(
-        labelText: "Email",
-        hintText: "Enter your email",
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Mail.svg"),
+        labelStyle: TextStyle(
+            fontFamily: 'PantonBold',
+            color: SecondaryColorDark.withOpacity(0.5),
+            fontWeight: FontWeight.w100),
+        labelText: "E-mail",
+        floatingLabelBehavior: FloatingLabelBehavior.auto,
+        contentPadding: EdgeInsets.symmetric(
+            vertical: getProportionateScreenWidth(20), horizontal: getProportionateScreenWidth(30)),
+        suffixIcon: Padding(
+          padding: EdgeInsets.only(right: getProportionateScreenWidth(26)),
+          child: Icon(
+            Icons.email_outlined,
+            size: getProportionateScreenWidth(28),
+            color: PrimaryColor,
+          ),
+        ),
       ),
     );
   }
 
   TextFormField buildAddressFormField() {
     return TextFormField(
+      style: TextStyle(fontWeight: FontWeight.w800),
       onSaved: (newValue) => address = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
@@ -368,18 +415,29 @@ class _SignUpFormState extends State<SignUpForm> {
         return null;
       },
       decoration: InputDecoration(
+        labelStyle: TextStyle(
+            fontFamily: 'PantonBold',
+            color: SecondaryColorDark.withOpacity(0.5),
+            fontWeight: FontWeight.w100),
         labelText: "Address",
-        hintText: "Enter your address",
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Location point.svg"),
+        floatingLabelBehavior: FloatingLabelBehavior.auto,
+        contentPadding: EdgeInsets.symmetric(
+            vertical: getProportionateScreenWidth(20), horizontal: getProportionateScreenWidth(30)),
+        suffixIcon: Padding(
+          padding: EdgeInsets.only(right: getProportionateScreenWidth(26)),
+          child: Icon(
+            Icons.location_on_outlined,
+            size: getProportionateScreenWidth(28),
+            color: PrimaryColor,
+          ),
+        ),
       ),
     );
   }
 
   TextFormField buildPhoneNumberFormField() {
     return TextFormField(
+      style: TextStyle(fontWeight: FontWeight.w800),
       keyboardType: TextInputType.phone,
       onSaved: (newValue) => phoneNumber = newValue,
       onChanged: (value) {
@@ -401,18 +459,29 @@ class _SignUpFormState extends State<SignUpForm> {
         return null;
       },
       decoration: InputDecoration(
+        labelStyle: TextStyle(
+            fontFamily: 'PantonBold',
+            color: SecondaryColorDark.withOpacity(0.5),
+            fontWeight: FontWeight.w100),
         labelText: "Phone Number",
-        hintText: "Enter your phone number",
-        // If  you are using latest version of flutter then label text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Phone.svg"),
+        floatingLabelBehavior: FloatingLabelBehavior.auto,
+        contentPadding: EdgeInsets.symmetric(
+            vertical: getProportionateScreenWidth(20), horizontal: getProportionateScreenWidth(30)),
+        suffixIcon: Padding(
+          padding: EdgeInsets.only(right: getProportionateScreenWidth(26)),
+          child: Icon(
+            Icons.phone_android_outlined,
+            size: getProportionateScreenWidth(28),
+            color: PrimaryColor,
+          ),
+        ),
       ),
     );
   }
 
   TextFormField buildFullNameFormField() {
     return TextFormField(
+      style: TextStyle(fontWeight: FontWeight.w800),
       onSaved: (newValue) => fullName = newValue,
       onChanged: (value) {
         if (value.isEmpty || nameValidatorRegExp.hasMatch(value)) {
@@ -433,12 +502,22 @@ class _SignUpFormState extends State<SignUpForm> {
         return null;
       },
       decoration: InputDecoration(
+        labelStyle: TextStyle(
+            fontFamily: 'PantonBold',
+            color: SecondaryColorDark.withOpacity(0.5),
+            fontWeight: FontWeight.w100),
         labelText: "Full Name",
-        hintText: "Enter your full name",
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/User.svg"),
+        floatingLabelBehavior: FloatingLabelBehavior.auto,
+        contentPadding: EdgeInsets.symmetric(
+            vertical: getProportionateScreenWidth(20), horizontal: getProportionateScreenWidth(30)),
+        suffixIcon: Padding(
+          padding: EdgeInsets.only(right: getProportionateScreenWidth(26)),
+          child: Icon(
+            Icons.person_outline_rounded,
+            size: getProportionateScreenWidth(28),
+            color: PrimaryColor,
+          ),
+        ),
       ),
     );
   }

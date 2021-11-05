@@ -2,12 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shop_app/screens/sign_up/sign_up_screen.dart';
 import '../../../size_config.dart';
-import 'package:shop_app/components/custom_surfix_icon.dart';
 import 'package:shop_app/components/form_error.dart';
 import 'package:shop_app/helper/keyboard.dart';
-import 'package:shop_app/screens/forgot_password/forgot_password_screen.dart';
 import 'package:shop_app/screens/home/home_screen.dart';
 import '../../../constants.dart';
+import '../components/Reset_Password.dart';
 import '../../../Services/authentication.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -46,7 +45,7 @@ class _SignFormState extends State<SignIn> {
               Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(builder: (context) => HomeScreen()),
-                    (Route<dynamic> route) => false,
+                (Route<dynamic> route) => false,
               );
               print("----------${user.email}----------");
             } else {
@@ -163,78 +162,82 @@ class _SignFormState extends State<SignIn> {
         backgroundColor: SecondaryColorDark,
       ),
       body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SizedBox(
-              width: double.infinity,
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(22)),
-                child: Column(
-                  children: [
-                    SizedBox(height: SizeConfig.screenHeight * 0.07),
-                    Text(
-                      "Welcome Back",
-                      style: TextStyle(
-                        color: SecondaryColorDark,
-                        fontSize: getProportionateScreenWidth(28),
-                        fontFamily: 'PantonBoldItalic',
+        child: SizedBox(
+          width: double.infinity,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(22)),
+            child: Column(
+              children: [
+                SizedBox(height: getProportionateScreenWidth(60)),
+                Text(
+                  "Welcome Back",
+                  style: TextStyle(
+                    color: SecondaryColorDark,
+                    fontSize: getProportionateScreenWidth(28),
+                    fontFamily: 'PantonBoldItalic',
+                  ),
+                ),
+                SizedBox(height: getProportionateScreenWidth(5)),
+                Text(
+                  "Sign in with your email and password",
+                  style: TextStyle(fontFamily: 'Panton'),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: getProportionateScreenWidth(60)),
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      buildEmailFormField(),
+                      SizedBox(height: SizeConfig.screenHeight * 0.05),
+                      buildPasswordFormField(),
+                      SizedBox(height: SizeConfig.screenHeight * 0.05),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: GestureDetector(
+                          onTap: () => showModalBottomSheet(
+                              context: context,
+                              isScrollControlled: true,
+                              backgroundColor: Colors.transparent,
+                              builder: (BuildContext bc) {
+                                return Padding(
+                                  padding: EdgeInsets.only(
+                                      bottom: MediaQuery.of(context).viewInsets.bottom),
+                                  child: ResetPassBottomSheet(),
+                                );
+                              }),
+                          child: Text(
+                            "Forgot Password",
+                            style: TextStyle(
+                                decoration: TextDecoration.underline,
+                                color: SecondaryColorDark,
+                                fontSize: 12,
+                                fontFamily: 'PantonBold'),
+                          ),
+                        ),
                       ),
-                    ),
-                    Text(
-                      "Sign in with your email and password  \nor continue with social media",
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(height: SizeConfig.screenHeight * 0.1),
-                    Form(
-                      key: _formKey,
-                      child: Column(
+                      SizedBox(height: SizeConfig.screenHeight * 0.025),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          buildEmailFormField(),
-                          SizedBox(height: SizeConfig.screenHeight * 0.05),
-                          buildPasswordFormField(),
-                          SizedBox(height: SizeConfig.screenHeight * 0.05),
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: GestureDetector(
-                              onTap: () =>
-                                  Navigator.pushNamed(context, ForgotPasswordScreen.routeName),
-                              child: Text(
-                                "Forgot Password",
-                                style: TextStyle(
-                                    decoration: TextDecoration.underline,
-                                    color: SecondaryColorDark,
-                                    fontSize: 12,
-                                    fontFamily: 'PantonBold'),
-                              ),
-                            ),
+                          Text(
+                            "Don't have an account?",
+                            style: TextStyle(
+                                color: SecondaryColorDark, fontSize: 14, fontFamily: 'PantonBold'),
                           ),
-                          SizedBox(height: SizeConfig.screenHeight * 0.025),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Don't have an account?",
-                                style: TextStyle(
-                                    color: SecondaryColorDark,
-                                    fontSize: 14,
-                                    fontFamily: 'PantonBold'),
-                              ),
-                              signUpRedirect(),
-                            ],
-                          ),
-                          SizedBox(height: SizeConfig.screenHeight * 0.02),
-                          FormError(errors: errors),
-                          SizedBox(height: SizeConfig.screenHeight * 0.02),
-                          buildTextWithIcon(),
+                          signUpRedirect(),
                         ],
                       ),
-                    ),
-                  ],
+                      SizedBox(height: SizeConfig.screenHeight * 0.02),
+                      FormError(errors: errors),
+                      SizedBox(height: SizeConfig.screenHeight * 0.02),
+                      buildTextWithIcon(),
+                    ],
+                  ),
                 ),
-              ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
@@ -242,6 +245,7 @@ class _SignFormState extends State<SignIn> {
 
   TextFormField buildPasswordFormField() {
     return TextFormField(
+      style: TextStyle(fontWeight: FontWeight.w800),
       obscureText: true,
       onSaved: (newValue) => password = newValue,
       onChanged: (value) {
@@ -263,18 +267,29 @@ class _SignFormState extends State<SignIn> {
         return null;
       },
       decoration: InputDecoration(
+        labelStyle: TextStyle(
+            fontFamily: 'PantonBold',
+            color: SecondaryColorDark.withOpacity(0.5),
+            fontWeight: FontWeight.w100),
         labelText: "Password",
-        hintText: "Enter your password",
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Lock.svg"),
+        floatingLabelBehavior: FloatingLabelBehavior.auto,
+        contentPadding: EdgeInsets.symmetric(
+            vertical: getProportionateScreenWidth(20), horizontal: getProportionateScreenWidth(30)),
+        suffixIcon: Padding(
+          padding: EdgeInsets.only(right: getProportionateScreenWidth(26)),
+          child: Icon(
+            Icons.lock_outline_rounded,
+            size: getProportionateScreenWidth(28),
+            color: PrimaryColor,
+          ),
+        ),
       ),
     );
   }
 
   TextFormField buildEmailFormField() {
     return TextFormField(
+      style: TextStyle(fontWeight: FontWeight.w800),
       keyboardType: TextInputType.emailAddress,
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {
@@ -296,12 +311,22 @@ class _SignFormState extends State<SignIn> {
         return null;
       },
       decoration: InputDecoration(
-        labelText: "Email",
-        hintText: "Enter your email",
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Mail.svg"),
+        labelStyle: TextStyle(
+            fontFamily: 'PantonBold',
+            color: SecondaryColorDark.withOpacity(0.5),
+            fontWeight: FontWeight.w100),
+        labelText: "E-mail",
+        floatingLabelBehavior: FloatingLabelBehavior.auto,
+        contentPadding: EdgeInsets.symmetric(
+            vertical: getProportionateScreenWidth(20), horizontal: getProportionateScreenWidth(30)),
+        suffixIcon: Padding(
+          padding: EdgeInsets.only(right: getProportionateScreenWidth(26)),
+          child: Icon(
+            Icons.email_outlined,
+            size: getProportionateScreenWidth(28),
+            color: PrimaryColor,
+          ),
+        ),
       ),
     );
   }

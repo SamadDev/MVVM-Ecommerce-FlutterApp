@@ -31,6 +31,117 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
   ButtonState stateTextWithIcon = ButtonState.idle;
   Future futureUserInfo;
 
+  @override
+  void initState() {
+    u = Provider.of<AuthenticationService>(context, listen: false).CurrentUser();
+    futureUserInfo = Provider.of<globalVars>(context, listen: false).getUserInfo(u);
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: PrimaryLightColor,
+      appBar: AppBar(
+        elevation: 5,
+        shadowColor: SecondaryColorDark.withOpacity(0.2),
+        iconTheme: IconThemeData(color: SecondaryColorDark),
+        title: Text(
+          "My Details",
+          style: TextStyle(
+            color: SecondaryColorDark,
+            fontSize: getProportionateScreenWidth(20),
+            fontWeight: FontWeight.w900,
+            fontFamily: 'Panton',
+          ),
+        ),
+        backgroundColor: CardBackgroundColor,
+      ),
+      body: Consumer<globalVars>(builder: (_, gv, __) {
+        return FutureBuilder(
+          future: futureUserInfo,
+          builder: (context, snapshot) {
+            email = u.email;
+            fullName = gv.UserInfo['Full Name'];
+            phoneNumber = gv.UserInfo['Phone Number'];
+            address = gv.UserInfo['Address'];
+            if (snapshot.connectionState == ConnectionState.done) {
+              return SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      width: double.infinity,
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+                        child: Column(
+                          children: [
+                            SizedBox(height: getProportionateScreenHeight(33)), // 4%
+                            Form(
+                              key: _formKey,
+                              child: Column(
+                                children: [
+                                  buildEmailFormField(email),
+                                  SizedBox(height: getProportionateScreenHeight(30)),
+                                  buildFullNameFormField(fullName),
+                                  SizedBox(height: getProportionateScreenHeight(30)),
+                                  buildPhoneNumberFormField(phoneNumber),
+                                  SizedBox(height: getProportionateScreenHeight(30)),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        "Governorate:",
+                                        style: TextStyle(
+                                          fontFamily: 'PantonBoldItalic',
+                                          color: SecondaryColorDark,
+                                          fontSize: SizeConfig.screenWidth * 0.046,
+                                        ),
+                                      ),
+                                      Container(
+                                          padding: EdgeInsets.symmetric(horizontal: 15),
+                                          decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(18.0),
+                                              border: Border.all(
+                                                  color: SecondaryColorDark, width: 2.8)),
+                                          child: buildGovDropdown(gv.UserInfo['Governorate'])),
+                                    ],
+                                  ),
+                                  SizedBox(height: getProportionateScreenHeight(30)),
+                                  buildAddressFormField(address),
+                                  SizedBox(height: getProportionateScreenHeight(20)),
+                                  FormError(errors: errors),
+                                  SizedBox(height: getProportionateScreenHeight(20)),
+                                  buildTextWithIcon(),
+                                  SizedBox(height: getProportionateScreenHeight(35)),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: Container(
+                    height: getProportionateScreenWidth(40),
+                    width: getProportionateScreenWidth(40),
+                    child: CircularProgressIndicator(
+                      color: SecondaryColorDark,
+                    )),
+              );
+            }
+            return Container();
+          },
+        );
+      }),
+    );
+  }
+
   void onPressedIconWithText() async {
     setState(() {
       stateTextWithIcon = ButtonState.loading;
@@ -47,7 +158,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
             setState(() {
               stateTextWithIcon = ButtonState.success;
             });
-            Future.delayed(Duration(milliseconds: 1600), () {
+            Future.delayed(Duration(milliseconds: 1300), () {
               setState(() {
                 Navigator.pop(context);
               });
@@ -127,120 +238,6 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
         },
         onPressed: () => onPressedIconWithText(),
         state: stateTextWithIcon);
-  }
-
-  @override
-  void initState() {
-    u = Provider.of<AuthenticationService>(context, listen: false).CurrentUser();
-    futureUserInfo = Provider.of<globalVars>(context, listen: false).getUserInfo(u);
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: PrimaryLightColor,
-      appBar: AppBar(
-        elevation: 5,
-        shadowColor: SecondaryColorDark.withOpacity(0.2),
-        iconTheme: IconThemeData(color: SecondaryColorDark),
-        title: Text(
-          "My Details",
-          style: TextStyle(
-            color: SecondaryColorDark,
-            fontSize: getProportionateScreenWidth(20),
-            fontWeight: FontWeight.w900,
-            fontFamily: 'Panton',
-          ),
-        ),
-        backgroundColor: CardBackgroundColor,
-      ),
-      body: Consumer<globalVars>(builder: (_, gv, __) {
-        return Center(
-          child: FutureBuilder(
-            future: futureUserInfo,
-            builder: (context, snapshot) {
-              email = u.email;
-              fullName = gv.UserInfo['Full Name'];
-              phoneNumber = gv.UserInfo['Phone Number'];
-              address = gv.UserInfo['Address'];
-              if (snapshot.connectionState == ConnectionState.done) {
-                return SingleChildScrollView(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SizedBox(
-                        width: double.infinity,
-                        child: Padding(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
-                          child: Column(
-                            children: [
-                              SizedBox(height: SizeConfig.screenHeight * 0.04), // 4%
-                              Form(
-                                key: _formKey,
-                                child: Column(
-                                  children: [
-                                    buildEmailFormField(email),
-                                    SizedBox(height: getProportionateScreenHeight(30)),
-                                    buildFullNameFormField(fullName),
-                                    SizedBox(height: getProportionateScreenHeight(30)),
-                                    buildPhoneNumberFormField(phoneNumber),
-                                    SizedBox(height: getProportionateScreenHeight(30)),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          "Governorate:",
-                                          style: TextStyle(
-                                            fontFamily: 'PantonBoldItalic',
-                                            color: SecondaryColorDark,
-                                            fontSize: SizeConfig.screenWidth * 0.046,
-                                          ),
-                                        ),
-                                        Container(
-                                            padding: EdgeInsets.symmetric(horizontal: 15),
-                                            decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(18.0),
-                                                border: Border.all(
-                                                    color: SecondaryColorDark, width: 2.8)),
-                                            child: buildGovDropdown(gv.UserInfo['Governorate'])),
-                                      ],
-                                    ),
-                                    SizedBox(height: getProportionateScreenHeight(30)),
-                                    buildAddressFormField(address),
-                                    SizedBox(height: getProportionateScreenHeight(20)),
-                                    FormError(errors: errors),
-                                    SizedBox(height: getProportionateScreenHeight(20)),
-                                    buildTextWithIcon(),
-                                    SizedBox(height: getProportionateScreenHeight(35)),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              }
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(
-                  child: Container(
-                      height: getProportionateScreenWidth(40),
-                      width: getProportionateScreenWidth(40),
-                      child: CircularProgressIndicator(
-                        color: SecondaryColorDark,
-                      )),
-                );
-              }
-              return Container();
-            },
-          ),
-        );
-      }),
-    );
   }
 
   TextFormField buildEmailFormField(String LabelText) {
@@ -377,8 +374,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
 
   DropdownButton buildGovDropdown(String userGov) {
     return DropdownButton<String>(
-        hint: Text(userGov),
-        value: selectedGov,
+        value: (selectedGov == null || selectedGov.isEmpty) ? selectedGov = userGov : selectedGov,
         items: getDropdownItems(),
         onChanged: (value) {
           setState(() {
