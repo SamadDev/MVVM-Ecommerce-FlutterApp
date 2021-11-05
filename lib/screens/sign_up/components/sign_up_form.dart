@@ -27,7 +27,6 @@ class _SignUpFormState extends State<SignUpForm> {
   String phoneNumber;
   String selectedGov = 'Cairo';
   String address;
-  bool showSpinner = false;
   final List<String> errors = [];
   ButtonState stateTextWithIcon = ButtonState.idle;
 
@@ -397,6 +396,7 @@ class _SignUpFormState extends State<SignUpForm> {
           return "";
         } else if (!phoneNumValidatorRegExp.hasMatch(value)) {
           addError(error: InvalidPhoneNumError);
+          return "";
         }
         return null;
       },
@@ -428,6 +428,7 @@ class _SignUpFormState extends State<SignUpForm> {
           return "";
         } else if (!nameValidatorRegExp.hasMatch(value)) {
           addError(error: InvalidNameError);
+          return "";
         }
         return null;
       },

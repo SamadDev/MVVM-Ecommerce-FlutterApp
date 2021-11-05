@@ -21,7 +21,7 @@ InputDecorationTheme inputDecorationTheme() {
 
   OutlineInputBorder outlineInputErrorBorder = OutlineInputBorder(
     borderRadius: BorderRadius.circular(20.0),
-    borderSide: BorderSide(width: 3, color: Color(0xFFFB5354)),
+    borderSide: BorderSide(width: 3, color: Color(0xffea4b4b)),
     gapPadding: 10,
   );
   return InputDecorationTheme(

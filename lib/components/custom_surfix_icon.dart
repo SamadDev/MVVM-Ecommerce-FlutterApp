@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shop_app/constants.dart';
 
 import '../size_config.dart';
 
@@ -22,6 +23,7 @@ class CustomSurffixIcon extends StatelessWidget {
       ),
       child: SvgPicture.asset(
         svgIcon,
+        color: PrimaryColor,
         height: getProportionateScreenWidth(18),
       ),
     );

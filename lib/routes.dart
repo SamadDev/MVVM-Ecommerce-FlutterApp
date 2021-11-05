@@ -12,6 +12,7 @@ import 'package:shop_app/screens/sign_in/sign_in_screen.dart';
 import 'package:shop_app/screens/favourites/Favs_screen.dart';
 import 'screens/sign_up/sign_up_screen.dart';
 import 'package:shop_app/screens/profile/components/orders/ordersScreen.dart';
+import 'package:shop_app/screens/profile/components/userInfo/userInfo.dart';
 
 // We use name route
 // All our routes will be available here
@@ -29,4 +30,5 @@ final Map<String, WidgetBuilder> routes = {
   CartScreen.routeName: (context) => CartScreen(),
   ProfileScreen.routeName: (context) => ProfileScreen(),
   OrdersScreen.routeName: (context) => OrdersScreen(),
+  UserInfoScreen.routeName: (context) => UserInfoScreen(),
 };

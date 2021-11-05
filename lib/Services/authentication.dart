@@ -16,8 +16,8 @@ class AuthenticationService {
 
   Future<UserCredential> signIn({String email, String password}) async {
     try {
-      UserCredential userCredential = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
+      UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
       return userCredential;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -36,8 +36,8 @@ class AuthenticationService {
       String governorate,
       String address}) async {
     try {
-      UserCredential result = await _firebaseAuth
-          .createUserWithEmailAndPassword(email: email, password: password);
+      UserCredential result =
+          await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
       User user = result.user;
 
       await users_dbServices(uid: user.uid)
