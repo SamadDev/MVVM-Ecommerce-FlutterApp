@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../../../constants.dart';
-import '../../../../size_config.dart';
-import '../../../../globalVars.dart';
+import '../../../../components/constants.dart';
+import '../../../../components/size_config.dart';
+import '../../../../Services/globalVars.dart';
 import 'package:provider/provider.dart';
 import '../../../../Services/authentication.dart';
 import 'package:firebase_auth/firebase_auth.dart';

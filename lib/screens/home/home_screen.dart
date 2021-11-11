@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:shop_app/constants.dart';
+import 'package:shop_app/components/constants.dart';
 import 'package:titled_navigation_bar/titled_navigation_bar.dart';
 import 'components/body.dart';
-import '../../../size_config.dart';
+import '../../components/size_config.dart';
 import 'package:shop_app/screens/favourites/Favs_screen.dart';
 import 'package:shop_app/screens/cart/cart_screen.dart';
 import 'package:shop_app/screens/profile/profile_screen.dart';
-import 'package:shop_app/globalVars.dart';
+import 'package:shop_app/Services/globalVars.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -62,7 +62,10 @@ class _HomeScreenState extends State<HomeScreen> {
               currentIndex: gv.selectedPage,
               onTap: (index) => _onItemTapped(gv, index),
             ),
-            Container(color: Colors.white,height: getProportionateScreenWidth(16),)
+            Container(
+              color: Colors.white,
+              height: getProportionateScreenWidth(16),
+            )
           ],
         ),
       );

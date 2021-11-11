@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:shop_app/components/product_card.dart';
 import 'package:shop_app/screens/category/categoryScreen.dart';
-import '../../../size_config.dart';
+import '../../../components/size_config.dart';
 import 'section_title.dart';
-import '../../../constants.dart';
 import 'package:provider/provider.dart';
-import '../../../globalVars.dart';
+import '../../../Services/globalVars.dart';
 
 class category extends StatelessWidget {
   final String cat;

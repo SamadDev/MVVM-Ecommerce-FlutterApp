@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../../../size_config.dart';
+import '../../../components/size_config.dart';
 import 'cart_card.dart';
-import '../../../constants.dart';
+import '../../../components/constants.dart';
 import '../../../Services/authentication.dart';
-import '../../../globalVars.dart';
+import '../../../Services/globalVars.dart';
 
 class cartBody extends StatefulWidget {
   @override

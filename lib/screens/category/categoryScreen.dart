@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:shop_app/constants.dart';
-import '../../../size_config.dart';
+import 'package:shop_app/components/constants.dart';
+import '../../components/size_config.dart';
 import 'package:shop_app/components/product_card.dart';
 import 'package:provider/provider.dart';
-import '../../../globalVars.dart';
+import '../../Services/globalVars.dart';
 
 class CategoryScreen extends StatelessWidget {
   static String routeName = "/category";
@@ -29,20 +29,20 @@ class CategoryScreen extends StatelessWidget {
         backgroundColor: CardBackgroundColor,
       ),
       body: Consumer<globalVars>(builder: (_, gv, __) {
-          return GridView.count(
-            padding: EdgeInsets.all(getProportionateScreenWidth(25)),
-            childAspectRatio:
-                MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 1.5),
-            crossAxisSpacing: getProportionateScreenWidth(25),
-            crossAxisCount: 2,
-            children: List.generate(
-              gv.AllProds[args.category].length,
-              (index) {
-                return ProductCard(product: gv.AllProds[args.category][index]);
-              },
-            ),
-          );
-        }),
+        return GridView.count(
+          padding: EdgeInsets.all(getProportionateScreenWidth(25)),
+          childAspectRatio:
+              MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 1.5),
+          crossAxisSpacing: getProportionateScreenWidth(25),
+          crossAxisCount: 2,
+          children: List.generate(
+            gv.AllProds[args.category].length,
+            (index) {
+              return ProductCard(product: gv.AllProds[args.category][index]);
+            },
+          ),
+        );
+      }),
     );
   }
 }

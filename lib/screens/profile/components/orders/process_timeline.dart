@@ -1,9 +1,8 @@
-import 'dart:developer';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:timelines/timelines.dart';
-import '../../../../../../../constants.dart';
-import '../../../../size_config.dart';
+import '../../../../components/constants.dart';
+import '../../../../components/size_config.dart';
 
 const completeColor = PrimaryColor;
 const inProgressColor = Color(0xFFBFBDBD);

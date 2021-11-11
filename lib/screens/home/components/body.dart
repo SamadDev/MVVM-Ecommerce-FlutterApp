@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import '../../../size_config.dart';
+import '../../../components/size_config.dart';
 import 'categories.dart';
-import '../../../constants.dart';
+import '../../../components/constants.dart';
 import 'home_header.dart';
 import 'category.dart';
 import 'package:provider/provider.dart';
-import '../../../globalVars.dart';
+import '../../../Services/globalVars.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cached_network_image/cached_network_image.dart';

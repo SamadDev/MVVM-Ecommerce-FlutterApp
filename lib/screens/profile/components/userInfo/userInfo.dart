@@ -1,6 +1,6 @@
-import '../../../../constants.dart';
-import '../../../../globalVars.dart';
-import '../../../../size_config.dart';
+import '../../../../components/constants.dart';
+import '../../../../Services/globalVars.dart';
+import '../../../../components/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/helper/keyboard.dart';
@@ -40,105 +40,109 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: PrimaryLightColor,
-      appBar: AppBar(
-        elevation: 5,
-        shadowColor: SecondaryColorDark.withOpacity(0.2),
-        iconTheme: IconThemeData(color: SecondaryColorDark),
-        title: Text(
-          "My Details",
-          style: TextStyle(
-            color: SecondaryColorDark,
-            fontSize: getProportionateScreenWidth(20),
-            fontWeight: FontWeight.w900,
-            fontFamily: 'Panton',
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: Scaffold(
+        backgroundColor: PrimaryLightColor,
+        appBar: AppBar(
+          elevation: 5,
+          shadowColor: SecondaryColorDark.withOpacity(0.2),
+          iconTheme: IconThemeData(color: SecondaryColorDark),
+          title: Text(
+            "My Details",
+            style: TextStyle(
+              color: SecondaryColorDark,
+              fontSize: getProportionateScreenWidth(20),
+              fontWeight: FontWeight.w900,
+              fontFamily: 'Panton',
+            ),
           ),
+          backgroundColor: CardBackgroundColor,
         ),
-        backgroundColor: CardBackgroundColor,
-      ),
-      body: Consumer<globalVars>(builder: (_, gv, __) {
-        return FutureBuilder(
-          future: futureUserInfo,
-          builder: (context, snapshot) {
-            email = u.email;
-            fullName = gv.UserInfo['Full Name'];
-            phoneNumber = gv.UserInfo['Phone Number'];
-            address = gv.UserInfo['Address'];
-            if (snapshot.connectionState == ConnectionState.done) {
-              return SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SizedBox(
-                      width: double.infinity,
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
-                        child: Column(
-                          children: [
-                            SizedBox(height: getProportionateScreenHeight(33)), // 4%
-                            Form(
-                              key: _formKey,
-                              child: Column(
-                                children: [
-                                  buildEmailFormField(email),
-                                  SizedBox(height: getProportionateScreenHeight(30)),
-                                  buildFullNameFormField(fullName),
-                                  SizedBox(height: getProportionateScreenHeight(30)),
-                                  buildPhoneNumberFormField(phoneNumber),
-                                  SizedBox(height: getProportionateScreenHeight(30)),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        "Governorate:",
-                                        style: TextStyle(
-                                          fontFamily: 'PantonBoldItalic',
-                                          color: SecondaryColorDark,
-                                          fontSize: SizeConfig.screenWidth * 0.046,
+        body: Consumer<globalVars>(builder: (_, gv, __) {
+          return FutureBuilder(
+            future: futureUserInfo,
+            builder: (context, snapshot) {
+              email = u.email;
+              fullName = gv.UserInfo['Full Name'];
+              phoneNumber = gv.UserInfo['Phone Number'];
+              address = gv.UserInfo['Address'];
+              if (snapshot.connectionState == ConnectionState.done) {
+                return SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(
+                        width: double.infinity,
+                        child: Padding(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+                          child: Column(
+                            children: [
+                              SizedBox(height: getProportionateScreenHeight(33)), // 4%
+                              Form(
+                                key: _formKey,
+                                child: Column(
+                                  children: [
+                                    buildEmailFormField(email),
+                                    SizedBox(height: getProportionateScreenHeight(30)),
+                                    buildFullNameFormField(fullName),
+                                    SizedBox(height: getProportionateScreenHeight(30)),
+                                    buildPhoneNumberFormField(phoneNumber),
+                                    SizedBox(height: getProportionateScreenHeight(30)),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          "Governorate:",
+                                          style: TextStyle(
+                                            fontFamily: 'PantonBoldItalic',
+                                            color: SecondaryColorDark,
+                                            fontSize: SizeConfig.screenWidth * 0.046,
+                                          ),
                                         ),
-                                      ),
-                                      Container(
-                                          padding: EdgeInsets.symmetric(horizontal: 15),
-                                          decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(18.0),
-                                              border: Border.all(
-                                                  color: SecondaryColorDark, width: 2.8)),
-                                          child: buildGovDropdown(gv.UserInfo['Governorate'])),
-                                    ],
-                                  ),
-                                  SizedBox(height: getProportionateScreenHeight(30)),
-                                  buildAddressFormField(address),
-                                  SizedBox(height: getProportionateScreenHeight(20)),
-                                  FormError(errors: errors),
-                                  SizedBox(height: getProportionateScreenHeight(20)),
-                                  buildTextWithIcon(),
-                                  SizedBox(height: getProportionateScreenHeight(35)),
-                                ],
+                                        Container(
+                                            padding: EdgeInsets.symmetric(horizontal: 15),
+                                            decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(18.0),
+                                                border: Border.all(
+                                                    color: SecondaryColorDark, width: 2.8)),
+                                            child: buildGovDropdown(gv.UserInfo['Governorate'])),
+                                      ],
+                                    ),
+                                    SizedBox(height: getProportionateScreenHeight(30)),
+                                    buildAddressFormField(address),
+                                    SizedBox(height: getProportionateScreenHeight(20)),
+                                    FormError(errors: errors),
+                                    SizedBox(height: getProportionateScreenHeight(20)),
+                                    buildTextWithIcon(),
+                                    SizedBox(height: getProportionateScreenHeight(35)),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              );
-            }
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
-                child: Container(
-                    height: getProportionateScreenWidth(40),
-                    width: getProportionateScreenWidth(40),
-                    child: CircularProgressIndicator(
-                      color: SecondaryColorDark,
-                    )),
-              );
-            }
-            return Container();
-          },
-        );
-      }),
+                    ],
+                  ),
+                );
+              }
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: Container(
+                      height: getProportionateScreenWidth(40),
+                      width: getProportionateScreenWidth(40),
+                      child: CircularProgressIndicator(
+                        color: SecondaryColorDark,
+                      )),
+                );
+              }
+              return Container();
+            },
+          );
+        }),
+      ),
     );
   }
 
@@ -158,7 +162,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
             setState(() {
               stateTextWithIcon = ButtonState.success;
             });
-            Future.delayed(Duration(milliseconds: 1300), () {
+            Future.delayed(Duration(milliseconds: 1250), () {
               setState(() {
                 Navigator.pop(context);
               });
@@ -242,6 +246,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
 
   TextFormField buildEmailFormField(String LabelText) {
     return TextFormField(
+      enableInteractiveSelection: false,
       style: TextStyle(
           fontWeight: FontWeight.w900,
           fontSize: getProportionateScreenWidth(16),
@@ -266,11 +271,14 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
 
   TextFormField buildAddressFormField(String LabelText) {
     return TextFormField(
+      style: TextStyle(fontWeight: FontWeight.w800),
       onSaved: (newValue) => newValue.isEmpty ? address : address = newValue,
       decoration: InputDecoration(
         labelText: LabelText,
-        labelStyle:
-            TextStyle(fontWeight: FontWeight.w900, fontSize: getProportionateScreenWidth(14)),
+        labelStyle: TextStyle(
+            fontWeight: FontWeight.w900,
+            color: Color(0xff5c5e5e),
+            fontSize: getProportionateScreenWidth(14)),
         floatingLabelBehavior: FloatingLabelBehavior.auto,
         contentPadding: EdgeInsets.only(
             top: getProportionateScreenWidth(20),
@@ -290,6 +298,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
 
   TextFormField buildPhoneNumberFormField(String LabelText) {
     return TextFormField(
+      style: TextStyle(fontWeight: FontWeight.w800),
       keyboardType: TextInputType.phone,
       onSaved: (newValue) => newValue.isEmpty ? phoneNumber : phoneNumber = newValue,
       onChanged: (value) {
@@ -307,8 +316,10 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
       },
       decoration: InputDecoration(
         labelText: LabelText,
-        labelStyle:
-            TextStyle(fontWeight: FontWeight.w900, fontSize: getProportionateScreenWidth(16)),
+        labelStyle: TextStyle(
+            fontWeight: FontWeight.w900,
+            color: Color(0xff5c5e5e),
+            fontSize: getProportionateScreenWidth(16)),
         floatingLabelBehavior: FloatingLabelBehavior.auto,
         contentPadding: EdgeInsets.symmetric(
             vertical: getProportionateScreenWidth(20), horizontal: getProportionateScreenWidth(30)),
@@ -326,6 +337,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
 
   TextFormField buildFullNameFormField(String LabelText) {
     return TextFormField(
+      style: TextStyle(fontWeight: FontWeight.w800),
       onSaved: (newValue) => newValue.isEmpty ? fullName : fullName = newValue,
       onChanged: (value) {
         if (value.isNotEmpty && nameValidatorRegExp.hasMatch(value)) {
@@ -342,8 +354,10 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
       },
       decoration: InputDecoration(
         labelText: LabelText,
-        labelStyle:
-            TextStyle(fontWeight: FontWeight.w900, fontSize: getProportionateScreenWidth(16)),
+        labelStyle: TextStyle(
+            fontWeight: FontWeight.w900,
+            color: Color(0xff5c5e5e),
+            fontSize: getProportionateScreenWidth(16)),
         floatingLabelBehavior: FloatingLabelBehavior.auto,
         contentPadding: EdgeInsets.symmetric(
             vertical: getProportionateScreenWidth(20), horizontal: getProportionateScreenWidth(30)),

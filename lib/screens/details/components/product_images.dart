@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shop_app/models/Product.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import '../../../constants.dart';
-import '../../../size_config.dart';
+import '../../../components/constants.dart';
+import '../../../components/size_config.dart';
 
 class ProductImages extends StatefulWidget {
   const ProductImages({

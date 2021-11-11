@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:shop_app/components/default_button.dart';
-import 'package:shop_app/globalVars.dart';
-import '../../../constants.dart';
-import '../../../size_config.dart';
+import 'package:shop_app/Services/globalVars.dart';
+import '../../../components/constants.dart';
+import '../../../components/size_config.dart';
 import 'package:provider/provider.dart';
-import 'package:shop_app/screens/checkOut/checkout_bottom_sheet.dart';
+import 'package:shop_app/screens/check_out/checkout_bottom_sheet.dart';
 
 class CheckoutCard extends StatelessWidget {
   const CheckoutCard({
@@ -38,25 +37,33 @@ class CheckoutCard extends StatelessWidget {
               TextSpan(
                 text: "Total:\n",
                 style: TextStyle(
-                    color: SecondaryColorDark,
-                    fontSize: 12,
-                    fontFamily: 'PantonBoldItalic'),
+                    color: SecondaryColorDark, fontSize: 12, fontFamily: 'PantonBoldItalic'),
                 children: [
                   TextSpan(
                     text: "${gv.total} EGP",
                     style: TextStyle(
-                        color: PrimaryColor,
-                        fontSize: 20,
-                        fontFamily: 'PantonBoldItalic'),
+                        color: PrimaryColor, fontSize: 20, fontFamily: 'PantonBoldItalic'),
                   ),
                 ],
               ),
             ),
             SizedBox(
               width: getProportionateScreenWidth(190),
-              child: DefaultButton(
-                text: "Checkout",
-                press: () {
+              child: ElevatedButton(
+                child: Text("Checkout",
+                    style: TextStyle(
+                        fontFamily: 'PantonBoldItalic', fontSize: getProportionateScreenWidth(17))),
+                style: ButtonStyle(
+                  padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                    EdgeInsets.symmetric(
+                      vertical: getProportionateScreenWidth(17),
+                    ),
+                  ),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
+                  backgroundColor: MaterialStateProperty.all<Color>(PrimaryColor),
+                ),
+                onPressed: () {
                   if (gv.userCart.isNotEmpty) {
                     showModalBottomSheet(
                         context: context,

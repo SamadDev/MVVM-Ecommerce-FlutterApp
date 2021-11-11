@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../constants.dart';
-import '../../../size_config.dart';
+import '../../../components/constants.dart';
+import '../../../components/size_config.dart';
 
 class SectionTitle extends StatelessWidget {
   const SectionTitle({

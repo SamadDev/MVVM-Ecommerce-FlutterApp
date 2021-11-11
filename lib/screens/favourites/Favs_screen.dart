@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shop_app/constants.dart';
-import '../../../size_config.dart';
+import 'package:shop_app/components/constants.dart';
+import '../../components/size_config.dart';
 
 class FavScreen extends StatelessWidget {
   static String routeName = "/favs";

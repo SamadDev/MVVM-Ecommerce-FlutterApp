@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../../globalVars.dart';
+import '../../../Services/globalVars.dart';
 import 'package:shop_app/models/Product.dart';
-import 'package:shop_app/size_config.dart';
-import '../../../constants.dart';
+import 'package:shop_app/components/size_config.dart';
+import '../../../components/constants.dart';
 import 'product_description.dart';
 import 'top_rounded_container.dart';
 import 'product_images.dart';

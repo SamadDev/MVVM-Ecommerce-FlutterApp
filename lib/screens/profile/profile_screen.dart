@@ -1,13 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:shop_app/constants.dart';
+import 'package:shop_app/components/constants.dart';
 import 'package:shop_app/screens/profile/components/orders/ordersScreen.dart';
 import 'package:shop_app/screens/profile/components/userInfo/userInfo.dart';
-import 'package:shop_app/screens/sign_in/sign_in_screen.dart';
-import '../../../size_config.dart';
+import 'package:shop_app/screens/sign_in/SignInScreen.dart';
+import '../../components/size_config.dart';
 import '../../Services/authentication.dart';
 import 'package:provider/provider.dart';
-import '../../globalVars.dart';
+import '../../Services/globalVars.dart';
 
 class ProfileScreen extends StatefulWidget {
   static String routeName = "/profile";
@@ -17,11 +17,11 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  User loggedInUser;
+  User u;
 
   @override
   void initState() {
-    loggedInUser = Provider.of<AuthenticationService>(context, listen: false).CurrentUser();
+    u = Provider.of<AuthenticationService>(context, listen: false).CurrentUser();
     super.initState();
   }
 
@@ -31,7 +31,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       backgroundColor: PrimaryColor,
       body: Consumer<globalVars>(builder: (_, gv, __) {
         return FutureBuilder(
-            future: gv.getUserInfo(loggedInUser),
+            future: gv.getUserInfo(u),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
                 return Column(
@@ -55,17 +55,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   style: TextStyle(
                                       fontFamily: 'PantonBoldItalic',
                                       color: Colors.white,
-                                      fontSize: getProportionateScreenWidth(24)),
+                                      fontSize: getProportionateScreenWidth(20)),
                                 ),
                               ),
                               Align(
-                                alignment: Alignment.centerRight,
+                                alignment: Alignment.centerLeft,
                                 child: Text(
                                   gv.UserInfo['Full Name'],
+                                  maxLines: 3,
+                                  softWrap: false,
+                                  overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                       fontFamily: 'PantonBoldItalic',
                                       color: Colors.white,
-                                      fontSize: getProportionateScreenWidth(30)),
+                                      fontSize: getProportionateScreenWidth(29)),
                                 ),
                               ),
                             ],
@@ -109,7 +112,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                             ProfButton("Log-Out", Icons.logout, () {
                               gv.selectedPage = 0;
-                              print("Sign-Out of ${loggedInUser.email}");
+                              print("Sign-Out of ${u.email}");
                               context.read<AuthenticationService>().signOut();
                               Navigator.pushAndRemoveUntil(
                                 context,

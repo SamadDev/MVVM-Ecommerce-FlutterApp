@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shop_app/models/Product.dart';
 import 'package:shop_app/screens/details/details_screen.dart';
-import '../constants.dart';
-import '../size_config.dart';
+import 'constants.dart';
+import 'size_config.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class ProductCard extends StatelessWidget {

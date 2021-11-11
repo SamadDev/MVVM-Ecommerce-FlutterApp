@@ -2,13 +2,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shop_app/globalVars.dart';
-import 'package:shop_app/screens/sign_in/sign_in_screen.dart';
+import 'package:shop_app/Services/globalVars.dart';
+import 'package:shop_app/screens/sign_in/SignInScreen.dart';
 import 'package:shop_app/screens/home/home_screen.dart';
-import 'package:shop_app/theme.dart';
+import 'package:shop_app/components/theme.dart';
 import 'Services/authentication.dart';
-import 'package:shop_app/routes.dart';
-import '../../../globalVars.dart';
+import 'package:shop_app/components/routes.dart';
+import 'Services/globalVars.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,8 +25,7 @@ class MyApp extends StatelessWidget {
         Provider<AuthenticationService>(
             create: (_) => AuthenticationService(FirebaseAuth.instance)),
         StreamProvider(
-          create: (context) =>
-              context.read<AuthenticationService>().authStateChanges,
+          create: (context) => context.read<AuthenticationService>().authStateChanges,
         ),
         ChangeNotifierProvider(create: (context) => globalVars()),
       ],
