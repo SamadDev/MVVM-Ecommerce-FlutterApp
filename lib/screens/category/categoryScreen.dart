@@ -31,8 +31,9 @@ class CategoryScreen extends StatelessWidget {
       body: Consumer<globalVars>(builder: (_, gv, __) {
         return GridView.count(
           padding: EdgeInsets.all(getProportionateScreenWidth(25)),
-          childAspectRatio:
-              MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 1.5),
+          childAspectRatio: Theme.of(context).platform == TargetPlatform.iOS
+              ? MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 1.5)
+              : MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 1.35),
           crossAxisSpacing: getProportionateScreenWidth(25),
           crossAxisCount: 2,
           children: List.generate(

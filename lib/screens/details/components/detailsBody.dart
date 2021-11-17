@@ -134,25 +134,25 @@ class _BodyState extends State<Body> {
         Flexible(
           flex: 6,
           child: TopRoundedContainer(
-            color: Colors.white,
+            color: Color(0xfff6f8f8),
             child: Column(
               children: [
                 Flexible(
-                  flex: 1,
+                  flex: 16,
                   child: ProductDescription(
                     product: widget.product,
                     pressOnSeeMore: () {},
                   ),
                 ),
                 Flexible(
-                  flex: 2,
+                  flex: 30,
                   child: TopRoundedContainer(
                     color: PrimaryLightColor,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Flexible(
-                          flex: 2,
+                          flex: 5,
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -166,9 +166,9 @@ class _BodyState extends State<Body> {
                         ),
                         //ColorDots(product: product),
                         Flexible(
-                          flex: 5,
+                          flex: 10,
                           child: TopRoundedContainer(
-                            color: Colors.white,
+                            color: Color(0xfff6f8f8),
                             child: Padding(
                               padding: EdgeInsets.only(
                                 left: getProportionateScreenWidth(30),
@@ -210,7 +210,7 @@ class _BodyState extends State<Body> {
           height: getProportionateScreenWidth(48),
           width: getProportionateScreenWidth(48),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Color(0xfff6f8f8),
             borderRadius: BorderRadius.circular(10),
             border: Border.all(color: PrimaryColor.withOpacity(size == s ? 1 : 0)),
           ),

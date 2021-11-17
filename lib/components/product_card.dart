@@ -41,6 +41,10 @@ class ProductCard extends StatelessWidget {
                   tag: product.id.toString(),
                   child: CachedNetworkImage(
                     imageUrl: product.images[0].toString(),
+                    memCacheHeight: 800,
+                    memCacheWidth: 800,
+                    maxHeightDiskCache: 800,
+                    maxWidthDiskCache: 800,
                     progressIndicatorBuilder: (context, url, downloadProgress) => SizedBox(
                       width: getProportionateScreenWidth(6),
                       height: getProportionateScreenWidth(6),

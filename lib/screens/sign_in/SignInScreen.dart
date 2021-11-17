@@ -62,13 +62,17 @@ class _SignFormState extends State<SignInScreen> {
             }
           } catch (e) {
             print(e);
-            setState(() {
-              stateTextWithIcon = ButtonState.fail;
-            });
-            Future.delayed(Duration(milliseconds: 2000), () {
+            if (this.mounted) {
               setState(() {
-                stateTextWithIcon = ButtonState.idle;
+                stateTextWithIcon = ButtonState.fail;
               });
+            }
+            Future.delayed(Duration(milliseconds: 2000), () {
+              if (this.mounted) {
+                setState(() {
+                  stateTextWithIcon = ButtonState.idle;
+                });
+              }
             });
           }
         } else {
@@ -228,9 +232,7 @@ class _SignFormState extends State<SignInScreen> {
                           Text(
                             "Don't have an account?",
                             style: TextStyle(
-                                color: SecondaryColorDark,
-                                fontSize: 14,
-                                fontFamily: 'PantonBold'),
+                                color: SecondaryColorDark, fontSize: 14, fontFamily: 'PantonBold'),
                           ),
                           signUpRedirect(),
                         ],

@@ -22,7 +22,7 @@ class DetailsScreen extends StatelessWidget {
             padding: const EdgeInsets.only(top: 13),
             child: FloatingActionButton(
               mini: true,
-              backgroundColor: Colors.white,
+              backgroundColor: Color(0xfff6f8f8),
               onPressed: () => Navigator.pop(context),
               child: SvgPicture.asset(
                 "assets/icons/Back ICon.svg",

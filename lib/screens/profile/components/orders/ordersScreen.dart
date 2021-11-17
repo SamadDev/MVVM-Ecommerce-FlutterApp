@@ -193,6 +193,10 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                         .getSpecificProd(gv.Orders[Oindex]["cart"][index]["id"])
                                         .images[0]
                                         .toString(),
+                                    memCacheHeight: 200,
+                                    memCacheWidth: 200,
+                                    maxHeightDiskCache: 200,
+                                    maxWidthDiskCache: 200,
                                     progressIndicatorBuilder: (context, url, downloadProgress) =>
                                         SizedBox(
                                       width: getProportionateScreenWidth(0.1),

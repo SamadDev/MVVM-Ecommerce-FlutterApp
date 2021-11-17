@@ -64,7 +64,9 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             Container(
               color: Colors.white,
-              height: getProportionateScreenWidth(16),
+              height: Theme.of(context).platform == TargetPlatform.iOS
+                  ? getProportionateScreenWidth(16)
+                  : 0,
             )
           ],
         ),

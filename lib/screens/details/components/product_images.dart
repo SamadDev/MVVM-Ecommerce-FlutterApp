@@ -93,6 +93,10 @@ class _ProductImagesState extends State<ProductImages> with TickerProviderStateM
                 onInteractionEnd: _onInteractionEnd,
                 child: CachedNetworkImage(
                   imageUrl: widget.product.images[selectedImage].toString(),
+                  memCacheHeight: 800,
+                  memCacheWidth: 800,
+                  maxHeightDiskCache: 800,
+                  maxWidthDiskCache: 800,
                   progressIndicatorBuilder: (context, url, downloadProgress) => SizedBox(
                     width: getProportionateScreenWidth(6),
                     height: getProportionateScreenWidth(6),
@@ -136,12 +140,16 @@ class _ProductImagesState extends State<ProductImages> with TickerProviderStateM
         height: getProportionateScreenWidth(48),
         width: getProportionateScreenWidth(48),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Color(0xfff6f8f8),
           borderRadius: BorderRadius.circular(10),
           border: Border.all(color: PrimaryColor.withOpacity(selectedImage == index ? 1 : 0)),
         ),
         child: CachedNetworkImage(
           imageUrl: widget.product.images[index].toString(),
+          memCacheHeight: 200,
+          memCacheWidth: 200,
+          maxHeightDiskCache: 200,
+          maxWidthDiskCache: 200,
           progressIndicatorBuilder: (context, url, downloadProgress) => SizedBox(
             width: getProportionateScreenWidth(0.1),
             height: getProportionateScreenWidth(0.1),

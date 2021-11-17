@@ -35,6 +35,10 @@ class _CartCardState extends State<CartCard> {
               ),
               child: CachedNetworkImage(
                 imageUrl: widget.cart.product.images[0].toString(),
+                memCacheHeight: 500,
+                memCacheWidth: 500,
+                maxHeightDiskCache: 500,
+                maxWidthDiskCache: 500,
                 progressIndicatorBuilder: (context, url, downloadProgress) => SizedBox(
                   width: getProportionateScreenWidth(4),
                   height: getProportionateScreenWidth(4),
