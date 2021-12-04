@@ -8,7 +8,8 @@
 <img src="https://visitor-badge.glitch.me/badge?page_id=ISL270.Flutter-E-commerce-App&right_color=red&left_text=visitors" /></h3>
 
 ## About
-I developed a fully functioning e-commerce flutter application that is compatible with both iOS & Android. I used [**Firebase Authentication**](https://firebase.google.com/products/auth) to securely authenticate users, [**Cloud Firestore**](https://firebase.google.com/products/firestore) to store product details & users' data, [**Firebase Storage**](https://firebase.google.com/products/storage) to store product images, and [**Provider**](https://pub.dev/packages/provider) for state management.
+I developed a fully functioning e-commerce flutter application that is compatible with both iOS & Android.  I built it with the MVVM
+( Model-View-ViewModel ) architecture, and I used [**Firebase Authentication**](https://firebase.google.com/products/auth) to securely authenticate users, [**Cloud Firestore**](https://firebase.google.com/products/firestore) to store product details & users' data, [**Firebase Storage**](https://firebase.google.com/products/storage) to store product images, and [**Provider**](https://pub.dev/packages/provider) for state management.
 
 **Note:** I didn't include my `GoogleService-Info.plist` & `google-services.json` files for obvious reasons, so you have to set up your own firebase project to be able to host this application, otherwise it won't work.
 
