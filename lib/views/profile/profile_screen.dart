@@ -8,6 +8,7 @@ import '../../utils/size_config.dart';
 import '../../view_models/auth_viewModel.dart';
 import 'package:provider/provider.dart';
 import '../../view_models/globalVariables_viewModel.dart';
+import 'package:shop_app/utils/SignInMessage.dart';
 
 class ProfileScreen extends StatefulWidget {
   static String routeName = "/profile";
@@ -51,24 +52,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  'welcome,',
+                                  gv.UserInfo == null ? ' ' : 'Welcome',
                                   style: TextStyle(
                                       fontFamily: 'PantonBoldItalic',
                                       color: Colors.white,
-                                      fontSize: getProportionateScreenWidth(20)),
+                                      fontSize:
+                                          getProportionateScreenWidth(20)),
                                 ),
                               ),
                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  gv.UserInfo['Full Name'],
+                                  gv.UserInfo == null
+                                      ? 'Welcome Back'
+                                      : gv.UserInfo['Full Name'],
                                   maxLines: 3,
                                   softWrap: false,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                       fontFamily: 'PantonBoldItalic',
                                       color: Colors.white,
-                                      fontSize: getProportionateScreenWidth(29)),
+                                      fontSize:
+                                          getProportionateScreenWidth(29)),
                                 ),
                               ),
                             ],
@@ -89,36 +94,95 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                         child: Column(
                           children: [
-                            ProfButton("My Details", Icons.person_outline_rounded, () {
-                              Navigator.pushNamed(context, UserInfoScreen.routeName)
-                                  .then((_) => setState(() {}));
+                            ProfButton(
+                                "My Details", Icons.person_outline_rounded, () {
+                              if (u.isAnonymous) {
+                                return showModalBottomSheet(
+                                    context: context,
+                                    isScrollControlled: true,
+                                    backgroundColor: Colors.transparent,
+                                    builder: (BuildContext bc) {
+                                      return Padding(
+                                        padding: EdgeInsets.only(
+                                            bottom: MediaQuery.of(context)
+                                                .viewInsets
+                                                .bottom),
+                                        child: SignInMessage(),
+                                      );
+                                    });
+                              } else {
+                                Navigator.pushNamed(
+                                        context, UserInfoScreen.routeName)
+                                    .then((_) => setState(() {}));
+                              }
                             }),
                             SizedBox(
                               height: getProportionateScreenHeight(25),
                             ),
-                            ProfButton("My Orders", Icons.inventory_2_outlined, () {
-                              Navigator.pushNamed(
-                                context,
-                                OrdersScreen.routeName,
-                                arguments: OrderArguments(ordersID: gv.UserInfo['orders']),
-                              );
+                            ProfButton("My Orders", Icons.inventory_2_outlined,
+                                () {
+                              if (u.isAnonymous) {
+                                return showModalBottomSheet(
+                                    context: context,
+                                    isScrollControlled: true,
+                                    backgroundColor: Colors.transparent,
+                                    builder: (BuildContext bc) {
+                                      return Padding(
+                                        padding: EdgeInsets.only(
+                                            bottom: MediaQuery.of(context)
+                                                .viewInsets
+                                                .bottom),
+                                        child: SignInMessage(),
+                                      );
+                                    });
+                              } else {
+                                Navigator.pushNamed(
+                                  context,
+                                  OrdersScreen.routeName,
+                                  arguments: OrderArguments(
+                                      ordersID: gv.UserInfo['orders']),
+                                );
+                              }
                             }),
+                            // SizedBox(
+                            //   height: getProportionateScreenHeight(25),
+                            // ),
+                            // ProfButton(
+                            //   "Settings",
+                            //   Icons.settings_outlined,
+                            //   () => showModalBottomSheet(
+                            //       context: context,
+                            //       isScrollControlled: true,
+                            //       backgroundColor: Colors.transparent,
+                            //       builder: (BuildContext bc) {
+                            //         return Padding(
+                            //           padding: EdgeInsets.only(
+                            //               bottom: MediaQuery.of(context)
+                            //                   .viewInsets
+                            //                   .bottom),
+                            //           child: SignInMessage(),
+                            //         );
+                            //       }),
+                            // ),
                             SizedBox(
                               height: getProportionateScreenHeight(25),
                             ),
-                            ProfButton("Settings", Icons.settings_outlined, () {}),
-                            SizedBox(
-                              height: getProportionateScreenHeight(25),
-                            ),
-                            ProfButton("Log-Out", Icons.logout, () {
-                              gv.selectedPage = 0;
-                              print("Sign-Out of ${u.email}");
-                              context.read<auth_viewModel>().signOut();
-                              Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(builder: (context) => SignInScreen()),
-                                (Route<dynamic> route) => false,
-                              );
+                            ProfButton(u.isAnonymous ? "Sign-In" : "Log-Out",
+                                u.isAnonymous ? Icons.login : Icons.logout, () {
+                              if (u.isAnonymous) {
+                                Navigator.pushNamed(
+                                    context, SignInScreen.routeName);
+                              } else {
+                                gv.selectedPage = 0;
+                                print("Sign-Out of ${u.email}");
+                                context.read<auth_viewModel>().signOut();
+                                Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SignInScreen()),
+                                  (Route<dynamic> route) => false,
+                                );
+                              }
                             }),
                           ],
                         ),
@@ -173,5 +237,6 @@ ElevatedButton ProfButton(String label, IconData icon, Function func) {
       style: ElevatedButton.styleFrom(
           padding: EdgeInsets.all(21),
           primary: Colors.white,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))));
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))));
 }

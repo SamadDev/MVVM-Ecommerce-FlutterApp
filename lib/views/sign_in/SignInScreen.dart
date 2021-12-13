@@ -48,7 +48,8 @@ class _SignFormState extends State<SignInScreen> {
         body: SizedBox(
           width: double.infinity,
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(22)),
+            padding: EdgeInsets.symmetric(
+                horizontal: getProportionateScreenWidth(22)),
             child: ListView(
               children: [
                 SizedBox(height: getProportionateScreenWidth(60)),
@@ -64,7 +65,8 @@ class _SignFormState extends State<SignInScreen> {
                 SizedBox(height: getProportionateScreenWidth(5)),
                 Text(
                   "Sign in with your email and password \nor sign in with social media",
-                  style: TextStyle(fontFamily: 'Panton', color: SecondaryColorDark),
+                  style: TextStyle(
+                      fontFamily: 'Panton', color: SecondaryColorDark),
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: getProportionateScreenWidth(60)),
@@ -86,7 +88,9 @@ class _SignFormState extends State<SignInScreen> {
                               builder: (BuildContext bc) {
                                 return Padding(
                                   padding: EdgeInsets.only(
-                                      bottom: MediaQuery.of(context).viewInsets.bottom),
+                                      bottom: MediaQuery.of(context)
+                                          .viewInsets
+                                          .bottom),
                                   child: ResetPassBottomSheet(),
                                 );
                               }),
@@ -107,7 +111,9 @@ class _SignFormState extends State<SignInScreen> {
                           Text(
                             "Don't have an account?",
                             style: TextStyle(
-                                color: SecondaryColorDark, fontSize: 14, fontFamily: 'PantonBold'),
+                                color: SecondaryColorDark,
+                                fontSize: 14,
+                                fontFamily: 'PantonBold'),
                           ),
                           signUpRedirect(),
                         ],
@@ -162,7 +168,9 @@ class _SignFormState extends State<SignInScreen> {
         if (_formKey.currentState.validate()) {
           _formKey.currentState.save();
           try {
-            await context.read<auth_viewModel>().signIn(email: _email, password: _password);
+            await context
+                .read<auth_viewModel>()
+                .signIn(email: _email, password: _password);
 
             User user = context.read<auth_viewModel>().CurrentUser();
 
@@ -228,8 +236,10 @@ class _SignFormState extends State<SignInScreen> {
         height: getProportionateScreenWidth(58),
         maxWidth: getProportionateScreenWidth(400),
         radius: 20.0,
-        textStyle:
-            TextStyle(color: Color(0xffeeecec), fontSize: 17, fontFamily: 'PantonBoldItalic'),
+        textStyle: TextStyle(
+            color: Color(0xffeeecec),
+            fontSize: 17,
+            fontFamily: 'PantonBoldItalic'),
         iconedButtons: {
           ButtonState.idle: IconedButton(
               text: "Continue",
@@ -239,7 +249,8 @@ class _SignFormState extends State<SignInScreen> {
                 color: PrimaryColor,
               ),
               color: PrimaryColor),
-          ButtonState.loading: IconedButton(text: "Loading", color: PrimaryColor),
+          ButtonState.loading:
+              IconedButton(text: "Loading", color: PrimaryColor),
           ButtonState.fail: IconedButton(
               text: "Wrong email or password",
               icon: Icon(Icons.cancel, color: Colors.white),
@@ -308,7 +319,8 @@ class _SignFormState extends State<SignInScreen> {
         labelText: "Password",
         floatingLabelBehavior: FloatingLabelBehavior.auto,
         contentPadding: EdgeInsets.symmetric(
-            vertical: getProportionateScreenWidth(20), horizontal: getProportionateScreenWidth(30)),
+            vertical: getProportionateScreenWidth(20),
+            horizontal: getProportionateScreenWidth(30)),
         suffixIcon: Padding(
           padding: EdgeInsets.only(right: getProportionateScreenWidth(26)),
           child: Icon(
@@ -352,7 +364,8 @@ class _SignFormState extends State<SignInScreen> {
         labelText: "E-mail",
         floatingLabelBehavior: FloatingLabelBehavior.auto,
         contentPadding: EdgeInsets.symmetric(
-            vertical: getProportionateScreenWidth(20), horizontal: getProportionateScreenWidth(30)),
+            vertical: getProportionateScreenWidth(20),
+            horizontal: getProportionateScreenWidth(30)),
         suffixIcon: Padding(
           padding: EdgeInsets.only(right: getProportionateScreenWidth(26)),
           child: Icon(
@@ -376,7 +389,10 @@ class signUpRedirect extends StatelessWidget {
     return ElevatedButton(
       child: Text(
         "Sign-Up",
-        style: TextStyle(color: Color(0xffeeecec), fontSize: 13, fontFamily: 'PantonBoldItalic'),
+        style: TextStyle(
+            color: Color(0xffeeecec),
+            fontSize: 13,
+            fontFamily: 'PantonBoldItalic'),
       ),
       style: ButtonStyle(
           padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
@@ -387,7 +403,8 @@ class signUpRedirect extends StatelessWidget {
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
           backgroundColor: MaterialStateProperty.all<Color>(PrimaryColor),
-          overlayColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
+          overlayColor: MaterialStateProperty.resolveWith<Color>(
+              (Set<MaterialState> states) {
             return null;
           })),
       onPressed: () {

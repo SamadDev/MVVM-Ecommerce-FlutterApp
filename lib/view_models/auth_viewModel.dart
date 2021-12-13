@@ -10,14 +10,21 @@ class auth_viewModel {
 
   User CurrentUser() => _firebaseAuth.currentUser;
 
+  Future<User> AnonymousOrCurrent() async {
+    if (_firebaseAuth.currentUser == null) {
+      await _firebaseAuth.signInAnonymously();
+    }
+    return _firebaseAuth.currentUser;
+  }
+
   Future<void> signOut() async {
     await _firebaseAuth.signOut();
   }
 
   Future<UserCredential> signIn({String email, String password}) async {
     try {
-      UserCredential userCredential =
-          await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
+      UserCredential userCredential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
       return userCredential;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -35,22 +42,44 @@ class auth_viewModel {
       String phoneNumber,
       String governorate,
       String address}) async {
-    try {
-      UserCredential result =
-          await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
-      User user = result.user;
+    if (_firebaseAuth.currentUser.isAnonymous) {
+      try {
+        AuthCredential credential =
+            EmailAuthProvider.credential(email: email, password: password);
+        UserCredential result =
+            await _firebaseAuth.currentUser.linkWithCredential(credential);
+        User user = result.user;
 
-      await user_info_viewModel(uid: user.uid)
-          .addUserData(fullName, phoneNumber, governorate, address);
-      return result;
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
-      } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
+        await user_info_viewModel(uid: user.uid)
+            .addUserData(fullName, phoneNumber, governorate, address);
+        return result;
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'weak-password') {
+          print('The password provided is too weak.');
+        } else if (e.code == 'email-already-in-use') {
+          print('The account already exists for that email.');
+        }
+      } catch (e) {
+        print(e);
       }
-    } catch (e) {
-      print(e);
+    } else {
+      try {
+        UserCredential result = await _firebaseAuth
+            .createUserWithEmailAndPassword(email: email, password: password);
+        User user = result.user;
+
+        await user_info_viewModel(uid: user.uid)
+            .addUserData(fullName, phoneNumber, governorate, address);
+        return result;
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'weak-password') {
+          print('The password provided is too weak.');
+        } else if (e.code == 'email-already-in-use') {
+          print('The account already exists for that email.');
+        }
+      } catch (e) {
+        print(e);
+      }
     }
   }
 }
