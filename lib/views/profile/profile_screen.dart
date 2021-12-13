@@ -170,6 +170,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ProfButton(u.isAnonymous ? "Sign-In" : "Log-Out",
                                 u.isAnonymous ? Icons.login : Icons.logout, () {
                               if (u.isAnonymous) {
+
                                 Navigator.pushNamed(
                                     context, SignInScreen.routeName);
                               } else {

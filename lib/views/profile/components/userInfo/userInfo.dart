@@ -161,9 +161,9 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
             setState(() {
               _stateTextWithIcon = ButtonState.success;
             });
-            Future.delayed(Duration(milliseconds: 1250), () {
+            Future.delayed(Duration(milliseconds: 1300), () {
               setState(() {
-                Navigator.pop(context);
+                _stateTextWithIcon = ButtonState.idle;
               });
             });
           } catch (e) {
@@ -173,7 +173,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
             });
             Future.delayed(Duration(milliseconds: 1600), () {
               setState(() {
-                _stateTextWithIcon = ButtonState.idle;
+
               });
             });
           }

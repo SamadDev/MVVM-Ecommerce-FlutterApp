@@ -31,6 +31,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
   ButtonState _stateTextWithIcon = ButtonState.idle;
 
   @override
+  void initState() async {
+    await auth_viewModel(FirebaseAuth.instance).AnonymousOrCurrent();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
@@ -131,6 +137,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         if (_formKey.currentState.validate()) {
           _formKey.currentState.save();
           try {
+            //await context.read<auth_viewModel>().signOut();
             await context.read<auth_viewModel>().signUp(
                 email: _email,
                 password: _password,
@@ -143,7 +150,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
             if (user != null) {
               KeyboardUtil.hideKeyboard(context);
-              Navigator.pushNamed(context, HomeScreen.routeName);
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => HomeScreen()),
+                    (Route<dynamic> route) => false,
+              );
               print("----------${user.email}----------");
             } else {
               setState(() {

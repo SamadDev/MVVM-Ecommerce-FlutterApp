@@ -122,31 +122,31 @@ class _SignFormState extends State<SignInScreen> {
                       FormError(errors: _errors),
                       SizedBox(height: SizeConfig.screenHeight * 0.02),
                       buildTextWithIcon(),
-                      SizedBox(height: SizeConfig.screenHeight * 0.03),
-                      Divider(
-                        thickness: 2,
-                        endIndent: getProportionateScreenWidth(40),
-                        indent: getProportionateScreenWidth(40),
-                        color: SecondaryColor.withOpacity(0.25),
-                      ),
-                      SizedBox(height: SizeConfig.screenHeight * 0.03),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SocialCard(
-                            icon: "assets/icons/google-icon.svg",
-                            press: () {},
-                          ),
-                          SocialCard(
-                            icon: "assets/icons/apple-logo.svg",
-                            press: () {},
-                          ),
-                          SocialCard(
-                            icon: "assets/icons/facebook-2.svg",
-                            press: () {},
-                          ),
-                        ],
-                      ),
+                      // SizedBox(height: SizeConfig.screenHeight * 0.03),
+                      // Divider(
+                      //   thickness: 2,
+                      //   endIndent: getProportionateScreenWidth(40),
+                      //   indent: getProportionateScreenWidth(40),
+                      //   color: SecondaryColor.withOpacity(0.25),
+                      // ),
+                      // SizedBox(height: SizeConfig.screenHeight * 0.03),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.center,
+                      //   children: [
+                      //     SocialCard(
+                      //       icon: "assets/icons/google-icon.svg",
+                      //       press: () {},
+                      //     ),
+                      //     SocialCard(
+                      //       icon: "assets/icons/apple-logo.svg",
+                      //       press: () {},
+                      //     ),
+                      //     SocialCard(
+                      //       icon: "assets/icons/facebook-2.svg",
+                      //       press: () {},
+                      //     ),
+                      //   ],
+                      // ),
                     ],
                   ),
                 ),
@@ -168,6 +168,7 @@ class _SignFormState extends State<SignInScreen> {
         if (_formKey.currentState.validate()) {
           _formKey.currentState.save();
           try {
+            await context.read<auth_viewModel>().signOut();
             await context
                 .read<auth_viewModel>()
                 .signIn(email: _email, password: _password);
