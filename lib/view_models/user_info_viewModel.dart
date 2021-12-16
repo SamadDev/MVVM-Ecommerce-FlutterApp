@@ -4,12 +4,14 @@ class user_info_viewModel {
   final String uid;
   user_info_viewModel({this.uid});
 
-  final CollectionReference UsersInformation = FirebaseFirestore.instance.collection('UsersInfo');
+  final CollectionReference UsersInformation =
+      FirebaseFirestore.instance.collection('UsersInfo');
 
-  final CollectionReference Orders = FirebaseFirestore.instance.collection('Orders');
+  final CollectionReference Orders =
+      FirebaseFirestore.instance.collection('Orders');
 
-  Future addUserData(
-      String fullName, String phoneNumber, String governorate, String address) async {
+  Future addUserData(String fullName, String phoneNumber, String governorate,
+      String address) async {
     return await UsersInformation.doc(uid).set({
       'Full Name': fullName,
       'Phone Number': phoneNumber,
@@ -32,7 +34,8 @@ class user_info_viewModel {
     await docRef.update({attribute: FieldValue.delete()});
   }
 
-  Future addToOrders(String orderID, List<dynamic> c, String paymentMethod, int total) async {
+  Future addToOrders(
+      String orderID, List<dynamic> c, String paymentMethod, int total) async {
     return await Orders.doc(orderID).set({
       'userID': uid,
       'Status': "Ordered",
@@ -49,7 +52,20 @@ class user_info_viewModel {
     }, SetOptions(merge: true));
   }
 
-  void addOrder(String orderID, List<dynamic> c, String paymentMethod, int total) {
+  Future addToFavs(String prodID) async {
+    return await UsersInformation.doc(uid).set({
+      'Favorites': FieldValue.arrayUnion([prodID])
+    }, SetOptions(merge: true));
+  }
+
+  Future removeFromFavs(String prodID) async {
+    return await UsersInformation.doc(uid).set({
+      'Favorites': FieldValue.arrayRemove([prodID])
+    }, SetOptions(merge: true));
+  }
+
+  void addOrder(
+      String orderID, List<dynamic> c, String paymentMethod, int total) {
     addToOrders(orderID, c, paymentMethod, total);
     addOrderToUser(orderID);
   }

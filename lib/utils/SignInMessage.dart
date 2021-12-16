@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:shop_app/utils/constants.dart';
-import 'package:shop_app/utils/size_config.dart';
+import 'package:ecommerce_app/utils/constants.dart';
+import 'package:ecommerce_app/utils/size_config.dart';
 import 'package:progress_state_button/progress_button.dart';
-import 'package:shop_app/views/sign_in/SignInScreen.dart';
+import 'package:ecommerce_app/views/sign_in/SignInScreen.dart';
 
 class SignInMessage extends StatefulWidget {
   @override

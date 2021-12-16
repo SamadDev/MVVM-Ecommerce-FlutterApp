@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:shop_app/utils/constants.dart';
-import 'package:shop_app/utils/size_config.dart';
-import 'package:shop_app/utils/form_error.dart';
+import 'package:ecommerce_app/utils/constants.dart';
+import 'package:ecommerce_app/utils/size_config.dart';
+import 'package:ecommerce_app/utils/form_error.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:progress_state_button/iconed_button.dart';
 import 'package:progress_state_button/progress_button.dart';
@@ -28,7 +28,8 @@ class _ResetPassBottomSheetState extends State<ResetPassBottomSheet> {
         vertical: 30,
       ),
       decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+          color: Colors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
       child: ListView(
         shrinkWrap: true,
         children: <Widget>[
@@ -42,7 +43,8 @@ class _ResetPassBottomSheetState extends State<ResetPassBottomSheet> {
                   onChanged: (value) {
                     if (value.isNotEmpty && _errors.contains(EmailNullError)) {
                       _errors.remove(EmailNullError);
-                    } else if (value.isEmpty && _errors.contains(InvalidEmailError) ||
+                    } else if (value.isEmpty &&
+                            _errors.contains(InvalidEmailError) ||
                         emailValidatorRegExp.hasMatch(value) &&
                             _errors.contains(InvalidEmailError)) {
                       _errors.remove(InvalidEmailError);
@@ -66,7 +68,8 @@ class _ResetPassBottomSheetState extends State<ResetPassBottomSheet> {
                         vertical: getProportionateScreenWidth(19),
                         horizontal: getProportionateScreenWidth(30)),
                     suffixIcon: Padding(
-                      padding: EdgeInsets.only(right: getProportionateScreenWidth(26)),
+                      padding: EdgeInsets.only(
+                          right: getProportionateScreenWidth(26)),
                       child: Icon(
                         Icons.email_outlined,
                         size: getProportionateScreenWidth(28),
@@ -146,7 +149,8 @@ class _ResetPassBottomSheetState extends State<ResetPassBottomSheet> {
         height: getProportionateScreenWidth(58),
         maxWidth: getProportionateScreenWidth(400),
         radius: 20.0,
-        textStyle: TextStyle(color: Colors.white, fontSize: 17, fontFamily: 'PantonBoldItalic'),
+        textStyle: TextStyle(
+            color: Colors.white, fontSize: 17, fontFamily: 'PantonBoldItalic'),
         iconedButtons: {
           ButtonState.idle: IconedButton(
               text: "Reset Password",
@@ -156,7 +160,8 @@ class _ResetPassBottomSheetState extends State<ResetPassBottomSheet> {
                 color: PrimaryColor,
               ),
               color: PrimaryColor),
-          ButtonState.loading: IconedButton(text: "Loading", color: PrimaryColor),
+          ButtonState.loading:
+              IconedButton(text: "Loading", color: PrimaryColor),
           ButtonState.fail: IconedButton(
               text: "Connection Lost",
               icon: Icon(

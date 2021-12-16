@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shop_app/models/Product.dart';
+import 'package:ecommerce_app/models/Product.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/size_config.dart';
 
@@ -45,8 +45,10 @@ class ProductDescription extends StatelessWidget {
               children: [
                 Text(
                   product.price.toString() + " EGP",
-                  style:
-                      TextStyle(color: PrimaryColor, fontSize: 18, fontFamily: 'PantonBoldItalic'),
+                  style: TextStyle(
+                      color: PrimaryColor,
+                      fontSize: 18,
+                      fontFamily: 'PantonBoldItalic'),
                 ),
               ],
             ),

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:shop_app/view_models/globalVariables_viewModel.dart';
-import 'package:shop_app/models/cartItem.dart';
+import 'package:ecommerce_app/view_models/globalVariables_viewModel.dart';
+import 'package:ecommerce_app/models/cartItem.dart';
 import 'package:provider/provider.dart';
-import '../../../utils/constants.dart';
-import '../../../utils/size_config.dart';
+import 'package:ecommerce_app/utils/constants.dart';
+import 'package:ecommerce_app/utils/size_config.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class CartCard extends StatefulWidget {
@@ -39,7 +39,8 @@ class _CartCardState extends State<CartCard> {
                 memCacheWidth: 500,
                 maxHeightDiskCache: 500,
                 maxWidthDiskCache: 500,
-                progressIndicatorBuilder: (context, url, downloadProgress) => SizedBox(
+                progressIndicatorBuilder: (context, url, downloadProgress) =>
+                    SizedBox(
                   width: getProportionateScreenWidth(4),
                   height: getProportionateScreenWidth(4),
                   child: Center(
@@ -74,7 +75,9 @@ class _CartCardState extends State<CartCard> {
               Text(
                 widget.cart.option1,
                 style: TextStyle(
-                    color: SecondaryColorDark, fontSize: 14, fontFamily: 'PantonBoldItalic'),
+                    color: SecondaryColorDark,
+                    fontSize: 14,
+                    fontFamily: 'PantonBoldItalic'),
               ),
               SizedBox(height: 10),
               Row(
@@ -83,7 +86,9 @@ class _CartCardState extends State<CartCard> {
                   Text(
                     "${widget.cart.product.price} EGP",
                     style: TextStyle(
-                        color: PrimaryColor, fontSize: 16, fontFamily: 'PantonBoldItalic'),
+                        color: PrimaryColor,
+                        fontSize: 16,
+                        fontFamily: 'PantonBoldItalic'),
                   ),
                   Consumer<globalVars>(builder: (_, gv, __) {
                     return Row(

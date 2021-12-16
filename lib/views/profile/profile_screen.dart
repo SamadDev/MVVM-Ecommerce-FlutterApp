@@ -1,14 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:shop_app/utils/constants.dart';
-import 'package:shop_app/views/profile/components/orders/ordersScreen.dart';
-import 'package:shop_app/views/profile/components/userInfo/userInfo.dart';
-import 'package:shop_app/views/sign_in/SignInScreen.dart';
+import 'package:ecommerce_app/utils/constants.dart';
+import 'package:ecommerce_app/views/profile/components/orders/ordersScreen.dart';
+import 'package:ecommerce_app/views/profile/components/userInfo/userInfo.dart';
+import 'package:ecommerce_app/views/sign_in/SignInScreen.dart';
 import '../../utils/size_config.dart';
 import '../../view_models/auth_viewModel.dart';
 import 'package:provider/provider.dart';
 import '../../view_models/globalVariables_viewModel.dart';
-import 'package:shop_app/utils/SignInMessage.dart';
+import 'package:ecommerce_app/utils/SignInMessage.dart';
 
 class ProfileScreen extends StatefulWidget {
   static String routeName = "/profile";
@@ -144,33 +144,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 );
                               }
                             }),
-                            // SizedBox(
-                            //   height: getProportionateScreenHeight(25),
-                            // ),
-                            // ProfButton(
-                            //   "Settings",
-                            //   Icons.settings_outlined,
-                            //   () => showModalBottomSheet(
-                            //       context: context,
-                            //       isScrollControlled: true,
-                            //       backgroundColor: Colors.transparent,
-                            //       builder: (BuildContext bc) {
-                            //         return Padding(
-                            //           padding: EdgeInsets.only(
-                            //               bottom: MediaQuery.of(context)
-                            //                   .viewInsets
-                            //                   .bottom),
-                            //           child: SignInMessage(),
-                            //         );
-                            //       }),
-                            // ),
                             SizedBox(
                               height: getProportionateScreenHeight(25),
                             ),
                             ProfButton(u.isAnonymous ? "Sign-In" : "Log-Out",
                                 u.isAnonymous ? Icons.login : Icons.logout, () {
                               if (u.isAnonymous) {
-
                                 Navigator.pushNamed(
                                     context, SignInScreen.routeName);
                               } else {

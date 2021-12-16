@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:shop_app/utils/constants.dart';
-import 'package:shop_app/views/category/categoryScreen.dart';
+import 'package:ecommerce_app/utils/constants.dart';
+import 'package:ecommerce_app/views/category/categoryScreen.dart';
 import '../../../utils/size_config.dart';
 
 class Categories extends StatelessWidget {
@@ -28,7 +28,8 @@ class Categories extends StatelessWidget {
               Navigator.pushNamed(
                 context,
                 CategoryScreen.routeName,
-                arguments: CategoryDetailsArguments(category: categories[index]["text"]),
+                arguments: CategoryDetailsArguments(
+                    category: categories[index]["text"]),
               );
             },
           ),

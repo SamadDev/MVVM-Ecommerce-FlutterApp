@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:shop_app/utils/form_error.dart';
-import 'package:shop_app/views/home/home_screen.dart';
+import 'package:ecommerce_app/utils/form_error.dart';
+import 'package:ecommerce_app/views/home/home_screen.dart';
 import '../../utils/constants.dart';
 import '../../utils/size_config.dart';
 import '../../view_models/auth_viewModel.dart';
@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:progress_state_button/iconed_button.dart';
 import 'package:progress_state_button/progress_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:shop_app/utils/keyboard.dart';
+import 'package:ecommerce_app/utils/keyboard.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -56,7 +56,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
           child: SizedBox(
             width: double.infinity,
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(22)),
+              padding: EdgeInsets.symmetric(
+                  horizontal: getProportionateScreenWidth(22)),
               child: Column(
                 children: [
                   SizedBox(height: getProportionateScreenWidth(45)),
@@ -104,7 +105,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 padding: EdgeInsets.symmetric(horizontal: 15),
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(18.0),
-                                    border: Border.all(color: SecondaryColorDark, width: 2.8)),
+                                    border: Border.all(
+                                        color: SecondaryColorDark, width: 2.8)),
                                 child: buildGovDropdown()),
                           ],
                         ),
@@ -153,7 +155,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(builder: (context) => HomeScreen()),
-                    (Route<dynamic> route) => false,
+                (Route<dynamic> route) => false,
               );
               print("----------${user.email}----------");
             } else {
@@ -206,8 +208,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
         height: getProportionateScreenWidth(58),
         maxWidth: getProportionateScreenWidth(400),
         radius: 20.0,
-        textStyle:
-            TextStyle(color: Color(0xffeeecec), fontSize: 18, fontFamily: 'PantonBoldItalic'),
+        textStyle: TextStyle(
+            color: Color(0xffeeecec),
+            fontSize: 18,
+            fontFamily: 'PantonBoldItalic'),
         iconedButtons: {
           ButtonState.idle: IconedButton(
               text: "Continue",
@@ -217,7 +221,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 color: PrimaryColor,
               ),
               color: PrimaryColor),
-          ButtonState.loading: IconedButton(text: "Loading", color: PrimaryColor),
+          ButtonState.loading:
+              IconedButton(text: "Loading", color: PrimaryColor),
           ButtonState.fail: IconedButton(
               text: "email already exists",
               icon: Icon(Icons.cancel, color: Colors.white),
@@ -309,7 +314,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
         labelText: "Password",
         floatingLabelBehavior: FloatingLabelBehavior.auto,
         contentPadding: EdgeInsets.symmetric(
-            vertical: getProportionateScreenWidth(20), horizontal: getProportionateScreenWidth(30)),
+            vertical: getProportionateScreenWidth(20),
+            horizontal: getProportionateScreenWidth(30)),
         suffixIcon: Padding(
           padding: EdgeInsets.only(right: getProportionateScreenWidth(26)),
           child: Icon(
@@ -349,7 +355,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
         labelText: "CONFIRM Password",
         floatingLabelBehavior: FloatingLabelBehavior.auto,
         contentPadding: EdgeInsets.symmetric(
-            vertical: getProportionateScreenWidth(20), horizontal: getProportionateScreenWidth(30)),
+            vertical: getProportionateScreenWidth(20),
+            horizontal: getProportionateScreenWidth(30)),
         suffixIcon: Padding(
           padding: EdgeInsets.only(right: getProportionateScreenWidth(26)),
           child: Icon(
@@ -393,7 +400,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
         labelText: "E-mail",
         floatingLabelBehavior: FloatingLabelBehavior.auto,
         contentPadding: EdgeInsets.symmetric(
-            vertical: getProportionateScreenWidth(20), horizontal: getProportionateScreenWidth(30)),
+            vertical: getProportionateScreenWidth(20),
+            horizontal: getProportionateScreenWidth(30)),
         suffixIcon: Padding(
           padding: EdgeInsets.only(right: getProportionateScreenWidth(26)),
           child: Icon(
@@ -431,7 +439,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
         labelText: "Address",
         floatingLabelBehavior: FloatingLabelBehavior.auto,
         contentPadding: EdgeInsets.symmetric(
-            vertical: getProportionateScreenWidth(20), horizontal: getProportionateScreenWidth(30)),
+            vertical: getProportionateScreenWidth(20),
+            horizontal: getProportionateScreenWidth(30)),
         suffixIcon: Padding(
           padding: EdgeInsets.only(right: getProportionateScreenWidth(26)),
           child: Icon(
@@ -475,7 +484,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
         labelText: "Phone Number",
         floatingLabelBehavior: FloatingLabelBehavior.auto,
         contentPadding: EdgeInsets.symmetric(
-            vertical: getProportionateScreenWidth(20), horizontal: getProportionateScreenWidth(30)),
+            vertical: getProportionateScreenWidth(20),
+            horizontal: getProportionateScreenWidth(30)),
         suffixIcon: Padding(
           padding: EdgeInsets.only(right: getProportionateScreenWidth(26)),
           child: Icon(
@@ -518,7 +528,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
         labelText: "Full Name",
         floatingLabelBehavior: FloatingLabelBehavior.auto,
         contentPadding: EdgeInsets.symmetric(
-            vertical: getProportionateScreenWidth(20), horizontal: getProportionateScreenWidth(30)),
+            vertical: getProportionateScreenWidth(20),
+            horizontal: getProportionateScreenWidth(30)),
         suffixIcon: Padding(
           padding: EdgeInsets.only(right: getProportionateScreenWidth(26)),
           child: Icon(

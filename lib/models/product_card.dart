@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shop_app/models/Product.dart';
-import 'package:shop_app/views/prodDetails/details_screen.dart';
+import 'package:ecommerce_app/models/Product.dart';
+import 'package:ecommerce_app/views/prodDetails/details_screen.dart';
 import '../utils/constants.dart';
 import '../utils/size_config.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -38,14 +38,15 @@ class ProductCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(15),
                 ),
                 child: Hero(
-                  tag: product.id.toString(),
+                  tag: UniqueKey(),
                   child: CachedNetworkImage(
                     imageUrl: product.images[0].toString(),
                     memCacheHeight: 800,
                     memCacheWidth: 800,
                     maxHeightDiskCache: 800,
                     maxWidthDiskCache: 800,
-                    progressIndicatorBuilder: (context, url, downloadProgress) => SizedBox(
+                    progressIndicatorBuilder:
+                        (context, url, downloadProgress) => SizedBox(
                       width: getProportionateScreenWidth(6),
                       height: getProportionateScreenWidth(6),
                       child: Center(

@@ -1,18 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:shop_app/utils/constants.dart';
-import 'package:shop_app/utils/size_config.dart';
+import 'package:ecommerce_app/utils/constants.dart';
+import 'package:ecommerce_app/utils/size_config.dart';
 import 'package:animated_size_and_fade/animated_size_and_fade.dart';
-import 'package:shop_app/view_models/globalVariables_viewModel.dart';
+import 'package:ecommerce_app/view_models/globalVariables_viewModel.dart';
 import 'package:provider/provider.dart';
 import '../../../view_models/auth_viewModel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:shop_app/view_models/user_info_viewModel.dart';
+import 'package:ecommerce_app/view_models/user_info_viewModel.dart';
 import 'package:nanoid/nanoid.dart';
 import 'package:progress_state_button/iconed_button.dart';
 import 'package:progress_state_button/progress_button.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:shop_app/views/profile/components/userInfo/userInfo.dart';
+import 'package:ecommerce_app/views/profile/components/userInfo/userInfo.dart';
 
 class checkoutBottomSheet extends StatefulWidget {
   bool paymentSection = false;
@@ -98,7 +98,8 @@ class _checkoutBottomSheetState extends State<checkoutBottomSheet> {
   Widget buildTextWithIcon(globalVars gv, user_info_viewModel u) {
     return ProgressButton.icon(
         radius: 20.0,
-        textStyle: TextStyle(color: Colors.white, fontSize: 17, fontFamily: 'PantonBoldItalic'),
+        textStyle: TextStyle(
+            color: Colors.white, fontSize: 17, fontFamily: 'PantonBoldItalic'),
         iconedButtons: {
           ButtonState.idle: IconedButton(
               text: "Place Order",
@@ -108,7 +109,8 @@ class _checkoutBottomSheetState extends State<checkoutBottomSheet> {
                 color: PrimaryColor,
               ),
               color: PrimaryColor),
-          ButtonState.loading: IconedButton(text: "Loading", color: PrimaryColor),
+          ButtonState.loading:
+              IconedButton(text: "Loading", color: PrimaryColor),
           ButtonState.fail: IconedButton(
               text: "Connection Lost",
               icon: Icon(
@@ -147,7 +149,8 @@ class _checkoutBottomSheetState extends State<checkoutBottomSheet> {
           vertical: 30,
         ),
         decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
         child: ListView(
           shrinkWrap: true,
           children: <Widget>[
@@ -270,15 +273,22 @@ class _checkoutBottomSheetState extends State<checkoutBottomSheet> {
                       child: Text(
                         "Edit",
                         style: TextStyle(
-                            color: Colors.white, fontSize: 14, fontFamily: 'PantonBoldItalic'),
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontFamily: 'PantonBoldItalic'),
                       ),
                       style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(PrimaryColor),
-                          fixedSize: MaterialStateProperty.all<Size>(
-                              Size(double.infinity, getProportionateScreenHeight(30))),
+                          backgroundColor:
+                              MaterialStateProperty.all(PrimaryColor),
+                          fixedSize: MaterialStateProperty.all<Size>(Size(
+                              double.infinity,
+                              getProportionateScreenHeight(30))),
                           elevation: MaterialStateProperty.all<double>(0),
-                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)))),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(12)))),
                     ),
                   )
                 ],
@@ -316,10 +326,11 @@ class _checkoutBottomSheetState extends State<checkoutBottomSheet> {
                                 softWrap: false,
                                 overflow: TextOverflow.ellipsis,
                               ),
-                              leading: Text("${gv.userCart[index].quantity.toString()}x"),
-                              trailing: Text(
-                                  (gv.userCart[index].quantity * gv.userCart[index].product.price)
-                                      .toString()),
+                              leading: Text(
+                                  "${gv.userCart[index].quantity.toString()}x"),
+                              trailing: Text((gv.userCart[index].quantity *
+                                      gv.userCart[index].product.price)
+                                  .toString()),
                             )),
                     ListTile(
                       title: Text("Shipping fees"),
@@ -363,11 +374,14 @@ class _checkoutBottomSheetState extends State<checkoutBottomSheet> {
           ),
           children: [
             TextSpan(
-                text: " Terms", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+                text: " Terms",
+                style: TextStyle(
+                    color: Colors.black, fontWeight: FontWeight.bold)),
             TextSpan(text: " And"),
             TextSpan(
                 text: " Conditions",
-                style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+                style: TextStyle(
+                    color: Colors.black, fontWeight: FontWeight.bold)),
           ]),
     );
   }

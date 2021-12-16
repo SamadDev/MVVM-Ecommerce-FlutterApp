@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shop_app/utils/size_config.dart';
+import 'package:ecommerce_app/utils/size_config.dart';
 
 const PrimaryColor = Color(0xffea4b4b);
 const PrimaryLightColor = Color(0xffebeded);
@@ -24,14 +24,16 @@ final headingStyle = TextStyle(
 const defaultDuration = Duration(milliseconds: 250);
 
 // Form Error
-final RegExp emailValidatorRegExp = RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+final RegExp emailValidatorRegExp =
+    RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
 final RegExp passwordValidatorRegExp = RegExp(r"^(?=.*?[a-zA-Z])(?=.*?[0-9])");
 final RegExp phoneNumValidatorRegExp = RegExp(r"^[0-9]{11}$");
 final RegExp nameValidatorRegExp = RegExp(r"^[a-zA-Z\s]*$");
 
 const String EmailNullError = "Please Enter your email";
 const String InvalidEmailError = "Please Enter a valid email";
-const String InvalidPassError = "Password must contain both letters and numbers";
+const String InvalidPassError =
+    "Password must contain both letters and numbers";
 const String InvalidPhoneNumError = "Phone number must contain 11 numbers";
 const String InvalidNameError = "Name must contain letters only";
 const String PassNullError = "Please Enter your password";
@@ -43,7 +45,8 @@ const String AddressNullError = "Please Enter your address";
 const String WrongEorP = "Wrong email or password";
 
 final otpInputDecoration = InputDecoration(
-  contentPadding: EdgeInsets.symmetric(vertical: getProportionateScreenWidth(15)),
+  contentPadding:
+      EdgeInsets.symmetric(vertical: getProportionateScreenWidth(15)),
   border: outlineInputBorder(),
   focusedBorder: outlineInputBorder(),
   enabledBorder: outlineInputBorder(),

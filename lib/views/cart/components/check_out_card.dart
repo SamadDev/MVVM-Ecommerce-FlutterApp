@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:shop_app/utils/SignInMessage.dart';
-import 'package:shop_app/view_models/auth_viewModel.dart';
-import 'package:shop_app/view_models/globalVariables_viewModel.dart';
+import 'package:ecommerce_app/utils/SignInMessage.dart';
+import 'package:ecommerce_app/view_models/auth_viewModel.dart';
+import 'package:ecommerce_app/view_models/globalVariables_viewModel.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/size_config.dart';
 import 'package:provider/provider.dart';
-import 'package:shop_app/views/check_out/checkout_bottom_sheet.dart';
+import 'package:ecommerce_app/views/check_out/checkout_bottom_sheet.dart';
 
 class CheckoutCard extends StatelessWidget {
   const CheckoutCard({

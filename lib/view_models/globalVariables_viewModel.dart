@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:shop_app/models/cartItem.dart';
+import 'package:ecommerce_app/models/cartItem.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:shop_app/models/Product.dart';
+import 'package:ecommerce_app/models/Product.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class globalVars with ChangeNotifier {
@@ -36,7 +36,11 @@ class globalVars with ChangeNotifier {
 
   Map<String, List<Product>> _AllProds = {'': []};
 
+  bool _prodsLoaded = false;
+
   List<cartItem> _userCart = [];
+
+  List<String> _FavsList = [];
 
   int selectedPage = 0;
 
@@ -76,6 +80,7 @@ class globalVars with ChangeNotifier {
       }
       _AllProds[_categories[i]] = catProds;
     }
+    prodsTrue();
   }
 
   Product getSpecificProd(String id) {
@@ -122,11 +127,16 @@ class globalVars with ChangeNotifier {
 
   Future getUserInfo(User u) async {
     if (u.isAnonymous) {
-      print(u.uid);
+      DocumentSnapshot documentSnapshot =
+          await UsersInformation.doc(u.uid).get();
+      _UserInfo = documentSnapshot.data();
+      //notifyListeners();
+      print(_UserInfo);
     } else {
       DocumentSnapshot documentSnapshot =
           await UsersInformation.doc(u.uid).get();
       _UserInfo = documentSnapshot.data();
+      //notifyListeners();
       print(_UserInfo);
     }
   }
@@ -235,11 +245,28 @@ class globalVars with ChangeNotifier {
     notifyListeners();
   }
 
+  void prodsTrue() {
+    _prodsLoaded = true;
+    notifyListeners();
+  }
+
+  void addToFavs(String id) {
+    _UserInfo['Favorites'].add(id);
+    notifyListeners();
+  }
+
+  void removeFromFavs(String id) {
+    _UserInfo['Favorites'].remove(id);
+    notifyListeners();
+  }
+
   int get total => _total;
 
   List<cartItem> get userCart => _userCart;
 
   get CartProds => _CartProds;
+
+  get prodsLoaded => _prodsLoaded;
 
   List<Map<String, dynamic>> get Orders => _Orders;
 
@@ -250,6 +277,8 @@ class globalVars with ChangeNotifier {
   Map<String, List<Product>> get AllProds => _AllProds;
 
   int get shippingPrice => _shippingPrice;
+
+  List<String> get FavsList => _FavsList;
 
   String get paymentMethod => _paymentMethod;
   List<String> get imgList => _imgList;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:shop_app/utils/constants.dart';
+import 'package:ecommerce_app/utils/constants.dart';
 import '../../models/Product.dart';
 import 'components/detailsBody.dart';
 
@@ -9,7 +9,8 @@ class DetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ProductDetailsArguments args = ModalRoute.of(context).settings.arguments;
+    final ProductDetailsArguments args =
+        ModalRoute.of(context).settings.arguments;
     return Container(
       color: PrimaryLightColor,
       child: SafeArea(
@@ -21,6 +22,7 @@ class DetailsScreen extends StatelessWidget {
           floatingActionButton: Padding(
             padding: const EdgeInsets.only(top: 13),
             child: FloatingActionButton(
+              heroTag: UniqueKey(),
               mini: true,
               backgroundColor: Color(0xfff6f8f8),
               onPressed: () => Navigator.pop(context),

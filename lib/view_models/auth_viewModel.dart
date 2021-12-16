@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:shop_app/view_models/user_info_viewModel.dart';
+import 'package:ecommerce_app/view_models/user_info_viewModel.dart';
 
 class auth_viewModel {
   final FirebaseAuth _firebaseAuth;

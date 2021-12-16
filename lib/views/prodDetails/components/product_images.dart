@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:shop_app/models/Product.dart';
+import 'package:ecommerce_app/models/Product.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import '../../../utils/constants.dart';
-import '../../../utils/size_config.dart';
+import 'package:ecommerce_app/utils/constants.dart';
+import 'package:ecommerce_app/utils/size_config.dart';
 
 class ProductImages extends StatefulWidget {
   const ProductImages({
@@ -17,9 +17,11 @@ class ProductImages extends StatefulWidget {
   _ProductImagesState createState() => _ProductImagesState();
 }
 
-class _ProductImagesState extends State<ProductImages> with TickerProviderStateMixin {
+class _ProductImagesState extends State<ProductImages>
+    with TickerProviderStateMixin {
   int selectedImage = 0;
-  final TransformationController _transformationController = TransformationController();
+  final TransformationController _transformationController =
+      TransformationController();
   Animation<Matrix4> _animationReset;
   AnimationController _controllerReset;
 
@@ -50,8 +52,6 @@ class _ProductImagesState extends State<ProductImages> with TickerProviderStateM
   }
 
   void _onInteractionStart(ScaleStartDetails details) {
-    // If the user tries to cause a transformation while the reset animation is
-    // running, cancel the reset animation.
     if (_controllerReset.status == AnimationStatus.forward) {
       _animateResetStop();
     }
@@ -85,7 +85,7 @@ class _ProductImagesState extends State<ProductImages> with TickerProviderStateM
           child: AspectRatio(
             aspectRatio: 1,
             child: Hero(
-              tag: widget.product.id.toString(),
+              tag: UniqueKey(),
               child: InteractiveViewer(
                 clipBehavior: Clip.none,
                 transformationController: _transformationController,
@@ -97,7 +97,8 @@ class _ProductImagesState extends State<ProductImages> with TickerProviderStateM
                   memCacheWidth: 800,
                   maxHeightDiskCache: 800,
                   maxWidthDiskCache: 800,
-                  progressIndicatorBuilder: (context, url, downloadProgress) => SizedBox(
+                  progressIndicatorBuilder: (context, url, downloadProgress) =>
+                      SizedBox(
                     width: getProportionateScreenWidth(6),
                     height: getProportionateScreenWidth(6),
                     child: Center(
@@ -118,8 +119,8 @@ class _ProductImagesState extends State<ProductImages> with TickerProviderStateM
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ...List.generate(
-                widget.product.images.length, (index) => buildSmallProductPreview(index)),
+            ...List.generate(widget.product.images.length,
+                (index) => buildSmallProductPreview(index)),
           ],
         )
       ],
@@ -142,7 +143,8 @@ class _ProductImagesState extends State<ProductImages> with TickerProviderStateM
         decoration: BoxDecoration(
           color: Color(0xfff6f8f8),
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: PrimaryColor.withOpacity(selectedImage == index ? 1 : 0)),
+          border: Border.all(
+              color: PrimaryColor.withOpacity(selectedImage == index ? 1 : 0)),
         ),
         child: CachedNetworkImage(
           imageUrl: widget.product.images[index].toString(),
@@ -150,7 +152,8 @@ class _ProductImagesState extends State<ProductImages> with TickerProviderStateM
           memCacheWidth: 200,
           maxHeightDiskCache: 200,
           maxWidthDiskCache: 200,
-          progressIndicatorBuilder: (context, url, downloadProgress) => SizedBox(
+          progressIndicatorBuilder: (context, url, downloadProgress) =>
+              SizedBox(
             width: getProportionateScreenWidth(0.1),
             height: getProportionateScreenWidth(0.1),
             child: Center(

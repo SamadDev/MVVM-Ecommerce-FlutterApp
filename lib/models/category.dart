@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shop_app/models/product_card.dart';
-import 'package:shop_app/views/category/categoryScreen.dart';
+import 'package:ecommerce_app/models/product_card.dart';
+import 'package:ecommerce_app/views/category/categoryScreen.dart';
 import '../utils/size_config.dart';
 import '../views/home/components/section_title.dart';
 import 'package:provider/provider.dart';
@@ -17,7 +17,8 @@ class category extends StatelessWidget {
       children: [
         SizedBox(height: getProportionateScreenWidth(20)),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+          padding:
+              EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
           child: SectionTitle(
               title: cat,
               press: () {

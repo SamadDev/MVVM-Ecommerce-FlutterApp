@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:shop_app/utils/constants.dart';
+import 'package:ecommerce_app/utils/constants.dart';
 import '../../utils/size_config.dart';
-import 'package:shop_app/models/product_card.dart';
+import 'package:ecommerce_app/models/product_card.dart';
 import 'package:provider/provider.dart';
 import '../../view_models/globalVariables_viewModel.dart';
 
@@ -10,7 +10,8 @@ class CategoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final CategoryDetailsArguments args = ModalRoute.of(context).settings.arguments;
+    final CategoryDetailsArguments args =
+        ModalRoute.of(context).settings.arguments;
     return Scaffold(
       backgroundColor: PrimaryLightColor,
       appBar: AppBar(
@@ -32,8 +33,10 @@ class CategoryScreen extends StatelessWidget {
         return GridView.count(
           padding: EdgeInsets.all(getProportionateScreenWidth(25)),
           childAspectRatio: Theme.of(context).platform == TargetPlatform.iOS
-              ? MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 1.5)
-              : MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 1.35),
+              ? MediaQuery.of(context).size.width /
+                  (MediaQuery.of(context).size.height / 1.5)
+              : MediaQuery.of(context).size.width /
+                  (MediaQuery.of(context).size.height / 1.35),
           crossAxisSpacing: getProportionateScreenWidth(25),
           crossAxisCount: 2,
           children: List.generate(
