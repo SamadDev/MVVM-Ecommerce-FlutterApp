@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import '../../../utils/size_config.dart';
 import 'categories.dart';
 import '../../../utils/constants.dart';
-import 'home_header.dart';
 import '../../../models/category.dart';
 import 'package:provider/provider.dart';
 import '../../../view_models/globalVariables_viewModel.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import '../components/search_field.dart';
 
 class HomeBody extends StatefulWidget {
   @override
@@ -22,8 +22,10 @@ class _HomeBodyState extends State<HomeBody> {
 
   @override
   void initState() {
-    _futureProds = Provider.of<globalVars>(context, listen: false).getAllProds();
-    _futureHomeImages = Provider.of<globalVars>(context, listen: false).getHomeImages();
+    _futureProds =
+        Provider.of<globalVars>(context, listen: false).getAllProds();
+    _futureHomeImages =
+        Provider.of<globalVars>(context, listen: false).getHomeImages();
     super.initState();
   }
 
@@ -43,14 +45,18 @@ class _HomeBodyState extends State<HomeBody> {
                   if (_connection == true) {
                     return Consumer<globalVars>(builder: (_, gv, __) {
                       return FutureBuilder(
-                          future: Future.wait([_futureProds, _futureHomeImages]),
+                          future:
+                              Future.wait([_futureProds, _futureHomeImages]),
                           builder: (context, snapshot) {
-                            if (snapshot.connectionState == ConnectionState.done) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.done) {
                               return Column(
                                 children: [
-                                  SizedBox(height: getProportionateScreenHeight(20)),
-                                  HomeHeader(),
-                                  SizedBox(height: getProportionateScreenWidth(5)),
+                                  SizedBox(
+                                      height: getProportionateScreenHeight(22)),
+                                  SearchField(),
+                                  SizedBox(
+                                      height: getProportionateScreenWidth(5)),
                                   Categories(),
                                   CarouselSlider(
                                     options: CarouselOptions(
@@ -58,36 +64,50 @@ class _HomeBodyState extends State<HomeBody> {
                                       autoPlay: true,
                                       aspectRatio: 1.7,
                                       enlargeCenterPage: true,
-                                      enlargeStrategy: CenterPageEnlargeStrategy.height,
+                                      enlargeStrategy:
+                                          CenterPageEnlargeStrategy.height,
                                     ),
                                     items: gv.imgList
                                         .map((item) => Container(
                                               child: Container(
                                                 margin: EdgeInsets.all(7.5),
                                                 child: ClipRRect(
-                                                  borderRadius: BorderRadius.all(Radius.circular(
-                                                      getProportionateScreenWidth(10))),
+                                                  borderRadius: BorderRadius
+                                                      .all(Radius.circular(
+                                                          getProportionateScreenWidth(
+                                                              10))),
                                                   child: CachedNetworkImage(
                                                       imageUrl: item,
-                                                      progressIndicatorBuilder: (context, url,
-                                                              downloadProgress) =>
-                                                          SizedBox(
-                                                            width: getProportionateScreenWidth(6),
-                                                            height: getProportionateScreenWidth(6),
-                                                            child: Center(
-                                                              child: CircularProgressIndicator(
-                                                                value: downloadProgress.progress,
-                                                                strokeWidth: 5,
-                                                                color: PrimaryLightColor,
-                                                                backgroundColor:
-                                                                    CardBackgroundColor,
+                                                      progressIndicatorBuilder:
+                                                          (context, url,
+                                                                  downloadProgress) =>
+                                                              SizedBox(
+                                                                width:
+                                                                    getProportionateScreenWidth(
+                                                                        6),
+                                                                height:
+                                                                    getProportionateScreenWidth(
+                                                                        6),
+                                                                child: Center(
+                                                                  child:
+                                                                      CircularProgressIndicator(
+                                                                    value: downloadProgress
+                                                                        .progress,
+                                                                    strokeWidth:
+                                                                        5,
+                                                                    color:
+                                                                        PrimaryLightColor,
+                                                                    backgroundColor:
+                                                                        CardBackgroundColor,
+                                                                  ),
+                                                                ),
                                                               ),
-                                                            ),
-                                                          ),
-                                                      errorWidget: (context, url, error) =>
+                                                      errorWidget: (context,
+                                                              url, error) =>
                                                           Icon(Icons.error),
                                                       fit: BoxFit.cover,
-                                                      placeholderFadeInDuration: Duration.zero,
+                                                      placeholderFadeInDuration:
+                                                          Duration.zero,
                                                       width: double.infinity),
                                                 ),
                                               ),
@@ -95,14 +115,18 @@ class _HomeBodyState extends State<HomeBody> {
                                         .toList(),
                                   ),
                                   Column(
-                                    children: List.generate(gv.categories.length,
-                                        (index) => category(cat: gv.categories[index])),
+                                    children: List.generate(
+                                        gv.categories.length,
+                                        (index) => category(
+                                            cat: gv.categories[index])),
                                   ),
-                                  SizedBox(height: getProportionateScreenWidth(30))
+                                  SizedBox(
+                                      height: getProportionateScreenWidth(30))
                                 ],
                               );
                             }
-                            if (snapshot.connectionState == ConnectionState.waiting)
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting)
                               return Center(
                                 child: Container(
                                     height: getProportionateScreenWidth(40),
@@ -119,20 +143,22 @@ class _HomeBodyState extends State<HomeBody> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                          Icon(
-                            Icons.warning_amber_rounded,
-                            color: SecondaryColor,
-                            size: 23,
-                          ),
-                          Text(
-                            '   No Internet Connection',
-                            style: TextStyle(
-                                fontSize: 16,
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.warning_amber_rounded,
                                 color: SecondaryColor,
-                                fontFamily: 'PantonBoldItalic'),
-                          ),
-                        ]),
+                                size: 23,
+                              ),
+                              Text(
+                                '   No Internet Connection',
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    color: SecondaryColor,
+                                    fontFamily: 'PantonBoldItalic'),
+                              ),
+                            ]),
                         SizedBox(
                           height: 10,
                         ),

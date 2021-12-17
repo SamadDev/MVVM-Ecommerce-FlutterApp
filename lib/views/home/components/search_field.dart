@@ -1,3 +1,4 @@
+import 'package:ecommerce_app/views/home/components/searchScreen.dart';
 import 'package:flutter/material.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/size_config.dart';
@@ -10,13 +11,21 @@ class SearchField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: SizeConfig.screenWidth * 0.75,
+      margin: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
       decoration: BoxDecoration(
         color: SecondaryColor.withOpacity(0.1),
         borderRadius: BorderRadius.circular(15),
       ),
       child: TextField(
-        onChanged: (value) => print(value),
+        textInputAction: TextInputAction.search,
+        onSubmitted: (value) {
+          Navigator.pushNamed(
+                context,
+                SearchScreen.routeName,
+                arguments: SearchKeyword(
+                    keyword: value),
+              );
+        },
         decoration: InputDecoration(
             contentPadding: EdgeInsets.symmetric(
                 horizontal: getProportionateScreenWidth(20),

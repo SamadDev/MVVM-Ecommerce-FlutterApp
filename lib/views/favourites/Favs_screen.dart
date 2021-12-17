@@ -34,7 +34,7 @@ class _FavScreenState extends State<FavScreen> {
             future: _futureUserInfo,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done && gv.prodsLoaded == true) {
-                if (gv.UserInfo.containsKey('Favorites') &&
+                if (gv.UserInfo != null && gv.UserInfo.containsKey('Favorites') &&
                     gv.UserInfo["Favorites"].isNotEmpty) {
                   return GridView.count(
                     padding: EdgeInsets.all(getProportionateScreenWidth(25)),

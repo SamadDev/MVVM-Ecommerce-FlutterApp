@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:ecommerce_app/utils/constants.dart';
-import '../../utils/size_config.dart';
+import 'package:ecommerce_app/utils/size_config.dart';
 import 'package:ecommerce_app/models/product_card.dart';
 import 'package:provider/provider.dart';
-import '../../view_models/globalVariables_viewModel.dart';
+import 'package:ecommerce_app/view_models/globalVariables_viewModel.dart';
 
 class CategoryScreen extends StatelessWidget {
   static String routeName = "/category";

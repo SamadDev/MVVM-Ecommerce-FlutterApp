@@ -52,7 +52,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  gv.UserInfo == null ? ' ' : 'Welcome',
+                                  gv.UserInfo['Full Name'] == null ? ' ' : 'Welcome',
                                   style: TextStyle(
                                       fontFamily: 'PantonBoldItalic',
                                       color: Colors.white,
@@ -63,7 +63,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  gv.UserInfo == null
+                                  gv.UserInfo['Full Name'] == null
                                       ? 'Welcome Back'
                                       : gv.UserInfo['Full Name'],
                                   maxLines: 3,

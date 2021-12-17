@@ -126,19 +126,10 @@ class globalVars with ChangeNotifier {
   }
 
   Future getUserInfo(User u) async {
-    if (u.isAnonymous) {
       DocumentSnapshot documentSnapshot =
           await UsersInformation.doc(u.uid).get();
       _UserInfo = documentSnapshot.data();
-      //notifyListeners();
       print(_UserInfo);
-    } else {
-      DocumentSnapshot documentSnapshot =
-          await UsersInformation.doc(u.uid).get();
-      _UserInfo = documentSnapshot.data();
-      //notifyListeners();
-      print(_UserInfo);
-    }
   }
 
   Future DeleteItemFromCart(User u, int index) async {
@@ -251,7 +242,11 @@ class globalVars with ChangeNotifier {
   }
 
   void addToFavs(String id) {
-    _UserInfo['Favorites'].add(id);
+    if (_UserInfo == null) {
+      _UserInfo['Favorites'] = [id];
+    } else {
+      _UserInfo['Favorites'].add(id);
+    }
     notifyListeners();
   }
 

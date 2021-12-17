@@ -42,7 +42,7 @@ class _BodyState extends State<Body> {
             mini: true,
             backgroundColor: Color(0xfff6f8f8),
             onPressed: () async {
-              if (gv.UserInfo["Favorites"].contains(widget.product.id)) {
+              if (gv.UserInfo!=null && gv.UserInfo["Favorites"].contains(widget.product.id)) {
                 u.removeFromFavs(widget.product.id);
                 gv.removeFromFavs(widget.product.id);
               } else {
@@ -51,9 +51,10 @@ class _BodyState extends State<Body> {
               }
             },
             child: Icon(
-              gv.UserInfo["Favorites"].contains(widget.product.id)
-                  ? Icons.favorite
-                  : Icons.favorite_border_outlined,
+              gv.UserInfo == null ||
+                      !gv.UserInfo["Favorites"].contains(widget.product.id)
+                  ? Icons.favorite_border_outlined
+                  : Icons.favorite,
               color: PrimaryColor,
             ),
           );
