@@ -38,6 +38,8 @@ class globalVars with ChangeNotifier {
 
   bool _prodsLoaded = false;
 
+  bool _cartLoaded = false;
+
   List<cartItem> _userCart = [];
 
   List<String> _FavsList = [];
@@ -122,14 +124,15 @@ class globalVars with ChangeNotifier {
     _CartProds = documentSnapshot.get('cart');
     print(_CartProds);
     await fillCartList(_CartProds);
+    cartTrue();
     TotalPrice();
+    print("-|-|-|-|-|-|-$_cartLoaded");
   }
 
   Future getUserInfo(User u) async {
-      DocumentSnapshot documentSnapshot =
-          await UsersInformation.doc(u.uid).get();
-      _UserInfo = documentSnapshot.data();
-      print(_UserInfo);
+    DocumentSnapshot documentSnapshot = await UsersInformation.doc(u.uid).get();
+    _UserInfo = documentSnapshot.data();
+    print(_UserInfo);
   }
 
   Future DeleteItemFromCart(User u, int index) async {
@@ -241,6 +244,11 @@ class globalVars with ChangeNotifier {
     notifyListeners();
   }
 
+  void cartTrue() {
+    _cartLoaded = true;
+    notifyListeners();
+  }
+
   void addToFavs(String id) {
     if (_UserInfo == null) {
       _UserInfo['Favorites'] = [id];
@@ -277,4 +285,6 @@ class globalVars with ChangeNotifier {
 
   String get paymentMethod => _paymentMethod;
   List<String> get imgList => _imgList;
+
+  bool get cartLoaded => _cartLoaded;
 }

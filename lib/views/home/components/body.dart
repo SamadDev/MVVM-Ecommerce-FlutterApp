@@ -53,7 +53,7 @@ class _HomeBodyState extends State<HomeBody> {
                               return Column(
                                 children: [
                                   SizedBox(
-                                      height: getProportionateScreenHeight(22)),
+                                      height: getProportionateScreenHeight(15)),
                                   SearchField(),
                                   SizedBox(
                                       height: getProportionateScreenWidth(5)),

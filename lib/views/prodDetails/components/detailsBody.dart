@@ -42,7 +42,8 @@ class _BodyState extends State<Body> {
             mini: true,
             backgroundColor: Color(0xfff6f8f8),
             onPressed: () async {
-              if (gv.UserInfo!=null && gv.UserInfo["Favorites"].contains(widget.product.id)) {
+              if (gv.UserInfo != null &&
+                  gv.UserInfo["Favorites"].contains(widget.product.id)) {
                 u.removeFromFavs(widget.product.id);
                 gv.removeFromFavs(widget.product.id);
               } else {
@@ -155,7 +156,7 @@ class _BodyState extends State<Body> {
       stateTextWithIcon = ButtonState.loading;
     });
     bool connection = await InternetConnectionChecker().hasConnection;
-    if (connection == true) {
+    if (connection && gv.cartLoaded) {
       try {
         String temp = widget.product.id + size;
         List<String> tempLsit = [];
