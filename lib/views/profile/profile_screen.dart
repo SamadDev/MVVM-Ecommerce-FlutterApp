@@ -52,7 +52,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  gv.UserInfo['Full Name'] == null ? ' ' : 'Welcome',
+                                  u.isAnonymous ? ' ' : 'Welcome',
                                   style: TextStyle(
                                       fontFamily: 'PantonBoldItalic',
                                       color: Colors.white,
@@ -63,7 +63,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  gv.UserInfo['Full Name'] == null
+                                  u.isAnonymous
                                       ? 'Welcome Back'
                                       : gv.UserInfo['Full Name'],
                                   maxLines: 3,
@@ -150,10 +150,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ProfButton(u.isAnonymous ? "Sign-In" : "Log-Out",
                                 u.isAnonymous ? Icons.login : Icons.logout, () {
                               if (u.isAnonymous) {
+                                gv.selectedPage = 0;
+                                gv.prodsBool(false);
+                                gv.cartBool(false);
                                 Navigator.pushNamed(
                                     context, SignInScreen.routeName);
                               } else {
                                 gv.selectedPage = 0;
+                                gv.prodsBool(false);
+                                gv.cartBool(false);
                                 print("Sign-Out of ${u.email}");
                                 context.read<auth_viewModel>().signOut();
                                 Navigator.pushAndRemoveUntil(

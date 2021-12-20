@@ -82,7 +82,7 @@ class globalVars with ChangeNotifier {
       }
       _AllProds[_categories[i]] = catProds;
     }
-    prodsTrue();
+    prodsBool(true);
   }
 
   Product getSpecificProd(String id) {
@@ -124,9 +124,8 @@ class globalVars with ChangeNotifier {
     _CartProds = documentSnapshot.get('cart');
     print(_CartProds);
     await fillCartList(_CartProds);
-    cartTrue();
+    cartBool(true);
     TotalPrice();
-    print("-|-|-|-|-|-|-$_cartLoaded");
   }
 
   Future getUserInfo(User u) async {
@@ -239,19 +238,21 @@ class globalVars with ChangeNotifier {
     notifyListeners();
   }
 
-  void prodsTrue() {
-    _prodsLoaded = true;
+  void prodsBool(bool b) {
+    _prodsLoaded = b;
     notifyListeners();
   }
 
-  void cartTrue() {
-    _cartLoaded = true;
+  void cartBool(bool b) {
+    _cartLoaded = b;
     notifyListeners();
   }
 
   void addToFavs(String id) {
     if (_UserInfo == null) {
-      _UserInfo['Favorites'] = [id];
+      _UserInfo = {
+        "Favorites": [id]
+      };
     } else {
       _UserInfo['Favorites'].add(id);
     }
