@@ -150,15 +150,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ProfButton(u.isAnonymous ? "Sign-In" : "Log-Out",
                                 u.isAnonymous ? Icons.login : Icons.logout, () {
                               if (u.isAnonymous) {
-                                gv.selectedPage = 0;
-                                gv.prodsBool(false);
-                                gv.cartBool(false);
                                 Navigator.pushNamed(
                                     context, SignInScreen.routeName);
+                                Future.delayed(Duration(milliseconds: 700), () {
+                                  gv.selectedPage = 0;
+                                  gv.prodsBool(false);
+                                  gv.cartBool(false);
+                                });
                               } else {
-                                gv.selectedPage = 0;
-                                gv.prodsBool(false);
-                                gv.cartBool(false);
                                 print("Sign-Out of ${u.email}");
                                 context.read<auth_viewModel>().signOut();
                                 Navigator.pushAndRemoveUntil(
@@ -167,6 +166,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       builder: (context) => SignInScreen()),
                                   (Route<dynamic> route) => false,
                                 );
+
+                                Future.delayed(Duration(milliseconds: 700), () {
+                                  gv.selectedPage = 0;
+                                  gv.prodsBool(false);
+                                  gv.cartBool(false);
+                                });
                               }
                             }),
                           ],
