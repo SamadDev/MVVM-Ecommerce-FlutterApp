@@ -1,11 +1,15 @@
-# Flutter-E-commerce-App
+# MVVM-Ecommerce-FlutterApp
 <p align="center">
 <img src="https://user-images.githubusercontent.com/32794378/141204109-bb23af7a-9f26-411b-ba15-e7550a9218ae.png" alt="Logo" width="120">
 </p>
 <h3 align="center">MyBRAND<br><br>
 <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/ISL270/Flutter-E-commerce-App">
 <img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/ISL270/Flutter-E-commerce-App">
-<img src="https://visitor-badge.glitch.me/badge?page_id=ISL270.Flutter-E-commerce-App&right_color=red&left_text=visitors" /></h3>
+<img src="https://visitor-badge.glitch.me/badge?page_id=ISL270.Flutter-E-commerce-App&right_color=red&left_text=visitors" /><br><br>
+<a href="https://apps.apple.com/us/app/my-brand/id1599696779"><img src="https://user-images.githubusercontent.com/32794378/147163357-ce0643ff-6439-4a31-a97a-7b00a134ab37.png" width="159" alt="App Store" title="App Store" /></a>
+<a href="https://play.google.com/store/apps/details?id=com.isl270.ecommerce1"><img src="https://user-images.githubusercontent.com/32794378/147163363-6fd81430-1187-4748-80aa-7a2b4a399bd5.png" width="159" alt="Google Play Store" title="Google Play Store" /></a>
+</h3>
+
 
 ## About
 I developed a fully functioning e-commerce flutter application that is compatible with both iOS & Android.  I built it with the MVVM
