@@ -43,6 +43,7 @@ class _BodyState extends State<Body> {
             backgroundColor: Color(0xfff6f8f8),
             onPressed: () async {
               if (gv.UserInfo != null &&
+                  gv.UserInfo.containsKey("Favorites") &&
                   gv.UserInfo["Favorites"].contains(widget.product.id)) {
                 u.removeFromFavs(widget.product.id);
                 gv.removeFromFavs(widget.product.id);
@@ -53,6 +54,7 @@ class _BodyState extends State<Body> {
             },
             child: Icon(
               gv.UserInfo == null ||
+                      !gv.UserInfo.containsKey("Favorites") ||
                       !gv.UserInfo["Favorites"].contains(widget.product.id)
                   ? Icons.favorite_border_outlined
                   : Icons.favorite,
@@ -156,7 +158,7 @@ class _BodyState extends State<Body> {
       stateTextWithIcon = ButtonState.loading;
     });
     bool connection = await InternetConnectionChecker().hasConnection;
-    if (connection && gv.cartLoaded) {
+    if (connection && gv.cartLoaded || user.isAnonymous) {
       try {
         String temp = widget.product.id + size;
         List<String> tempLsit = [];
@@ -164,7 +166,7 @@ class _BodyState extends State<Body> {
         for (int i = 0; i < gv.userCart.length; i++) {
           tempLsit.add(gv.userCart[i].uid);
         }
-        if (!tempLsit.contains(temp)) {
+        if (!tempLsit.contains(temp) || user.isAnonymous) {
           gv.addToUserCart(widget.product, 1, size);
           u.addToCart(widget.product.id, size, 1);
           setState(() {

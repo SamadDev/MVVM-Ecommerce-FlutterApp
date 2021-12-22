@@ -85,12 +85,26 @@ class _FavScreenState extends State<FavScreen> {
                 }
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(
-                    child: Container(
-                        height: getProportionateScreenWidth(40),
-                        width: getProportionateScreenWidth(40),
-                        child: CircularProgressIndicator(
-                          color: SecondaryColorDark,
-                        )),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.favorite_border_outlined,
+                          size: 90,
+                          color: PrimaryColor,
+                        ),
+                        SizedBox(height: getProportionateScreenHeight(10)),
+                        Text(
+                          "No Favourite Items",
+                          style: TextStyle(
+                              fontFamily: 'Panton',
+                              color: SecondaryColor,
+                              fontWeight: FontWeight.w900),
+                        )
+                      ],
+                    ),
                   );
                 }
                 return Container();

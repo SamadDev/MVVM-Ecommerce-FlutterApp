@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:ecommerce_app/utils/constants.dart';
 import 'package:ecommerce_app/views/profile/components/orders/ordersScreen.dart';
 import 'package:ecommerce_app/views/profile/components/userInfo/userInfo.dart';
+import 'package:ecommerce_app/views/profile/components/profClone.dart';
 import 'package:ecommerce_app/views/sign_in/SignInScreen.dart';
 import '../../utils/size_config.dart';
 import '../../view_models/auth_viewModel.dart';
@@ -183,14 +184,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               }
 
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(
-                  child: Container(
-                      height: getProportionateScreenWidth(40),
-                      width: getProportionateScreenWidth(40),
-                      child: CircularProgressIndicator(
-                        color: SecondaryColorDark,
-                      )),
-                );
+                return profClone(u: u);
               }
 
               return Container();

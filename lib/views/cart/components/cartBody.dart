@@ -27,7 +27,8 @@ class cartBodyState extends State<cartBody> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+      padding:
+          EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
       child: Consumer<globalVars>(builder: (_, gv, __) {
         return FutureBuilder(
           future: futureCart,
@@ -102,12 +103,26 @@ class cartBodyState extends State<cartBody> {
             }
             if (snapshot.connectionState == ConnectionState.waiting)
               return Center(
-                child: Container(
-                    height: getProportionateScreenWidth(40),
-                    width: getProportionateScreenWidth(40),
-                    child: CircularProgressIndicator(
-                      color: SecondaryColorDark,
-                    )),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SvgPicture.asset(
+                      "assets/icons/EmptyCart.svg",
+                      color: PrimaryColor,
+                      height: getProportionateScreenWidth(70),
+                    ),
+                    SizedBox(height: getProportionateScreenHeight(20)),
+                    Text(
+                      "Your Cart is Empty",
+                      style: TextStyle(
+                          fontFamily: 'Panton',
+                          color: SecondaryColor,
+                          fontWeight: FontWeight.w900),
+                    )
+                  ],
+                ),
               );
 
             return Container();

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/size_config.dart';
 
-class SearchField extends StatelessWidget {
-  const SearchField({
+class searchBar extends StatelessWidget {
+  const searchBar({
     Key key,
   }) : super(key: key);
 

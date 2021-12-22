@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ecommerce_app/utils/constants.dart';
 import 'package:titled_navigation_bar/titled_navigation_bar.dart';
 import 'components/body.dart';
-import '../../utils/size_config.dart';
+import 'package:ecommerce_app/utils/size_config.dart';
 import 'package:ecommerce_app/views/favourites/Favs_screen.dart';
 import 'package:ecommerce_app/views/cart/cart_screen.dart';
 import 'package:ecommerce_app/views/profile/profile_screen.dart';

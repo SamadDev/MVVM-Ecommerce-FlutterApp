@@ -249,13 +249,11 @@ class globalVars with ChangeNotifier {
   }
 
   void addToFavs(String id) {
-    if (_UserInfo == null) {
-      _UserInfo = {
-        "Favorites": [id]
-      };
-    } else {
-      _UserInfo['Favorites'].add(id);
-    }
+    _UserInfo != null && _UserInfo.containsKey("Favorites")
+        ? _UserInfo['Favorites'].add(id)
+        : _UserInfo = {
+            "Favorites": [id]
+          };
     notifyListeners();
   }
 

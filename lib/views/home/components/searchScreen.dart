@@ -40,7 +40,6 @@ class SearchScreen extends StatelessWidget {
               _searchList.add(element);
             }
           });
-          print(_searchList);
         });
 
         return _searchList.isNotEmpty
