@@ -37,101 +37,101 @@ class _HomeBodyState extends State<HomeBody> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: SingleChildScrollView(
-        child: FutureBuilder(
-            future: connection_checker(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                if (_connection == true) {
-                  return Consumer<globalVars>(builder: (_, gv, __) {
-                    return FutureBuilder(
-                        future: Future.wait([_futureProds, _futureHomeImages]),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.done) {
-                            return Column(
-                              children: [
-                                SizedBox(
-                                    height: getProportionateScreenHeight(15)),
-                                searchBar(),
-                                SizedBox(
-                                    height: getProportionateScreenWidth(5)),
-                                Categories(),
-                                CarouselSlider(
-                                  options: CarouselOptions(
-                                    viewportFraction: 0.9,
-                                    autoPlay: true,
-                                    aspectRatio: 1.7,
-                                    enlargeCenterPage: true,
-                                    enlargeStrategy:
-                                        CenterPageEnlargeStrategy.height,
-                                  ),
-                                  items: gv.imgList
-                                      .map((item) => Container(
-                                            child: Container(
-                                              margin: EdgeInsets.all(7.5),
-                                              child: ClipRRect(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(
-                                                        getProportionateScreenWidth(
-                                                            10))),
-                                                child: CachedNetworkImage(
-                                                    imageUrl: item,
-                                                    progressIndicatorBuilder:
-                                                        (context, url,
-                                                                downloadProgress) =>
-                                                            SizedBox(
-                                                              width:
-                                                                  getProportionateScreenWidth(
-                                                                      6),
-                                                              height:
-                                                                  getProportionateScreenWidth(
-                                                                      6),
-                                                              child: Center(
-                                                                child:
-                                                                    CircularProgressIndicator(
-                                                                  value: downloadProgress
-                                                                      .progress,
-                                                                  strokeWidth:
-                                                                      5,
-                                                                  color:
-                                                                      PrimaryLightColor,
-                                                                  backgroundColor:
-                                                                      CardBackgroundColor,
+      child: Center(
+        child: SingleChildScrollView(
+          child: FutureBuilder(
+              future: connection_checker(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  if (_connection == true) {
+                    return Consumer<globalVars>(builder: (_, gv, __) {
+                      return FutureBuilder(
+                          future: Future.wait([_futureProds, _futureHomeImages]),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.done) {
+                              return Column(
+                                children: [
+                                  SizedBox(
+                                      height: getProportionateScreenHeight(15)),
+                                  searchBar(),
+                                  SizedBox(
+                                      height: getProportionateScreenWidth(5)),
+                                  Categories(),
+                                  CarouselSlider(
+                                    options: CarouselOptions(
+                                      viewportFraction: 0.9,
+                                      autoPlay: true,
+                                      aspectRatio: 1.7,
+                                      enlargeCenterPage: true,
+                                      enlargeStrategy:
+                                          CenterPageEnlargeStrategy.height,
+                                    ),
+                                    items: gv.imgList
+                                        .map((item) => Container(
+                                              child: Container(
+                                                margin: EdgeInsets.all(7.5),
+                                                child: ClipRRect(
+                                                  borderRadius: BorderRadius.all(
+                                                      Radius.circular(
+                                                          getProportionateScreenWidth(
+                                                              10))),
+                                                  child: CachedNetworkImage(
+                                                      imageUrl: item,
+                                                      progressIndicatorBuilder:
+                                                          (context, url,
+                                                                  downloadProgress) =>
+                                                              SizedBox(
+                                                                width:
+                                                                    getProportionateScreenWidth(
+                                                                        6),
+                                                                height:
+                                                                    getProportionateScreenWidth(
+                                                                        6),
+                                                                child: Center(
+                                                                  child:
+                                                                      CircularProgressIndicator(
+                                                                    value: downloadProgress
+                                                                        .progress,
+                                                                    strokeWidth:
+                                                                        5,
+                                                                    color:
+                                                                        PrimaryLightColor,
+                                                                    backgroundColor:
+                                                                        CardBackgroundColor,
+                                                                  ),
                                                                 ),
                                                               ),
-                                                            ),
-                                                    errorWidget:
-                                                        (context, url, error) =>
-                                                            Icon(Icons.error),
-                                                    fit: BoxFit.cover,
-                                                    placeholderFadeInDuration:
-                                                        Duration.zero,
-                                                    width: double.infinity),
+                                                      errorWidget:
+                                                          (context, url, error) =>
+                                                              Icon(Icons.error),
+                                                      fit: BoxFit.cover,
+                                                      placeholderFadeInDuration:
+                                                          Duration.zero,
+                                                      width: double.infinity),
+                                                ),
                                               ),
-                                            ),
-                                          ))
-                                      .toList(),
-                                ),
-                                Column(
-                                  children: List.generate(
-                                      gv.categories.length,
-                                      (index) =>
-                                          category(cat: gv.categories[index])),
-                                ),
-                                SizedBox(
-                                    height: getProportionateScreenWidth(30))
-                              ],
-                            );
-                          }
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) return homeShimmer();
-                          return Container();
-                        });
-                  });
-                } else {
-                  return Center(
-                    child: Column(
+                                            ))
+                                        .toList(),
+                                  ),
+                                  Column(
+                                    children: List.generate(
+                                        gv.categories.length,
+                                        (index) =>
+                                            category(cat: gv.categories[index])),
+                                  ),
+                                  SizedBox(
+                                      height: getProportionateScreenWidth(30))
+                                ],
+                              );
+                            }
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) return homeShimmer();
+                            return Container();
+                          });
+                    });
+                  } else {
+                    return Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -163,15 +163,15 @@ class _HomeBodyState extends State<HomeBody> {
                           iconSize: 53,
                         )
                       ],
-                    ),
-                  );
+                    );
+                  }
                 }
-              }
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return homeShimmer();
-              }
-              return Container();
-            }),
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return homeShimmer();
+                }
+                return Container();
+              }),
+        ),
       ),
     );
   }

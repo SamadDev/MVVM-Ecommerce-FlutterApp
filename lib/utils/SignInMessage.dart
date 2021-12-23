@@ -68,6 +68,7 @@ class _SignInMessageState extends State<SignInMessage> {
             return null;
           })),
       onPressed: () {
+        Navigator.pop(context);
         Navigator.pushNamed(context, SignInScreen.routeName);
       },
     );

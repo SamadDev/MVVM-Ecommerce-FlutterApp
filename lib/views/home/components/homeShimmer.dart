@@ -9,7 +9,7 @@ class homeShimmer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
-        baseColor: CardBackgroundColor,
+        baseColor: Color(0xfff6f6f6),
         highlightColor: Colors.grey.shade400,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
