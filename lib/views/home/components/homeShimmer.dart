@@ -19,13 +19,13 @@ class homeShimmer extends StatelessWidget {
               margin: EdgeInsets.symmetric(
                   horizontal: getProportionateScreenWidth(20)),
               width: double.infinity,
-              height: getProportionateScreenWidth(42),
+              height: getProportionateScreenWidth(45),
               decoration: BoxDecoration(
                 color: PrimaryColor.withOpacity(0.2),
                 borderRadius: BorderRadius.circular(15),
               ),
             ),
-            SizedBox(height: getProportionateScreenWidth(29)),
+            SizedBox(height: getProportionateScreenWidth(26)),
             Padding(
               padding: EdgeInsets.symmetric(
                   horizontal: getProportionateScreenWidth(20)),
@@ -49,7 +49,7 @@ class homeShimmer extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: getProportionateScreenWidth(48)),
+            SizedBox(height: getProportionateScreenWidth(46)),
             Container(
               margin: EdgeInsets.symmetric(
                   horizontal: getProportionateScreenWidth(20)),
@@ -61,7 +61,7 @@ class homeShimmer extends StatelessWidget {
                     Radius.circular(getProportionateScreenWidth(10))),
               ),
             ),
-            SizedBox(height: getProportionateScreenWidth(29)),
+            SizedBox(height: getProportionateScreenWidth(31)),
             Padding(
               padding: EdgeInsets.symmetric(
                   horizontal: getProportionateScreenWidth(20)),
@@ -70,7 +70,7 @@ class homeShimmer extends StatelessWidget {
                 children: [
                   Container(
                     width: getProportionateScreenWidth(90),
-                    height: getProportionateScreenWidth(18),
+                    height: getProportionateScreenWidth(17),
                     decoration: BoxDecoration(
                       color: PrimaryColor.withOpacity(0.2),
                       borderRadius: BorderRadius.all(
@@ -89,7 +89,7 @@ class homeShimmer extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: getProportionateScreenWidth(10)),
+            SizedBox(height: getProportionateScreenWidth(11)),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(

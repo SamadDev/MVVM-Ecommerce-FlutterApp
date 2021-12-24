@@ -156,7 +156,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 Future.delayed(Duration(milliseconds: 700), () {
                                   gv.selectedPage = 0;
                                   gv.prodsBool(false);
-                                  gv.cartBool(false);
                                 });
                               } else {
                                 print("Sign-Out of ${u.email}");
@@ -171,7 +170,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 Future.delayed(Duration(milliseconds: 700), () {
                                   gv.selectedPage = 0;
                                   gv.prodsBool(false);
-                                  gv.cartBool(false);
                                 });
                               }
                             }),

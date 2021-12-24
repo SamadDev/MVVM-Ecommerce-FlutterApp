@@ -124,7 +124,6 @@ class globalVars with ChangeNotifier {
     _CartProds = documentSnapshot.get('cart');
     print(_CartProds);
     await fillCartList(_CartProds);
-    cartBool(true);
     TotalPrice();
   }
 
@@ -240,11 +239,6 @@ class globalVars with ChangeNotifier {
 
   void prodsBool(bool b) {
     _prodsLoaded = b;
-    notifyListeners();
-  }
-
-  void cartBool(bool b) {
-    _cartLoaded = b;
     notifyListeners();
   }
 

@@ -158,7 +158,7 @@ class _BodyState extends State<Body> {
       stateTextWithIcon = ButtonState.loading;
     });
     bool connection = await InternetConnectionChecker().hasConnection;
-    if (connection && gv.cartLoaded || user.isAnonymous) {
+    if (connection) {
       try {
         String temp = widget.product.id + size;
         List<String> tempLsit = [];
